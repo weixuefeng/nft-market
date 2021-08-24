@@ -6,6 +6,7 @@ import { pageSize, POLLING_INTERVAL } from '../constant'
 import { useState } from 'react'
 import NFTList from '../components/lists/NFTList'
 import { FILTER_START_BLOCK } from '../constant/settings'
+import MainLoadingView from '../components/layouts/MainLoadingView'
 
 export default function Home() {
   const { t } = useTranslation()
@@ -24,6 +25,10 @@ export default function Home() {
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL
   })
+
+  if (loading) {
+    return <MainLoadingView />
+  }
 
   if (error) {
     console.log(error)

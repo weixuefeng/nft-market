@@ -31,7 +31,7 @@ function NFTFixedPriceNotForSale(props) {
   const exchangeContract = useNFTExchangeContract()
 
   function checkApprove() {
-    if(isApproved) {
+    if (isApproved) {
       return
     }
     contract
@@ -49,7 +49,6 @@ function NFTFixedPriceNotForSale(props) {
   }
 
   usePoller(checkApprove, POLLING_INTERVAL, true)
-
 
   return (
     <section className="offer-card">

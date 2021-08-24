@@ -56,13 +56,12 @@ function PutOnSaleModal(props) {
       )
       .then(res => {
         console.log(res)
+        setShowModal(false)
       })
       .catch(error => {
         console.log(error)
+        setShowModal(false)
       })
-    setTimeout(() => {
-      setShowModal(false)
-    }, 1500)
   }
 
   function closeModal() {
@@ -127,7 +126,7 @@ function PutOnSaleModal(props) {
                     <img src={nftTokenMetaData.image} alt="" />
                     <div>
                       <h4>{nftTokenMetaData.name}</h4>
-                      <p>#{nftToken.id}</p>
+                      <p>#{nftToken.tokenId}</p>
                     </div>
                   </div>
 

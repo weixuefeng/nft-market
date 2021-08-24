@@ -6,6 +6,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useState } from 'react'
 import { pageSize, POLLING_INTERVAL } from '../constant'
 import NFTList from '../components/lists/NFTList'
+import MainLoadingView from '../components/layouts/MainLoadingView'
 
 function Me() {
   const { t } = useTranslation()

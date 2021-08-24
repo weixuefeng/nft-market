@@ -42,15 +42,12 @@ function TransferItemModal(props) {
     nftContract
       .safeTransferFrom(account, toAddress, nftToken.tokenId)
       .then(res => {
-        console.log(res)
+        setShowModal(false)
       })
       .catch(error => {
         console.log(error)
+        setShowModal(false)
       })
-    // tx(writeContracts.NewtonNFT.safeTransferFrom(address, toAddress, item.nid))
-    setTimeout(() => {
-      setShowModal(false)
-    }, 1500)
   }
 
   function closeModal() {
@@ -106,7 +103,7 @@ function TransferItemModal(props) {
                     <img src={nftTokenMetaData.tokenImage} alt="" />
                     <div>
                       <h4>{nftTokenMetaData.tokenName}</h4>
-                      <p>#{nftToken.id}</p>
+                      <p>#{nftToken.tokenId}</p>
                     </div>
                   </div>
 

@@ -14,6 +14,7 @@ import { useQuery } from '@apollo/client'
 import { NFTBidPriceHistory } from '../../components/Widget/NFTBidPriceHistory'
 import { NFTokenSaleType, NFTokenType } from '../../entities'
 import { POLLING_INTERVAL } from '../../constant'
+import MainLoadingView from '../../components/layouts/MainLoadingView'
 
 function DetailSideBar(props) {
   const { nftToken } = props
@@ -55,8 +56,8 @@ export default function View() {
   if (error) {
     return <>Error :(</>
   }
-  if (metaData === undefined || loading) {
-    return <>loading</>
+  if (loading || metaData === undefined) {
+    return <MainLoadingView />
   }
 
   const nftHeader = (

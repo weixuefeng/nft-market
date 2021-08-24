@@ -7,6 +7,7 @@ import { NFTokenDataList } from '../entities'
 import { NFT_TOKEN_LIST } from '../services/queries/list'
 import { pageSize, POLLING_INTERVAL } from '../constant'
 import NFTList from '../components/lists/NFTList'
+import MainLoadingView from '../components/layouts/MainLoadingView'
 
 export default function Browse() {
   const { t } = useTranslation()
@@ -30,7 +31,9 @@ export default function Browse() {
     console.log(error)
     return <p>Error :(</p>
   }
-
+  if (loading) {
+    return <MainLoadingView />
+  }
   function uniqBy(a, key) {
     let seen = new Set()
     return a.filter(item => {

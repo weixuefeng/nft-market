@@ -5,7 +5,7 @@ const MainLoadingView = props => {
     <>
       <div className="flex h-screen">
         <div className="m-auto">
-          <img src="/newmall-logo.svg" className="w-24 h-24 animate-bounce" alt="" />
+          <img src="/image/NewMallLogo.svg" className="w-24 h-24 animate-bounce" alt="" />
         </div>
       </div>
     </>
