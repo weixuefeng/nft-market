@@ -123,9 +123,9 @@ function PutOnSaleModal(props) {
                   <p>{t('put on sale description')}</p>
 
                   <div className="nft_card">
-                    <img src={nftTokenMetaData.image} alt="" />
+                    <img src={nftTokenMetaData.tokenImage} alt="" />
                     <div>
-                      <h4>{nftTokenMetaData.name}</h4>
+                      <h4>{nftTokenMetaData.tokenName}</h4>
                       <p>#{nftToken.tokenId}</p>
                     </div>
                   </div>

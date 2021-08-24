@@ -185,9 +185,9 @@ export default function NewAuctionModal(props) {
                   <p>{t('new auction decription')}</p>
 
                   <div className="nft_card">
-                    <img src={nftToken.tokenImage} alt="" />
+                    <img src={nftTokenMetaData.tokenImage} alt="" />
                     <div>
-                      <h4>{nftToken.tokenName}</h4>
+                      <h4>{nftTokenMetaData.tokenName}</h4>
                       <p>#{nftToken.tokenId}</p>
                     </div>
                   </div>

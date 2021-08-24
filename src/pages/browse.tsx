@@ -28,12 +28,9 @@ export default function Browse() {
   })
 
   if (error) {
-    console.log(error)
     return <p>Error :(</p>
   }
-  if (loading) {
-    return <MainLoadingView />
-  }
+
   function uniqBy(a, key) {
     let seen = new Set()
     return a.filter(item => {

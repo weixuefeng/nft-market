@@ -26,10 +26,6 @@ export default function Home() {
     pollInterval: POLLING_INTERVAL
   })
 
-  if (loading) {
-    return <MainLoadingView />
-  }
-
   if (error) {
     console.log(error)
     return <p>Error :(</p>
@@ -49,10 +45,7 @@ export default function Home() {
   function onFetchMore() {
     fetchMore({
       variables: {
-        skip: data.tokens.length,
-        first: pageSize,
-        orderBy: orderBy,
-        orderDirection: orderDirection
+        skip: data.tokens.length
       }
     })
   }
