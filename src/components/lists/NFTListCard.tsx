@@ -4,7 +4,7 @@ import NewAddress from 'components/layouts/NewAddress'
 import { VideoCameraIcon } from '@heroicons/react/solid'
 import { useTokenDescription } from 'hooks/useTokenDescription'
 import { getNftDetailPath } from 'functions'
-import NftCardFooter from "./NFTCardFooter";
+import NftCardFooter from './NFTCardFooter'
 
 export function NFTListCard(props) {
   const { t } = useTranslation()
@@ -52,7 +52,7 @@ export function NFTListCard(props) {
         </Link>
         {tokenProfile}
         <Link href={getNftDetailPath(item.id)}>
-           <NftCardFooter {...props} />
+          <NftCardFooter {...props} />
         </Link>
       </li>
     )
@@ -72,7 +72,7 @@ export function NFTListCard(props) {
         </Link>
         {tokenProfile}
         <Link href={getNftDetailPath(item.id)}>
-           <NftCardFooter {...props} />
+          <NftCardFooter {...props} />
         </Link>
       </li>
     )
