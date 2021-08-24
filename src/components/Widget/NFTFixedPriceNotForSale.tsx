@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import NumberFormat from 'react-number-format'
 import { formatEther } from '@ethersproject/units'
-import { cSymbol } from '../../constant'
+import { cSymbol, POLLING_INTERVAL } from '../../constant'
 import { useWeb3React } from '@web3-react/core'
 import PutOnSaleModal from '../Modal/PutOnSaleModal'
 import TransferItemModal from '../Modal/TransferItemModal'
@@ -18,6 +18,7 @@ import { NEW_NFT_EXCHANGE_CONTRACT_ADDRESS } from '../../constant/settings'
 import { useOwner } from '../../hooks/useOwner'
 import NewAuctionModal from '../Modal/NewAuctionModal'
 import NewDutchAuctionModal from '../Modal/NewDutchAuctionModal'
+import usePoller from '../../hooks/usePooler'
 
 function NFTFixedPriceNotForSale(props) {
   const tag = 'NFTFixedPriceNotForSale'
@@ -29,7 +30,10 @@ function NFTFixedPriceNotForSale(props) {
   const contract = useERC721Contract(nftToken.contract.id)
   const exchangeContract = useNFTExchangeContract()
 
-  useEffect(() => {
+  function checkApprove() {
+    if(isApproved) {
+      return
+    }
     contract
       .getApproved(nftToken.tokenId)
       .then(res => {
@@ -42,7 +46,10 @@ function NFTFixedPriceNotForSale(props) {
       .catch(error => {
         console.log(tag, error)
       })
-  }, [0])
+  }
+
+  usePoller(checkApprove, POLLING_INTERVAL, true)
+
 
   return (
     <section className="offer-card">
