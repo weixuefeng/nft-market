@@ -1,0 +1,8 @@
+module.exports.NewtonCoinIcon = require('./NewtonCoinIcon.js')
+module.exports.NewtonLogoFull = require('./NewtonLogoFull.js')
+module.exports.NewMallLogo = require('./NewMallLogo.js')
+module.exports.NewMallText = require('./NewMallText.js')
+module.exports.HuobiTokenIcon = require('./HuobiTokenIcon.js')
+module.exports.BinanceCoinIcon = require('./BinanceCoinIcon.js')
+module.exports.HuobiLogoFull = require('./HuobiLogoFull.js')
+module.exports.BinanceLogoFull = require('./BinanceLogoFull.js')

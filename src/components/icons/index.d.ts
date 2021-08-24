@@ -1,0 +1,8 @@
+export { default as NewtonCoinIcon } from './NewtonCoinIcon'
+export { default as NewtonLogoFull } from './NewtonLogoFull'
+export { default as NewMallLogo } from './NewMallLogo'
+export { default as NewMallText } from './NewMallText'
+export { default as HuobiTokenIcon } from './HuobiTokenIcon'
+export { default as BinanceCoinIcon } from './BinanceCoinIcon'
+export { default as HuobiLogoFull } from './HuobiLogoFull'
+export { default as BinanceLogoFull } from './BinanceLogoFull'

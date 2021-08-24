@@ -1,0 +1,28 @@
+body {
+  @apply bg-white text-black;
+  @apply dark:bg-black dark:text-white;
+  *disabled {
+    @apply transition duration-150;
+  }
+}
+
+.mono {
+  @apply font-mono;
+}
+
+a,
+a:link {
+  @apply text-blue-500;
+  position: relative;
+}
+a:hover {
+  @apply text-blue-600;
+  cursor: cursor;
+}
+a,
+a:hover,
+a:active,
+a:focus {
+  text-decoration: none;
+  outline: none;
+}
