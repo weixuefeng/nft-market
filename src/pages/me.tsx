@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next'
-import { OwnerPerDataList } from '../entities'
+import { OrderDirection, OwnerPerDataList } from '../entities'
 import { useQuery } from '@apollo/client'
 import { NFT_MY_TOKEN } from '../services/queries/list'
 import { useWeb3React } from '@web3-react/core'
 import { useState } from 'react'
 import { pageSize, POLLING_INTERVAL } from '../constant'
 import NFTList from '../components/lists/NFTList'
-import MainLoadingView from '../components/layouts/MainLoadingView'
 
 function Me() {
   const { t } = useTranslation()
@@ -15,7 +14,7 @@ function Me() {
     return <>Please Connect Wallet</>
   }
   const [orderBy, setOrderBy] = useState('amount')
-  const [orderDirection, setOrderDirection] = useState('asc')
+  const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC)
   const nftWhere = { owner: account.toLowerCase() }
   const where = {}
   const [filter, setFilter] = useState(where)

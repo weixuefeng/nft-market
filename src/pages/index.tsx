@@ -1,17 +1,16 @@
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@apollo/client'
-import { NFTokenDataList } from '../entities'
+import { NFTokenDataList, OrderDirection } from '../entities'
 import { NFT_TOKEN_LIST } from '../services/queries/list'
 import { pageSize, POLLING_INTERVAL } from '../constant'
 import { useState } from 'react'
 import NFTList from '../components/lists/NFTList'
 import { FILTER_START_BLOCK } from '../constant/settings'
-import MainLoadingView from '../components/layouts/MainLoadingView'
 
 export default function Home() {
   const { t } = useTranslation()
   const [orderBy, setOrderBy] = useState('mintBlock')
-  const [orderDirection, setOrderDirection] = useState('asc')
+  const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC)
   const where = { mintBlock_gt: FILTER_START_BLOCK }
   const [filter, setFilter] = useState(where)
   const { loading, data, fetchMore, error } = useQuery<NFTokenDataList>(NFT_TOKEN_LIST, {
