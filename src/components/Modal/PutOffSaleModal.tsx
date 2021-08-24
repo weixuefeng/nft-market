@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { Fragment, useState } from 'react'
 import { XIcon } from '@heroicons/react/solid'
 import { useNFTExchangeContract } from '../../hooks/useContract'
+import transactor from '../../functions/Transactor'
 
 export default function PutOffSaleModal(props) {
   let { t } = useTranslation()
@@ -18,16 +19,9 @@ export default function PutOffSaleModal(props) {
   const exchangeContract = useNFTExchangeContract()
   function onConfirm() {
     const askHash = nftToken.orders[0].id
-    exchangeContract
-      .cancelByHash(askHash)
-      .then(res => {
-        console.log(res)
-        setShowModal(false)
-      })
-      .catch(error => {
-        console.log(error)
-        setShowModal(false)
-      })
+    transactor(exchangeContract.cancelByHash(askHash), t, () => {
+      setShowModal(false)
+    })
   }
 
   return (

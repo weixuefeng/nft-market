@@ -13,6 +13,7 @@ import { cSymbol } from '../../constant'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 import { AddressZero } from '@ethersproject/constants'
 import { formatEther, parseEther } from '@ethersproject/units'
+import transactor from '../../functions/Transactor'
 
 export function MakeBidModal(props) {
   let { t } = useTranslation()
@@ -47,21 +48,10 @@ export function MakeBidModal(props) {
     const bidPrice = parseEther(bidPriceInNEW + '')
     const bidRecipient = AddressZero
     const bidReferrer = AddressZero
-    // const variable = {
-    //   value: bidPrice
-    // }
-    exchangeContract
-      .bidByHash(orderHash, bidAmount, bidPrice, bidRecipient, bidReferrer)
-      .then(res => {
-        console.log(res)
-        setShowModal(false)
-        setButtonDisabled(false)
-      })
-      .catch(error => {
-        console.log(error)
-        setShowModal(false)
-        setButtonDisabled(false)
-      })
+    transactor(exchangeContract.bidByHash(orderHash, bidAmount, bidPrice, bidRecipient, bidReferrer), t, () => {
+      setShowModal(false)
+      setButtonDisabled(false)
+    })
   }
 
   function onUserChangeBidPrice(e) {

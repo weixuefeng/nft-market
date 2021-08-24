@@ -16,6 +16,7 @@ import { defaultAbiCoder as abi } from '@ethersproject/abi'
 import { AddressZero } from '@ethersproject/constants'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 import { formatEther } from 'ethers/lib/utils'
+import transactor from '../../functions/Transactor'
 
 export default function NewAuctionModal(props) {
   let { t } = useTranslation()
@@ -54,16 +55,13 @@ export default function NewAuctionModal(props) {
     const currency = AddressZero
     const deadline = endTime
     const params = abi.encode(['uint256'], [parseEther(startPriceInNEW + '')])
-    contract
-      .submitOrder(nftAddress, tokenId, amount, strategy, currency, AddressZero, deadline, params)
-      .then(res => {
-        console.log(res)
+    transactor(
+      contract.submitOrder(nftAddress, tokenId, amount, strategy, currency, AddressZero, deadline, params),
+      t,
+      () => {
         setShowModal(false)
-      })
-      .catch(error => {
-        console.log(error)
-        setShowModal(false)
-      })
+      }
+    )
   }
 
   function updateButtonStatus() {

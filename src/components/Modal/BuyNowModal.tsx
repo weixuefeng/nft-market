@@ -13,6 +13,7 @@ import { XIcon } from '@heroicons/react/solid'
 import { cSymbol } from '../../constant'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 import { AddressZero } from '@ethersproject/constants'
+import transactor from '../../functions/Transactor'
 
 export default function BuyNowModal(props) {
   let { t } = useTranslation()
@@ -49,18 +50,14 @@ export default function BuyNowModal(props) {
     const overrides = {
       value: parseEther(formatEther(bidPrice))
     }
-    exchangeContract
-      .bidByHash(orderHash, bidAmount, bidPrice, bidRecipient, bidReferrer, overrides)
-      .then(res => {
-        console.log(res)
+    transactor(
+      exchangeContract.bidByHash(orderHash, bidAmount, bidPrice, bidRecipient, bidReferrer, overrides),
+      t,
+      () => {
         setShowModal(false)
         setButtonDisabled(false)
-      })
-      .catch(error => {
-        console.log(error)
-        setShowModal(false)
-        setButtonDisabled(false)
-      })
+      }
+    )
   }
 
   return (

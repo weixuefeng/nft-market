@@ -16,6 +16,7 @@ import NumberFormat from 'react-number-format'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 import { FIXED_PRICE_SALE_CONTRACT_ADDRESS } from '../../constant/settings'
 import { AddressZero } from '@ethersproject/constants'
+import transactor from '../../functions/Transactor'
 
 function PutOnSaleModal(props) {
   const { t } = useTranslation()
@@ -43,8 +44,8 @@ function PutOnSaleModal(props) {
     const nftAddress = nftToken.contract.id
     const deadline = parseInt(Date.now() / 1000 + '') + 3600
     const params = abi.encode(['uint256'], [parseEther(userItemPriceInNEW + '')])
-    contract
-      .submitOrder(
+    const res = transactor(
+      contract.submitOrder(
         nftAddress,
         nftToken.tokenId,
         1,
@@ -53,15 +54,12 @@ function PutOnSaleModal(props) {
         AddressZero,
         deadline,
         params
-      )
-      .then(res => {
-        console.log(res)
+      ),
+      t,
+      () => {
         setShowModal(false)
-      })
-      .catch(error => {
-        console.log(error)
-        setShowModal(false)
-      })
+      }
+    )
   }
 
   function closeModal() {

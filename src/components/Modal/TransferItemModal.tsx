@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { isValidHexAddress, isValidNewAddress, newAddress2HexAddress } from '../../utils/NewChainUtils'
 import { useWeb3React } from '@web3-react/core'
 import { useERC721Contract } from '../../hooks/useContract'
+import transactor from '../../functions/Transactor'
 
 function TransferItemModal(props) {
   let { t } = useTranslation()
@@ -39,15 +40,9 @@ function TransferItemModal(props) {
     if (isValidNewAddress(toAddress)) {
       toAddress = newAddress2HexAddress(toAddress)
     }
-    nftContract
-      .safeTransferFrom(account, toAddress, nftToken.tokenId)
-      .then(res => {
-        setShowModal(false)
-      })
-      .catch(error => {
-        console.log(error)
-        setShowModal(false)
-      })
+    transactor(nftContract.safeTransferFrom(account, toAddress, nftToken.tokenId), t, () => {
+      setShowModal(false)
+    })
   }
 
   function closeModal() {
