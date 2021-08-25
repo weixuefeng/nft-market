@@ -188,7 +188,7 @@
   },
   "withdraw": "提取竞拍金额",
   "withdrawed": "已提取",
-  "you can't cancel auction once it's started.": "拍卖一旦开始就不能取消。",
+  "cancel_auction_tip": "拍卖一旦开始就不能取消。",
   "you will receive": "你将收到",
   "your bid": "你的出价",
   "your last bid": "你的最后出价",

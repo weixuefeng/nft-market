@@ -187,7 +187,7 @@
   },
   "withdraw": "Withdraw",
   "withdrawed": "Withdrawed",
-  "you can't cancel auction once it's started.": "You can't cancel auction once it's started.",
+  "cancel_auction_tip": "You can't cancel auction once it's started.",
   "you will receive": "You will receive",
   "your bid": "Your bid",
   "your last bid": "Your last bid",
