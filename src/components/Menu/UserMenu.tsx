@@ -117,14 +117,14 @@ export default function UserMenu(props) {
                       </Link>
                     </Menu.Item>
 
-                    <Menu.Item>
-                      <Link href="/create">
-                        <a className="item" role="menuitem">
-                          <SparklesIcon className="icon" />
-                          {t('create')}
-                        </a>
-                      </Link>
-                    </Menu.Item>
+                    {/*<Menu.Item>*/}
+                    {/*  <Link href="/create">*/}
+                    {/*    <a className="item" role="menuitem">*/}
+                    {/*      <SparklesIcon className="icon" />*/}
+                    {/*      {t('create')}*/}
+                    {/*    </a>*/}
+                    {/*  </Link>*/}
+                    {/*</Menu.Item>*/}
                   </section>
                 </Menu.Items>
               </Transition>
