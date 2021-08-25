@@ -5,7 +5,7 @@
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import NumberFormat from 'react-number-format'
 import { formatEther } from 'ethers/lib/utils'
 import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
@@ -17,7 +17,7 @@ import { useWeb3React } from '@web3-react/core'
 import { MakeBidModal } from '../Modal/MakeBidModal'
 import PutOffSaleModal from '../Modal/PutOffSaleModal'
 import { useNFTExchangeContract } from '../../hooks/useContract'
-import { DateTime } from '../../functions/DateTime'
+import CountDownTimer from '@inlightmedia/react-countdown-timer'
 
 export function NFTEnglandAuction(props) {
   // isOwner: cancel auction
@@ -28,6 +28,9 @@ export function NFTEnglandAuction(props) {
   const isOwner = useOwner(nftToken.orders[0].owner.id)
   const where = { askOrder: nftToken.orders[0].id }
   const exchangeContract = useNFTExchangeContract()
+
+  const [isEnded, setIsEnded] = useState(false)
+  const [canClaimNFT, setCanClaimNFT] = useState(false)
 
   const { data, loading, error } = useQuery(GET_BID_HISTORY, {
     variables: {
@@ -69,8 +72,15 @@ export function NFTEnglandAuction(props) {
   const myLastBidPrice = myBid.bidOrders.length === 0 ? '0' : parseInt(formatEther(myBid.bidOrders[0].price))
   const title = myLastBidPrice > 0 ? t('raise bid') : t('make bid')
   const isHigher = highestBid > 0 && myBid.bidOrders.length > 0 && highestBid === myBid.bidOrders[0].price
-  const isEnded = Date.now() / 1000 > deadLine
-  const canClaimNFT = isEnded && isHigher
+
+  const end = Date.now() / 1000 > deadLine
+  const claim = end && isHigher
+  function updateTime() {
+    const end = Date.now() / 1000 > deadLine
+    const claim = end && isHigher
+    setIsEnded(end)
+    setCanClaimNFT(claim)
+  }
 
   function claimNft() {
     const askOrderHash = nftToken.orders[0].id
@@ -124,10 +134,16 @@ export function NFTEnglandAuction(props) {
 
         <div className="status">
           <h4>{t('auction_ends_in')}</h4>
-          <p title={DateTime(deadLine * 1000)}>{DateTime(deadLine * 1000)}</p>
-          <span hidden>
-            {/*{t("round")} {auction.round.toString()}: #{startTime.toString()} - #{endTime.toString()}*/}
+          <span hidden={end || isEnded}>
+            <CountDownTimer
+              dateTime={new Date(deadLine * 1000).toISOString()}
+              shouldShowSeparator={false}
+              shouldShowTimeUnits={true}
+              shouldHidePrecedingZeros={true}
+              onCountdownCompletion={() => updateTime()}
+            />
           </span>
+          <span hidden={!(end || isEnded)}>{t('auction is over')}</span>
         </div>
       </header>
 
@@ -135,13 +151,13 @@ export function NFTEnglandAuction(props) {
         <p hidden={isOwner}>
           {t('my bid')}: {myLastBidPrice} {cSymbol()}
         </p>
-        <div hidden={isOwner || isEnded}>
+        <div hidden={isOwner || isEnded || end}>
           <MakeBidModal {...newProp} />
         </div>
         <div hidden={!isOwner || hasBid}>
           <PutOffSaleModal {...newProp} />
         </div>
-        <div hidden={!canClaimNFT}>
+        <div hidden={!(canClaimNFT || claim)}>
           <button
             onClick={() => {
               claimNft()

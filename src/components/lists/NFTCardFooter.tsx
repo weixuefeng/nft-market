@@ -50,7 +50,6 @@ function NftCardFooterAuction(props) {
 const NftCardFooter = props => {
   let { t } = useTranslation()
   const { item } = props
-  // console.log(item)
   if (item.strategyType === NFTokenSaleType.DIRECT_SALE && item.forSale === true) {
     return (
       <div className="footer sale">

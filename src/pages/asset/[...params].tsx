@@ -39,6 +39,9 @@ export default function View() {
   const contractFee = useContractFee(param[0])
   useEffect(() => {
     getTokenInfoById(lookTokenID).then(data => {
+      if (data === null || data.data === null || data.data.token === null) {
+        return
+      }
       parseTokenMetaData(data.data.token.uri)
         .then(meta => setMetaData(meta))
         .catch(error => {

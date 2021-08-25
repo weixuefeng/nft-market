@@ -43,7 +43,7 @@ export function NFTListCard(props) {
               </video>
             </div>
             <div className="bl collection_name" hidden>
-              <p className="collection_name">CollectionName: #{item.id}</p>
+              <p className="collection_name">CollectionName: #{item.tokenId}</p>
             </div>
             <div className="tr">
               <VideoCameraIcon className="w-6 h-6" />
