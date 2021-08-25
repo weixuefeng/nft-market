@@ -15,8 +15,6 @@ import { NFTokenSaleType } from '../../entities'
 function NftCardFooterAuction(props) {
   const { item } = props
   let { t } = useTranslation()
-
-  let usePrice = '-'
   return (
     <div className="footer auction">
       <div className="flex">
@@ -43,8 +41,6 @@ function NftCardFooterAuction(props) {
       </div>
     </div>
   )
-
-  return <></>
 }
 
 const NftCardFooter = props => {
@@ -75,9 +71,7 @@ const NftCardFooter = props => {
         </div>
       </div>
     )
-  }
-
-  if (item.strategyType === NFTokenSaleType.NOT_SALE && item.forSale === false) {
+  } else if (item.strategyType === NFTokenSaleType.NOT_SALE && item.forSale === false) {
     return (
       <div className="footer off">
         <div className="flex">
@@ -88,7 +82,7 @@ const NftCardFooter = props => {
           </div>
         </div>
         <div className="flex">
-          <div className="bl"></div>
+          <div className="bl" />
           <div className="br price">
             <NumberFormat
               thousandSeparator={true}
@@ -102,27 +96,25 @@ const NftCardFooter = props => {
         </div>
       </div>
     )
-  }
-
-  if (item.strategyType === NFTokenSaleType.ENGLAND_AUCTION) {
+  } else if (item.strategyType === NFTokenSaleType.ENGLAND_AUCTION) {
     return <NftCardFooterAuction {...props} />
-  }
-
-  return (
-    <div className="footer off">
-      <div className="flex">
-        <div className="tl">{t('not for sale')}</div>
-        <div className="tr">
-          <em>{t('s1 buys', { s1: item.numSales })}</em>
-          {t('last price')}
+  } else {
+    return (
+      <div className="footer off">
+        <div className="flex">
+          <div className="tl">{t('not for sale')}</div>
+          <div className="tr">
+            <em>{t('s1 buys', { s1: item.numSales })}</em>
+            {t('last price')}
+          </div>
+        </div>
+        <div className="flex">
+          <div className="bl" />
+          <div className="br price">-</div>
         </div>
       </div>
-      <div className="flex">
-        <div className="bl"></div>
-        <div className="br price">-</div>
-      </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default NftCardFooter

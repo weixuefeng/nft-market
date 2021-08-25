@@ -68,8 +68,7 @@ const SubNavMenu = props => {
           <select onChange={onSaleModeChange} id="filter" name="filter" defaultValue={0}>
             <option value={0}>{t('all')}</option>
             <option value={1}>{t('fixed price sale')}</option>
-            <option value={2}>{t('english auction')}</option>
-            <option value={3}>{t('dutch auction')}</option>
+            <option value={2}>{t('english auction')}</option>s{/*<option value={3}>{t('dutch auction')}</option>*/}
           </select>
         </div>
         <div>
