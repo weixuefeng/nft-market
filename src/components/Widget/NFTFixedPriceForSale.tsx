@@ -14,13 +14,27 @@ import BuyNowModal from '../Modal/BuyNowModal'
 import { cSymbol } from '../../constant'
 import PutOffSaleModal from '../Modal/PutOffSaleModal'
 import { useOwner } from '../../hooks/useOwner'
+import { Account } from '../../entities'
 
 export function NFTFixedPriceForSale(props) {
   let { t } = useTranslation()
   const { account } = useWeb3React()
   const { nftToken, nftTokenMetaData, contractFee } = props
   const isOwner = useOwner(nftToken.owners[0].owner.id)
-
+  const owners = nftToken.owners
+  const askOwner = nftToken.askOrder.owner
+  const isAskOwner = askOwner.id.toLowerCase() === account.toLowerCase()
+  function checkRealOwner(owner: Account, owners: Array<Account>) {
+    for (let i = 0; i < owners.length; i++) {
+      let o = owners[i]
+      if (o.id === owner.id) {
+        return true
+      }
+    }
+    return false
+  }
+  let isRealOwner = checkRealOwner(askOwner, owners)
+  let tip = isRealOwner ? t('for sale') : t('not for sale')
   return (
     <section className="offer-card sale mobile">
       <header>
@@ -38,7 +52,7 @@ export function NFTFixedPriceForSale(props) {
           </h3>
         </div>
         <div className="status">
-          <h4>{t('for sale')}</h4>
+          <h4>{tip}</h4>
         </div>
       </header>
       {/* <main>
@@ -52,10 +66,10 @@ export function NFTFixedPriceForSale(props) {
         </dl>
       </main> */}
       <footer>
-        <div hidden={isOwner}>
+        <div hidden={isOwner || !isRealOwner}>
           <BuyNowModal {...props} />
         </div>
-        <div hidden={!isOwner}>
+        <div hidden={!isAskOwner}>
           <PutOffSaleModal {...props} />
         </div>
       </footer>
