@@ -11,16 +11,20 @@ import { useTranslation } from 'react-i18next'
 import NumberFormat from 'react-number-format'
 import { cSymbol } from '../../constant'
 import { NFTokenSaleType } from '../../entities'
+import { useQuery } from '@apollo/client'
 
 function NftCardFooterAuction(props) {
   const { item } = props
   let { t } = useTranslation()
+  const deadLine: number = item.orders[0].deadline
+  const end = Date.now() / 1000 > deadLine
+  let auctionWords = end ? t('auction ended') : t('in auction')
   return (
     <div className="footer auction">
       <div className="flex">
-        <div className="tl">{t('in auction')}</div>
+        <div className="tl">{auctionWords}</div>
         <div className="tr">
-          <em>{t('s1 bids', { s1: item.numSales })}</em>
+          <em>{t('s1 bids', { s1: item.askOrder.numBids })}</em>
           {t('last bid')}
         </div>
       </div>

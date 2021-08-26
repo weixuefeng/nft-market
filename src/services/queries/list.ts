@@ -39,6 +39,27 @@ export const TOKEN_FIELDS = `
       numSales
       hot
       black
+      askOrder {
+        id
+        currency
+        strategy
+        strategyType
+        recipient
+        deadline
+        price
+        designee
+        startPrice
+        endPrice
+        startBlock
+        numBids
+        finalBidOrder {
+          id
+        }
+        status
+        owner {
+          id
+        }
+      }
       orders(where: { status: 1}) {
         id
         currency
@@ -51,6 +72,7 @@ export const TOKEN_FIELDS = `
         startPrice
         endPrice
         startBlock
+        numBids
         finalBidOrder {
           id
         }

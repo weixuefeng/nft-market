@@ -290,7 +290,7 @@ export default function NewAuctionModal(props) {
                       </dd>
                     </dl>
                   </div>
-                  <p className="warning">{t("cancel_auction_tip")}</p>
+                  <p className="warning">{t('cancel_auction_tip')}</p>
                 </main>
 
                 <footer>

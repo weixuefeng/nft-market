@@ -83,6 +83,7 @@ export class AskOrder {
   startBlock: number
   finalBidOrder: BidOrder
   status: OrderStatus
+  numBids: number
 }
 
 export class BidOrder {
@@ -118,6 +119,7 @@ export class NFToken {
   hot: boolean //是否热门
   black: boolean //是否黑名单
   orders: [AskOrder]
+  askOrder: AskOrder | undefined
 }
 
 export interface NFTokenDataList {
