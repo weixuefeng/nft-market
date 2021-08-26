@@ -59,7 +59,8 @@ export default function Browse() {
     setOrderBy,
     setOrderDirection,
     setFilter,
-    where
+    where,
+    showSubNav: true
   }
   return <NFTList {...info} />
 }

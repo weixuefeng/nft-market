@@ -62,7 +62,8 @@ function Me() {
     setOrderBy,
     setOrderDirection,
     setFilter,
-    where
+    where,
+    showSubNav: false
   }
   return <NFTList {...info} />
 }

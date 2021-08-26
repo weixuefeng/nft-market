@@ -55,7 +55,8 @@ export default function Home() {
     setOrderBy,
     setOrderDirection,
     setFilter,
-    where
+    where,
+    showSubNav: true
   }
   return <NFTList {...info} />
 }
