@@ -10,7 +10,7 @@
  * const { tokenName, tokenDescription, nftType, tokenImage, tokenVideo } = useTokenDescription(tokenUri)
  * ```
  */
-import { getFromIPFS } from 'functions'
+import { getInfo } from 'functions'
 import { UriResolver } from 'functions/UriResolver'
 import { useEffect, useState } from 'react'
 
@@ -25,8 +25,8 @@ export class TokenMetaData {
 export async function parseTokenMetaData(uri): Promise<TokenMetaData> {
   const data = new TokenMetaData()
   try {
-    const ipfsHash = uri.substr(uri.lastIndexOf('/') + 1)
-    const tokenExtraInfo = await getFromIPFS(ipfsHash)
+    const resolverUrl = UriResolver(uri)
+    const tokenExtraInfo = await getInfo(resolverUrl)
     if (!tokenExtraInfo) {
       return data
     }

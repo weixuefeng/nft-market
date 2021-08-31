@@ -1,15 +1,12 @@
 import axios from 'axios'
-import { IPFS_GATEWAY_URL } from 'constant'
-import { useTranslation } from 'react-i18next'
 import { PriceEvent } from '../entities'
 
-export async function getFromIPFS(hash) {
-  const url = IPFS_GATEWAY_URL + hash
+export async function getInfo(url) {
   try {
     const result = await axios.get(url)
     return result.data
   } catch (e) {
-    console.log('getFromIPFS error:', e)
+    console.log('getInfo error:', e)
     return ''
   }
 }

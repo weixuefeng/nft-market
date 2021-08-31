@@ -20,10 +20,9 @@ export function UriResolver(uri = '', baseUri = '') {
   let IPFS_GATEWAY_BASE_URL = IPFS_GATEWAY_URL
   let AR_GATEWAY_BASE_URL = 'https://arweave.net/'
 
-  // console.log(GetUriProtocol(uri))
   switch (GetUriProtocol(uri)) {
-    case 'http' || 'https':
-      // just use the uri itself
+    case 'http':
+    case 'https':
       return uri
     case 'ipfs':
       // use IPFS gateway
