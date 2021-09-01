@@ -207,5 +207,7 @@
   "event_sale": "Sale",
   "event_transfer": "Transfer",
   "auction_ends_in": "Auction ends in",
-  "floor price": "Floor Price"
+  "floor price": "Floor Price",
+  "designated sale": "Designated Sale",
+  "target address": "Target Address"
 }

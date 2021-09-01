@@ -21,6 +21,8 @@ function NftAuctionCard(props) {
     return <NFTEnglandAuction {...props} />
   } else if (nftToken.strategyType === NFTokenSaleType.DUTCH_AUCTION) {
     return <NFTDutchAuction {...props} />
+  } else if (nftToken.strategyType === NFTokenSaleType.DESIGNATED_BUYER_SALE) {
+    return <NFTFixedPriceForSale {...props} />
   }
   return <div></div>
 }

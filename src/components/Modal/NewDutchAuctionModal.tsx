@@ -331,7 +331,7 @@ export default function NewDutchAuctionModal(props) {
                       </dd>
                     </dl>
                   </div>
-                  <p className="warning">{t("you can't cancel auction once it's started.")}</p>
+                  <p className="warning">{t('cancel_auction_tip')}</p>
                 </main>
 
                 <footer>

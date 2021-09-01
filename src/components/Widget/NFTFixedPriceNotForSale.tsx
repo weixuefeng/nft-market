@@ -19,6 +19,7 @@ import { useOwner } from '../../hooks/useOwner'
 import NewAuctionModal from '../Modal/NewAuctionModal'
 import NewDutchAuctionModal from '../Modal/NewDutchAuctionModal'
 import usePoller from '../../hooks/usePooler'
+import { DesignatedSaleModal } from '../Modal/DesignatedSaleModal'
 
 function NFTFixedPriceNotForSale(props) {
   const tag = 'NFTFixedPriceNotForSale'
@@ -76,6 +77,7 @@ function NFTFixedPriceNotForSale(props) {
           <PutOnSaleModal {...props} />
           <NewDutchAuctionModal {...props} />
           <NewAuctionModal {...props} />
+          <DesignatedSaleModal {...props} />
         </div>
         <div hidden={isApproved}>
           <button
