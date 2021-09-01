@@ -57,10 +57,17 @@ export function MakeBidModal(props) {
     const bidPrice = parseEther(bidPriceInNEW + '')
     const bidRecipient = AddressZero
     const bidReferrer = AddressZero
-    transactor(exchangeContract.bidByHash(orderHash, bidAmount, bidPrice, bidRecipient, bidReferrer), t, () => {
-      setShowModal(false)
-      setButtonDisabled(false)
-    })
+    const overrides = {
+      value: bidPrice
+    }
+    transactor(
+      exchangeContract.bidByHash(orderHash, bidAmount, bidPrice, bidRecipient, bidReferrer, overrides),
+      t,
+      () => {
+        setShowModal(false)
+        setButtonDisabled(false)
+      }
+    )
   }
 
   function englishAuctionConfirm() {
