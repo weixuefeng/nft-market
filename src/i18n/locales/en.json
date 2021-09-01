@@ -206,5 +206,6 @@
   "event_minted": "Minted",
   "event_sale": "Sale",
   "event_transfer": "Transfer",
-  "auction_ends_in": "Auction ends in"
+  "auction_ends_in": "Auction ends in",
+  "floor price": "Floor Price"
 }

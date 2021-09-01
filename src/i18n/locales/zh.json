@@ -206,5 +206,6 @@
   "event_minted": "创建",
   "event_sale": "成交",
   "event_transfer": "转移",
-  "auction_ends_in": "拍卖结束时间"
+  "auction_ends_in": "拍卖结束时间",
+  "floor price": "地板价"
 }
