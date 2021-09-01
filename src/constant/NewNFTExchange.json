@@ -174,9 +174,29 @@
             "type": "uint256"
           },
           {
+            "internalType": "address",
+            "name": "operationalFeeRecipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint8",
+            "name": "operationalFeePermil",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "referFeePermil",
+            "type": "uint8"
+          },
+          {
             "internalType": "bytes",
             "name": "params",
             "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "salt",
+            "type": "uint256"
           },
           {
             "internalType": "uint8",
@@ -261,19 +281,6 @@
         "internalType": "bytes32",
         "name": "",
         "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "MAX_OPERATIONAL_FEE",
-    "outputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -413,9 +420,29 @@
             "type": "uint256"
           },
           {
+            "internalType": "address",
+            "name": "operationalFeeRecipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint8",
+            "name": "operationalFeePermil",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "referFeePermil",
+            "type": "uint8"
+          },
+          {
             "internalType": "bytes",
             "name": "params",
             "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "salt",
+            "type": "uint256"
           },
           {
             "internalType": "uint8",
@@ -553,9 +580,29 @@
             "type": "uint256"
           },
           {
+            "internalType": "address",
+            "name": "operationalFeeRecipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint8",
+            "name": "operationalFeePermil",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "referFeePermil",
+            "type": "uint8"
+          },
+          {
             "internalType": "bytes",
             "name": "params",
             "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "salt",
+            "type": "uint256"
           },
           {
             "internalType": "uint8",
@@ -686,9 +733,29 @@
             "type": "uint256"
           },
           {
+            "internalType": "address",
+            "name": "operationalFeeRecipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint8",
+            "name": "operationalFeePermil",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "referFeePermil",
+            "type": "uint8"
+          },
+          {
             "internalType": "bytes",
             "name": "params",
             "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "salt",
+            "type": "uint256"
           },
           {
             "internalType": "uint8",
@@ -774,9 +841,29 @@
             "type": "uint256"
           },
           {
+            "internalType": "address",
+            "name": "operationalFeeRecipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint8",
+            "name": "operationalFeePermil",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "referFeePermil",
+            "type": "uint8"
+          },
+          {
             "internalType": "bytes",
             "name": "params",
             "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "salt",
+            "type": "uint256"
           },
           {
             "internalType": "uint8",
@@ -815,6 +902,114 @@
     "name": "claimByHash",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "hash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getOrderBaseInfo",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "signer",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "nft",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "strategy",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "operationalFeeRecipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "operationalFeePermil",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "referFeePermil",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes",
+        "name": "params",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "hash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getOrderExInfo",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "salt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -900,98 +1095,6 @@
   },
   {
     "inputs": [],
-    "name": "operationalFeeInfo",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "permil",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "name": "orders",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "signer",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "strategy",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "deadline",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "params",
-        "type": "bytes"
-      },
-      {
-        "internalType": "uint8",
-        "name": "v",
-        "type": "uint8"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "r",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "s",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "owner",
     "outputs": [
       {
@@ -1055,51 +1158,17 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
         "internalType": "uint8",
-        "name": "operationalFee",
+        "name": "permil",
         "type": "uint8"
       }
     ],
-    "name": "setOperationalFee",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "operationalFeeRecipient",
-        "type": "address"
-      }
-    ],
-    "name": "setOperationalFeeRecipient",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "protocolFee",
-        "type": "uint8"
-      }
-    ],
-    "name": "setProtocolFee",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "protocolFeeRecipient",
-        "type": "address"
-      }
-    ],
-    "name": "setProtocolFeeRecipient",
+    "name": "setProtocolInfo",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1160,9 +1229,24 @@
         "type": "uint256"
       },
       {
+        "internalType": "address",
+        "name": "operationalFeeRecipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8[]",
+        "name": "permils",
+        "type": "uint8[]"
+      },
+      {
         "internalType": "bytes",
         "name": "params",
         "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "salt",
+        "type": "uint256"
       }
     ],
     "name": "submitOrder",

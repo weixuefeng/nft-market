@@ -57,8 +57,24 @@ export default function NewDutchAuctionModal(props) {
     const startPrice = parseEther(startPriceInNEW + '')
     const endPrice = parseEther(floorPriceInNEW + '')
     const params = abi.encode(['uint256', 'uint256', 'uint256'], [startPrice, endPrice, startTime])
+    const operationalFeeRecipient = AddressZero
+    const permils = [50, 50] // 第一个值为运营合约地址手续费值，第二个值为推荐人手续费值。
+    const salt = parseInt(Date.now() / 1000 + '')
+
     contract
-      .submitOrder(nftAddress, tokenId, amount, strategy, currency, AddressZero, deadline, params)
+      .submitOrder(
+        nftAddress,
+        tokenId,
+        amount,
+        strategy,
+        currency,
+        AddressZero,
+        deadline,
+        operationalFeeRecipient,
+        permils,
+        params,
+        salt
+      )
       .then(res => {
         console.log(res)
         setShowModal(false)
@@ -196,9 +212,9 @@ export default function NewDutchAuctionModal(props) {
                   <p>{t('new auction decription')}</p>
 
                   <div className="nft_card">
-                    <img src={nftToken.tokenImage} alt="" />
+                    <img src={nftTokenMetaData.tokenImage} alt="" />
                     <div>
-                      <h4>{nftToken.tokenName}</h4>
+                      <h4>{nftTokenMetaData.tokenName}</h4>
                       <p>#{nftToken.tokenId}</p>
                     </div>
                   </div>

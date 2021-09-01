@@ -74,7 +74,7 @@ function NFTFixedPriceNotForSale(props) {
       <footer hidden={!isOwner}>
         <div hidden={!isApproved}>
           <PutOnSaleModal {...props} />
-          {/*<NewDutchAuctionModal {...props} />*/}
+          <NewDutchAuctionModal {...props} />
           <NewAuctionModal {...props} />
         </div>
         <div hidden={isApproved}>

@@ -5,6 +5,11 @@ export enum NFTokenType {
   ERC1155 = 'ERC1155'
 }
 
+export enum AuctionType {
+  ENGLISH_AUCTION = 'ENGLISH_AUCTION',
+  DUTCH_AUCTION = 'DUTCH_AUCTION'
+}
+
 export enum TokenOrderBy {
   mintBlock = 'mintBlock',
   mintTime = 'mintTime',

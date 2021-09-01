@@ -11,7 +11,11 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import NumberFormat from 'react-number-format'
 import { cSymbol } from '../../constant'
-import { ENGLISH_AUCTION_CONTRACT_ADDRESS, WNEW_ADDRESS } from '../../constant/settings'
+import {
+  ENGLISH_AUCTION_CONTRACT_ADDRESS,
+  FIXED_PRICE_SALE_CONTRACT_ADDRESS,
+  WNEW_ADDRESS
+} from '../../constant/settings'
 import { defaultAbiCoder as abi } from '@ethersproject/abi'
 import { AddressZero } from '@ethersproject/constants'
 import { useNFTExchangeContract } from '../../hooks/useContract'
@@ -54,9 +58,25 @@ export default function NewAuctionModal(props) {
     const strategy = ENGLISH_AUCTION_CONTRACT_ADDRESS
     const currency = AddressZero
     const deadline = endTime
+    const operationalFeeRecipient = AddressZero
+    const permils = [50, 50] // 第一个值为运营合约地址手续费值，第二个值为推荐人手续费值。
+    const salt = parseInt(Date.now() / 1000 + '')
+
     const params = abi.encode(['uint256'], [parseEther(startPriceInNEW + '')])
     transactor(
-      contract.submitOrder(nftAddress, tokenId, amount, strategy, currency, AddressZero, deadline, params),
+      contract.submitOrder(
+        nftAddress,
+        tokenId,
+        amount,
+        strategy,
+        currency,
+        AddressZero,
+        deadline,
+        operationalFeeRecipient,
+        permils,
+        params,
+        salt
+      ),
       t,
       () => {
         setShowModal(false)

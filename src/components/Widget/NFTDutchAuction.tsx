@@ -9,6 +9,7 @@ import { GET_BID_HISTORY } from '../../services/queries/bidHistory'
 import { useWeb3React } from '@web3-react/core'
 import { MakeBidModal } from '../Modal/MakeBidModal'
 import PutOffSaleModal from '../Modal/PutOffSaleModal'
+import { AuctionType } from '../../entities'
 
 /**
  * @author weixuefeng@diynova.com
@@ -66,7 +67,8 @@ export function NFTDutchAuction(props) {
   const title = myLastBidPrice > 0 ? t('make bid') : t('raise bid')
   const newProp = {
     ...props,
-    title
+    title,
+    auctionType: AuctionType.DUTCH_AUCTION
   }
   return (
     <section className="offer-card auction mobile">

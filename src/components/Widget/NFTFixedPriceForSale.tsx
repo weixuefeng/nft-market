@@ -14,7 +14,7 @@ import BuyNowModal from '../Modal/BuyNowModal'
 import { cSymbol } from '../../constant'
 import PutOffSaleModal from '../Modal/PutOffSaleModal'
 import { useOwner } from '../../hooks/useOwner'
-import { Account } from '../../entities'
+import { Account, OwnerPerToken } from '../../entities'
 
 export function NFTFixedPriceForSale(props) {
   let { t } = useTranslation()
@@ -24,10 +24,11 @@ export function NFTFixedPriceForSale(props) {
   const owners = nftToken.owners
   const askOwner = nftToken.askOrder.owner
   const isAskOwner = askOwner.id.toLowerCase() === account.toLowerCase()
-  function checkRealOwner(owner: Account, owners: Array<Account>) {
+
+  function checkRealOwner(owner: Account, owners: Array<OwnerPerToken>) {
     for (let i = 0; i < owners.length; i++) {
       let o = owners[i]
-      if (o.id === owner.id) {
+      if (o.owner.id === owner.id) {
         return true
       }
     }

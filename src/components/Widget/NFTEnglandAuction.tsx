@@ -18,6 +18,7 @@ import { MakeBidModal } from '../Modal/MakeBidModal'
 import PutOffSaleModal from '../Modal/PutOffSaleModal'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 import CountDownTimer from '@inlightmedia/react-countdown-timer'
+import { AuctionType } from '../../entities'
 
 export function NFTEnglandAuction(props) {
   // isOwner: cancel auction
@@ -99,7 +100,8 @@ export function NFTEnglandAuction(props) {
 
   const newProp = {
     ...props,
-    title
+    title,
+    auctionType: AuctionType.ENGLISH_AUCTION
   }
   return (
     <section className="offer-card auction mobile">

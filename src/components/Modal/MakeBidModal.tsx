@@ -14,10 +14,11 @@ import { useNFTExchangeContract } from '../../hooks/useContract'
 import { AddressZero } from '@ethersproject/constants'
 import { formatEther, parseEther } from '@ethersproject/units'
 import transactor from '../../functions/Transactor'
+import { AuctionType } from '../../entities'
 
 export function MakeBidModal(props) {
   let { t } = useTranslation()
-  const { nftToken, nftTokenMetaData, title, contractFee } = props
+  const { nftToken, nftTokenMetaData, title, contractFee, auctionType } = props
   const [showModal, setShowModal] = useState(false)
   const [buttonText, setButtonText] = useState(t('invalid bid amount'))
   const [buttonDisabled, setButtonDisabled] = useState(true)
@@ -43,6 +44,26 @@ export function MakeBidModal(props) {
 
   const onConfirm = e => {
     e.preventDefault()
+    if (auctionType === AuctionType.ENGLISH_AUCTION) {
+      englishAuctionConfirm()
+    } else if (auctionType === AuctionType.DUTCH_AUCTION) {
+      dutchAuctionConfirm()
+    }
+  }
+
+  function dutchAuctionConfirm() {
+    const orderHash = nftToken.orders[0].id
+    const bidAmount = 1
+    const bidPrice = parseEther(bidPriceInNEW + '')
+    const bidRecipient = AddressZero
+    const bidReferrer = AddressZero
+    transactor(exchangeContract.bidByHash(orderHash, bidAmount, bidPrice, bidRecipient, bidReferrer), t, () => {
+      setShowModal(false)
+      setButtonDisabled(false)
+    })
+  }
+
+  function englishAuctionConfirm() {
     const orderHash = nftToken.orders[0].id
     const bidAmount = 1
     const bidPrice = parseEther(bidPriceInNEW + '')

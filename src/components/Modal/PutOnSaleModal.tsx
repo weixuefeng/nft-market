@@ -44,6 +44,9 @@ function PutOnSaleModal(props) {
     const nftAddress = nftToken.contract.id
     const deadline = parseInt(Date.now() / 1000 + '') + 3600
     const params = abi.encode(['uint256'], [parseEther(userItemPriceInNEW + '')])
+    const operationalFeeRecipient = AddressZero
+    const permils = [50, 50] // 第一个值为运营合约地址手续费值，第二个值为推荐人手续费值。
+    const salt = parseInt(Date.now() / 1000 + '')
     const res = transactor(
       contract.submitOrder(
         nftAddress,
@@ -53,7 +56,10 @@ function PutOnSaleModal(props) {
         AddressZero,
         AddressZero,
         deadline,
-        params
+        operationalFeeRecipient,
+        permils,
+        params,
+        salt
       ),
       t,
       () => {
