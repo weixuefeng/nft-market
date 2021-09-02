@@ -10,6 +10,7 @@ import NFTFixedPriceNotForSale from './NFTFixedPriceNotForSale'
 import { NFTFixedPriceForSale } from './NFTFixedPriceForSale'
 import { NFTEnglandAuction } from './NFTEnglandAuction'
 import { NFTDutchAuction } from './NFTDutchAuction'
+import { NFTDesignedBuyerForSale } from './NFTDesignedBuyerForSale'
 
 function NftAuctionCard(props) {
   const { nftToken } = props
@@ -22,7 +23,7 @@ function NftAuctionCard(props) {
   } else if (nftToken.strategyType === NFTokenSaleType.DUTCH_AUCTION) {
     return <NFTDutchAuction {...props} />
   } else if (nftToken.strategyType === NFTokenSaleType.DESIGNATED_BUYER_SALE) {
-    return <NFTFixedPriceForSale {...props} />
+    return <NFTDesignedBuyerForSale {...props} />
   }
   return <div></div>
 }
