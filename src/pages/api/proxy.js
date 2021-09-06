@@ -6,11 +6,12 @@ export default (req, res) => {
   const {url} = req.query
   axios.get(url)
     .then((response)=> {
-      console.log(response)
       res.status(200).json(response.data)
     })
     .catch(error=>{
-      res.status(400).json({ name: 'Error' })
+      console.log("error")
+      console.log(error)
+      res.status(400).json(error)
     })
 }
 
