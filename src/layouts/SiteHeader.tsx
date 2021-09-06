@@ -21,8 +21,8 @@ const navigationMenu = [
   { name: 'home', href: '/', icon: HomeIcon, exact: true },
   { name: 'browse', href: '/browse', icon: ShoppingBagIcon, exact: false },
   // { name: 'hot', href: '/hot', icon: FireIcon, exact: false },
-  { name: 'mine', href: '/me', icon: ArchiveIcon, exact: false }
-  // { name: 'create', href: '/create', icon: SparklesIcon, exact: false }
+  { name: 'mine', href: '/me', icon: ArchiveIcon, exact: false },
+  { name: 'create', href: '/create', icon: SparklesIcon, exact: false }
 ]
 
 function SiteNavMenu(props) {

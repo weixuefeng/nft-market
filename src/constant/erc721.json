@@ -409,5 +409,34 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "tokenURI",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "royaltyRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "royaltyRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "mintItem",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ]
