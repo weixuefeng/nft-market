@@ -15,6 +15,7 @@ import { NFTBidPriceHistory } from '../../components/Widget/NFTBidPriceHistory'
 import { NFTokenSaleType, NFTokenType } from '../../entities'
 import { POLLING_INTERVAL } from '../../constant'
 import MainLoadingView from '../../components/layouts/MainLoadingView'
+import { NFT_VIEWER_URL } from '../../constant/settings'
 
 function DetailSideBar(props) {
   const { nftToken } = props
@@ -81,7 +82,7 @@ export default function View() {
     <MoreMenu>
       <div>
         <Menu.Item>
-          <a href={''} target="_blank" rel="noopener noreferrer">
+          <a href={NFT_VIEWER_URL + '/view/' + param[0] + '/' + param[1]} target="_blank" rel="noopener noreferrer">
             {t('view in explorer')}
           </a>
         </Menu.Item>

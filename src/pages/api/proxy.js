@@ -3,15 +3,15 @@
 import axios from 'axios'
 
 export default (req, res) => {
-  const {url} = req.query
-  axios.get(url)
-    .then((response)=> {
+  const { url } = req.query
+  axios
+    .get(url)
+    .then(response => {
       res.status(200).json(response.data)
     })
-    .catch(error=>{
-      console.log("error")
+    .catch(error => {
+      console.log('error')
       console.log(error)
       res.status(400).json(error)
     })
 }
-
