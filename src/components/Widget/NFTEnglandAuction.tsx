@@ -101,6 +101,7 @@ export function NFTEnglandAuction(props) {
   const newProp = {
     ...props,
     title,
+    highPrice: highestBid,
     auctionType: AuctionType.ENGLISH_AUCTION
   }
   return (

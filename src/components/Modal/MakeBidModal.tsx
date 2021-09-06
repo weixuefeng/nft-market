@@ -18,7 +18,7 @@ import { AuctionType } from '../../entities'
 
 export function MakeBidModal(props) {
   let { t } = useTranslation()
-  const { nftToken, nftTokenMetaData, title, contractFee, auctionType } = props
+  const { nftToken, nftTokenMetaData, title, contractFee, auctionType, highPrice } = props
   const [showModal, setShowModal] = useState(false)
   const [buttonText, setButtonText] = useState(t('invalid bid amount'))
   const [buttonDisabled, setButtonDisabled] = useState(true)
@@ -39,7 +39,7 @@ export function MakeBidModal(props) {
   const payTotalInNEW = formatEther(payTotal.toString())
 
   const startPrice = nftToken.orders[0].startPrice
-  const highestPrice = nftToken.orders[0].price
+  const highestPrice = highPrice ? highPrice : startPrice
   const exchangeContract = useNFTExchangeContract()
 
   const onConfirm = e => {
