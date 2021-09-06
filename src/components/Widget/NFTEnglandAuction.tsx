@@ -57,7 +57,8 @@ export function NFTEnglandAuction(props) {
       orderDirection: 'desc',
       where: myBidWhere
     },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
+    pollInterval: POLLING_INTERVAL
   })
 
   if (error || myBidError) {
