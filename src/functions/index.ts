@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { PriceEvent } from '../entities'
 
 export async function getInfo(url) {
@@ -6,8 +6,13 @@ export async function getInfo(url) {
     const result = await axios.get(url)
     return result.data
   } catch (e) {
-    console.log('getInfo error:', e)
-    return ''
+    try {
+      const res = await axios.get(`/api/proxy?url=${url}`)
+      return res.data
+    } catch (e) {
+      console.error(e)
+      return ""
+    }
   }
 }
 

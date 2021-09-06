@@ -11,7 +11,7 @@
  * ```
  */
 import { getInfo } from 'functions'
-import { UriResolver } from 'functions/UriResolver'
+import { GetUriProtocol, UriResolver } from 'functions/UriResolver'
 import { useEffect, useState } from 'react'
 
 export class TokenMetaData {
@@ -46,8 +46,13 @@ export async function parseTokenMetaData(uri): Promise<TokenMetaData> {
     }
 
     if (tokenExtraInfo.image !== undefined) {
-      const imageUri = UriResolver(tokenExtraInfo.image.substring(tokenExtraInfo.image.lastIndexOf('/')))
-      data.tokenImage = imageUri
+      const protocol = GetUriProtocol(tokenExtraInfo.image)
+      if(protocol === 'http' || protocol === 'https') {
+        data.tokenImage = tokenExtraInfo.image
+      } else {
+        const imageUri = UriResolver(tokenExtraInfo.image.substring(tokenExtraInfo.image.lastIndexOf('/')))
+        data.tokenImage = imageUri
+      }
     }
 
     if (tokenExtraInfo.description !== undefined) {
