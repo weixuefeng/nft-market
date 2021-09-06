@@ -13,7 +13,7 @@ import moment from 'moment'
 
 // Convert timestamp to YYYY-MM-DD HH:MM:SS
 export function DateTime(timestamp = Date.now()) {
-  return moment(timestamp).format('YYYY-MM-DD HH:mm:ss')
+  return moment(timestamp * 1000).format('YYYY-MM-DD HH:mm:ss')
 }
 
 // Convert timestamp to relative time string

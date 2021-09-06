@@ -1,5 +1,15 @@
 ## Andromeda Metaverse
 
+## Contract Fee
+
+### NewNFTExchange
+- royalty fee: nft contract field, implement registrar interface.
+- protocol fee:
+- permil:
+
+###
+- operationalFeePermil: 
+
 ## Getting Started
 
 Install dependencies:

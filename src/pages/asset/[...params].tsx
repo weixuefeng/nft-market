@@ -16,6 +16,7 @@ import { NFTokenSaleType, NFTokenType } from '../../entities'
 import { POLLING_INTERVAL } from '../../constant'
 import MainLoadingView from '../../components/layouts/MainLoadingView'
 import { NFT_VIEWER_URL } from '../../constant/settings'
+import { DateTime } from '../../functions/DateTime'
 
 function DetailSideBar(props) {
   const { nftToken } = props
@@ -104,7 +105,7 @@ export default function View() {
         </dl>
         <dl>
           <dt>{t('created on')}</dt>
-          <dd>#{data.token.mintBlock}</dd>
+          <dd>#{DateTime(data.token.mintTime)}</dd>
         </dl>
         <dl>
           <dt>{t('royalty')}</dt>
