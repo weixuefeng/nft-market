@@ -12,6 +12,8 @@ import { FILTER_START_BLOCK } from '../../constant/settings'
 const SubNavMenu = props => {
   let { t } = useTranslation()
   const { setOrderBy, setOrderDirection, setFilter, where } = props
+  // filter contract: where: contract_not_in: []...
+  // filter contract & id: where id_not_in: [] ....
   function onOrderChange(e) {
     const order = e.target.value
     if (order === '0') {

@@ -191,66 +191,66 @@ export default function Me() {
         </section>
 
         {/* Royalty Options */}
-        <section>
-          <header>
-            <h3>{t('royalty')}</h3>
-            <p>{t('royalty description')}</p>
-          </header>
+        {/*<section>*/}
+        {/*  <header>*/}
+        {/*    <h3>{t('royalty')}</h3>*/}
+        {/*    <p>{t('royalty description')}</p>*/}
+        {/*  </header>*/}
 
-          <div className="group">
-            <div>
-              <label htmlFor="royalty_rate">{t('royalty rate')}</label>
+        {/*  <div className="group">*/}
+        {/*    <div>*/}
+        {/*      <label htmlFor="royalty_rate">{t('royalty rate')}</label>*/}
 
-              <div className="mt-1 flex rounded-md">
-                <input
-                  value={nftRoyaltyRate}
-                  id="royalty_rate"
-                  name="royalty_rate"
-                  type="number"
-                  inputMode="decimal"
-                  className="focus:border-gray-300 block rounded-none rounded-l-md sm:text-sm border-gray-300 dark:bg-gray-800 dark:border-gray-800 text-center w-16"
-                  onChange={e => {
-                    setNftRoyaltyRate(parseFloat(e.target.value).toFixed(1))
-                  }}
-                  autoComplete="off"
-                />
-                <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 dark:bg-gray-800 dark:border-gray-800 text-gray-500 text-sm">
-                  %
-                </span>
-              </div>
+        {/*      <div className="mt-1 flex rounded-md">*/}
+        {/*        <input*/}
+        {/*          value={nftRoyaltyRate}*/}
+        {/*          id="royalty_rate"*/}
+        {/*          name="royalty_rate"*/}
+        {/*          type="number"*/}
+        {/*          inputMode="decimal"*/}
+        {/*          className="focus:border-gray-300 block rounded-none rounded-l-md sm:text-sm border-gray-300 dark:bg-gray-800 dark:border-gray-800 text-center w-16"*/}
+        {/*          onChange={e => {*/}
+        {/*            setNftRoyaltyRate(parseFloat(e.target.value).toFixed(1))*/}
+        {/*          }}*/}
+        {/*          autoComplete="off"*/}
+        {/*        />*/}
+        {/*        <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 dark:bg-gray-800 dark:border-gray-800 text-gray-500 text-sm">*/}
+        {/*          %*/}
+        {/*        </span>*/}
+        {/*      </div>*/}
 
-              <div className="mt-2 flex rounded-md text-sm">
-                <span>0%</span>
-                <input
-                  type="range"
-                  id="royalty_rate_slider"
-                  min={0}
-                  max={10}
-                  step={0.1}
-                  value={nftRoyaltyRate}
-                  className="w-full mx-2"
-                  onChange={e => {
-                    setNftRoyaltyRate(parseFloat(e.target.value).toFixed(1))
-                  }}
-                />
-                <span>10%</span>
-              </div>
-            </div>
+        {/*      <div className="mt-2 flex rounded-md text-sm">*/}
+        {/*        <span>0%</span>*/}
+        {/*        <input*/}
+        {/*          type="range"*/}
+        {/*          id="royalty_rate_slider"*/}
+        {/*          min={0}*/}
+        {/*          max={10}*/}
+        {/*          step={0.1}*/}
+        {/*          value={nftRoyaltyRate}*/}
+        {/*          className="w-full mx-2"*/}
+        {/*          onChange={e => {*/}
+        {/*            setNftRoyaltyRate(parseFloat(e.target.value).toFixed(1))*/}
+        {/*          }}*/}
+        {/*        />*/}
+        {/*        <span>10%</span>*/}
+        {/*      </div>*/}
+        {/*    </div>*/}
 
-            <div>
-              <label htmlFor="royalty_address">{t('royalty receiving address')}</label>
-              <input
-                onChange={onUserChangeRoyaltyRecipient}
-                value={getRoyaltyRecipient()}
-                id="royalty_address"
-                name="royalty_address"
-                type="text"
-                autoComplete="off"
-              />
-              <p>{t('for royalty receiving address')}</p>
-            </div>
-          </div>
-        </section>
+        {/*    <div>*/}
+        {/*      <label htmlFor="royalty_address">{t('royalty receiving address')}</label>*/}
+        {/*      <input*/}
+        {/*        onChange={onUserChangeRoyaltyRecipient}*/}
+        {/*        value={getRoyaltyRecipient()}*/}
+        {/*        id="royalty_address"*/}
+        {/*        name="royalty_address"*/}
+        {/*        type="text"*/}
+        {/*        autoComplete="off"*/}
+        {/*      />*/}
+        {/*      <p>{t('for royalty receiving address')}</p>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*</section>*/}
 
         <section>
           <div></div>
