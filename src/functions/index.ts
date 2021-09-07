@@ -1,8 +1,13 @@
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import { PriceEvent } from '../entities'
 
 export async function getInfo(url) {
   try {
+    if (url.startsWith('data:application/json;base64,')) {
+      let data = url.split('data:application/json;base64,')[1]
+      const res = JSON.parse(atob(data))
+      return res
+    }
     const result = await axios.get(url)
     return result.data
   } catch (e) {

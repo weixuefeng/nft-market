@@ -47,7 +47,7 @@ export async function parseTokenMetaData(uri): Promise<TokenMetaData> {
 
     if (tokenExtraInfo.image !== undefined) {
       const protocol = GetUriProtocol(tokenExtraInfo.image)
-      if (protocol === 'http' || protocol === 'https') {
+      if (protocol === 'http' || protocol === 'https' || protocol === 'base64') {
         data.tokenImage = tokenExtraInfo.image
       } else {
         const imageUri = UriResolver(tokenExtraInfo.image.substring(tokenExtraInfo.image.lastIndexOf('/')))

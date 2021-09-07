@@ -23,6 +23,7 @@ export function UriResolver(uri = '', baseUri = '') {
   switch (GetUriProtocol(uri)) {
     case 'http':
     case 'https':
+    case 'base64':
       return uri
     case 'ipfs':
       // use IPFS gateway
@@ -53,6 +54,9 @@ export function GetUriProtocol(uri = '') {
   }
   if (uri.substring(0, 3) === 'ar:' || uri.substring(0, 8) === 'arweave:') {
     return 'ar'
+  }
+  if (uri.startsWith('data:')) {
+    return 'base64'
   }
   return 'unknown'
 }
