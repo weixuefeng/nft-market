@@ -16,7 +16,6 @@ export default function transactor(transaction, t, callback) {
           message: t('transactor.local transaction sent'),
           description: result.hash
         }
-        console.log('tx notification info:', info)
         notification.info(info)
         callback()
         return result
@@ -26,7 +25,6 @@ export default function transactor(transaction, t, callback) {
         message: t('transactor.transaction error'),
         description: e.message + (e.data && e.data.message ? e.data.message : '')
       }
-      console.log('Transaction Error:', err)
       notification.error(err)
       callback()
     }

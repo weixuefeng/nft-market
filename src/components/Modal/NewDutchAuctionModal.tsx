@@ -21,6 +21,7 @@ import { defaultAbiCoder as abi } from '@ethersproject/abi'
 import { AddressZero } from '@ethersproject/constants'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 import { formatEther } from 'ethers/lib/utils'
+import transactor from '../../functions/Transactor'
 
 export default function NewDutchAuctionModal(props) {
   let { t } = useTranslation()
@@ -68,9 +69,8 @@ export default function NewDutchAuctionModal(props) {
     const operationalFeeRecipient = OPERATION_FEE_RECEIPT_ADDRESS
     const permils = [parseInt(OPERATION_FEE), 50] // 第一个值为运营合约地址手续费值，第二个值为推荐人手续费值。
     const salt = parseInt(Date.now() / 1000 + '')
-
-    contract
-      .submitOrder(
+    transactor(
+      contract.submitOrder(
         nftAddress,
         tokenId,
         amount,
@@ -82,15 +82,10 @@ export default function NewDutchAuctionModal(props) {
         permils,
         params,
         salt
-      )
-      .then(res => {
-        console.log(res)
-        setShowModal(false)
-      })
-      .catch(error => {
-        console.log(error)
-        setShowModal(false)
-      })
+      ),
+      t,
+      () => setShowModal(false)
+    )
   }
 
   function updateButtonStatus() {

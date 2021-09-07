@@ -20,6 +20,7 @@ import NewAuctionModal from '../Modal/NewAuctionModal'
 import NewDutchAuctionModal from '../Modal/NewDutchAuctionModal'
 import usePoller from '../../hooks/usePooler'
 import { DesignatedSaleModal } from '../Modal/DesignatedSaleModal'
+import transactor from '../../functions/Transactor'
 
 function NFTFixedPriceNotForSale(props) {
   const tag = 'NFTFixedPriceNotForSale'
@@ -82,14 +83,9 @@ function NFTFixedPriceNotForSale(props) {
         <div hidden={isApproved}>
           <button
             onClick={() => {
-              contract
-                .approve(NEW_NFT_EXCHANGE_CONTRACT_ADDRESS, nftToken.tokenId)
-                .then(res => {
-                  console.log(res)
-                })
-                .catch(error => {
-                  console.log(error)
-                })
+              transactor(contract.approve(NEW_NFT_EXCHANGE_CONTRACT_ADDRESS, nftToken.tokenId), t, () =>
+                console.log('success')
+              )
             }}
             type="button"
             disabled={isApproved}
