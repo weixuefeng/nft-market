@@ -73,7 +73,7 @@
   "hot": "热门",
   "in auction": "拍卖中",
   "include royalty fee": "包含版权费",
-  "include service fee": "包含服务费",
+  "include protocol fee": "包含协议费",
   "input a valid address": "输入有效地址",
   "invalid bid amount": "无效的出价数额",
   "invalid end time": "无效的结束时间",
@@ -152,7 +152,7 @@
   "s1 bids": "{{s1}} 个出价",
   "s1 buys": "{{s1}} 次购买",
   "seller will receive": "卖家将收到",
-  "service fee": "服务费",
+  "protocol fee": "协议费",
   "start time": "开始时间",
   "starting price": "起拍价格",
   "starts": "开始",
@@ -209,5 +209,6 @@
   "auction_ends_in": "拍卖结束时间",
   "floor price": "地板价",
   "designated sale": "指定买家购买",
-  "target address": "指定买家地址"
+  "target address": "指定买家地址",
+  "operation fee": "运营费"
 }

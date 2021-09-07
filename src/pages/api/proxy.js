@@ -10,8 +10,7 @@ export default (req, res) => {
       res.status(200).json(response.data)
     })
     .catch(error => {
-      console.log('error')
-      console.log(error)
+      console.log(`error url is: ${url}`)
       res.status(400).json(error)
     })
 }

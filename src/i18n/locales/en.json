@@ -72,7 +72,7 @@
   "hot": "Hot",
   "in auction": "In Auction",
   "include royalty fee": "Include Royalty Fee",
-  "include service fee": "Include Service Fee",
+  "include protocol fee": "Include protocol fee",
   "input a valid address": "Input a valid address",
   "invalid bid amount": "Invalid Bid Amount",
   "invalid end time": "Invalid End Time",
@@ -151,7 +151,7 @@
   "s1 bids": "{{s1}} bids",
   "s1 buys": "{{s1}} buys",
   "seller will receive": "Seller will receive",
-  "service fee": "Service Fee",
+  "protocol fee": "protocol fee",
   "start time": "Start time",
   "starting price": "Starting price",
   "starts": "starts",
@@ -209,5 +209,6 @@
   "auction_ends_in": "Auction ends in",
   "floor price": "Floor Price",
   "designated sale": "Designated Sale",
-  "target address": "Target Address"
+  "target address": "Target Address",
+  "operation fee": "Operation Fee"
 }

@@ -21,10 +21,8 @@ export function useContractFee(tokenAddress) {
     const contractFee = new ContractFee()
     async function getProtocolInfo() {
       const protocolFee = await contract.protocolFeeInfo()
-      // const operationFee = await contract.operationalFeeInfo()
       const royaltyFee = await contract.royaltyFeeInfo(tokenAddress)
       contractFee.protocolFee = protocolFee[1] / base
-      // contractFee.operationFee = operationFee[1] / base
       contractFee.royaltyFee = royaltyFee[1] / base
       setContractFee(contractFee)
     }

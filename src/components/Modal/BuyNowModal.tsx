@@ -135,7 +135,7 @@ export default function BuyNowModal(props) {
                     </dl>
                     <dl className="heading">
                       <dt>
-                        {t('service fee')} ({parseInt(contractFee.protocolFee * 100 + '')}%)
+                        {t('protocol fee')} ({parseInt(contractFee.protocolFee * 100 + '')}%)
                       </dt>
                       <dd>
                         {tradingFeeInNEW} {cSymbol()}

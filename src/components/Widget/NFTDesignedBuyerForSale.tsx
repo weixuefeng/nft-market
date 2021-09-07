@@ -59,7 +59,7 @@ export function NFTDesignedBuyerForSale(props) {
       {/* <main>
         <dl>
           <dd>
-            {t('include service fee')} {_tradingFeeRate}%: <em>{formatEther(tradingFee.toString())} NEW</em>
+            {t('include protocol fee')} {_tradingFeeRate}%: <em>{formatEther(tradingFee.toString())} NEW</em>
           </dd>
           <dd>
             {t('include royalty fee')} {item.royaltyRate}%: <em>{formatEther(royaltyFee.toString())} NEW</em>

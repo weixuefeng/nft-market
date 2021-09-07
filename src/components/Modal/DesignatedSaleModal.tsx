@@ -5,7 +5,12 @@ import { defaultAbiCoder as abi } from '@ethersproject/abi/lib/abi-coder'
 import { formatEther, parseEther } from '@ethersproject/units'
 import { AddressZero } from '@ethersproject/constants'
 import transactor from '../../functions/Transactor'
-import { DESIGNATED_SALE_CONTRACT_ADDRESS, FIXED_PRICE_SALE_CONTRACT_ADDRESS } from '../../constant/settings'
+import {
+  DESIGNATED_SALE_CONTRACT_ADDRESS,
+  FIXED_PRICE_SALE_CONTRACT_ADDRESS,
+  OPERATION_FEE,
+  OPERATION_FEE_RECEIPT_ADDRESS
+} from '../../constant/settings'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/solid'
 import { cSymbol } from '../../constant'
@@ -55,8 +60,8 @@ export function DesignatedSaleModal(props) {
     const receiveAddress = newAddress2HexAddress(targetUserAddress)
     const deadline = parseInt(Date.now() / 1000 + '') + 3600
     const params = abi.encode(['uint256', 'address'], [parseEther(userItemPriceInNEW + ''), receiveAddress])
-    const operationalFeeRecipient = AddressZero
-    const permils = [50, 50] // 第一个值为运营合约地址手续费值，第二个值为推荐人手续费值。
+    const operationalFeeRecipient = OPERATION_FEE_RECEIPT_ADDRESS
+    const permils = [parseInt(OPERATION_FEE), 50] // 第一个值为运营合约地址手续费值，第二个值为推荐人手续费值。
     const salt = parseInt(Date.now() / 1000 + '')
     const res = transactor(
       contract.submitOrder(
@@ -93,7 +98,10 @@ export function DesignatedSaleModal(props) {
   const tradingFee = itemPrice.mul(parseInt(contractFee.protocolFee * 1000 + '')).div(1000)
   const tradingFeeInNEW = formatEther(tradingFee.toString())
 
-  const ownerReceive = itemPrice.sub(royaltyFee).sub(tradingFee)
+  const operationFee = itemPrice.mul(parseInt(OPERATION_FEE)).div(1000)
+  const operationFeeInNEW = formatEther(operationFee.toString())
+
+  const ownerReceive = itemPrice.sub(royaltyFee).sub(tradingFee).sub(operationFee)
   const ownerReceiveInNEW = formatEther(ownerReceive.toString())
 
   return (
@@ -203,12 +211,28 @@ export function DesignatedSaleModal(props) {
                     </dl>
                     <dl>
                       <dt>
-                        {t('service fee')} ({parseInt(contractFee.protocolFee * 100 + '')} %)
+                        {t('protocol fee')} ({parseInt(contractFee.protocolFee * 100 + '')} %)
                       </dt>
                       <dd>
                         <NumberFormat
                           thousandSeparator={true}
                           value={tradingFeeInNEW}
+                          decimalScale={3}
+                          fixedDecimalScale={false}
+                          displayType="text"
+                        />{' '}
+                        {cSymbol()}
+                      </dd>
+                    </dl>
+
+                    <dl>
+                      <dt>
+                        {t('operation fee')} ({parseInt(OPERATION_FEE) / 10} %)
+                      </dt>
+                      <dd>
+                        <NumberFormat
+                          thousandSeparator={true}
+                          value={operationFeeInNEW}
                           decimalScale={3}
                           fixedDecimalScale={false}
                           displayType="text"
