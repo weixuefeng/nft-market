@@ -145,7 +145,7 @@ export function NFTEnglandAuction(props) {
               shouldShowTimeUnits={true}
               shouldHidePrecedingZeros={true}
               onCountdownCompletion={() => updateTime()}
-              style={{ 'white-space': 'nowrap' }}
+              style={{ whiteSpace: 'nowrap' }}
             />
           </span>
           <span hidden={!(end || isEnded)}>{t('auction is over')}</span>

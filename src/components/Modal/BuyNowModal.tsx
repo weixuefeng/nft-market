@@ -14,6 +14,7 @@ import { cSymbol } from '../../constant'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 import { AddressZero } from '@ethersproject/constants'
 import transactor from '../../functions/Transactor'
+import { OPERATION_FEE } from '../../constant/settings'
 
 export default function BuyNowModal(props) {
   let { t } = useTranslation()
@@ -32,7 +33,10 @@ export default function BuyNowModal(props) {
   const tradingFee = itemPrice.mul(parseInt(contractFee.protocolFee * 1000 + '')).div(1000)
   const tradingFeeInNEW = formatEther(tradingFee.toString())
 
-  const ownerReceive = itemPrice.sub(royaltyFee).sub(tradingFee)
+  const operationFee = itemPrice.mul(parseInt(OPERATION_FEE)).div(1000)
+  const operationFeeInNEW = formatEther(operationFee.toString())
+
+  const ownerReceive = itemPrice.sub(royaltyFee).sub(tradingFee).sub(operationFee)
   const ownerReceiveInNEW = formatEther(ownerReceive.toString())
 
   const payTotal = itemPrice
@@ -125,6 +129,7 @@ export default function BuyNowModal(props) {
                         {ownerReceiveInNEW} {cSymbol()}
                       </dd>
                     </dl>
+
                     <dl>
                       <dt>
                         {t('royalty fee')} ({parseInt(contractFee.royaltyFee * 100 + '')}%)
@@ -133,7 +138,8 @@ export default function BuyNowModal(props) {
                         {royaltyFeeInNEW} {cSymbol()}
                       </dd>
                     </dl>
-                    <dl className="heading">
+
+                    <dl>
                       <dt>
                         {t('protocol fee')} ({parseInt(contractFee.protocolFee * 100 + '')}%)
                       </dt>
@@ -141,6 +147,16 @@ export default function BuyNowModal(props) {
                         {tradingFeeInNEW} {cSymbol()}
                       </dd>
                     </dl>
+
+                    <dl>
+                      <dt>
+                        {t('operation fee')} ({parseInt(OPERATION_FEE) / 10}%)
+                      </dt>
+                      <dd>
+                        {operationFeeInNEW} {cSymbol()}
+                      </dd>
+                    </dl>
+
                     <dl className="total">
                       <dt>{t('payment total')}</dt>
                       <dd>
