@@ -19,6 +19,7 @@ import PutOffSaleModal from '../Modal/PutOffSaleModal'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 import CountDownTimer from '@inlightmedia/react-countdown-timer'
 import { AuctionType } from '../../entities'
+import transactor from '../../functions/Transactor'
 
 export function NFTEnglandAuction(props) {
   // isOwner: cancel auction
@@ -44,7 +45,7 @@ export function NFTEnglandAuction(props) {
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL
   })
-  const myBidWhere = { bidder: account.toLowerCase(), askOrder: nftToken.orders[0].id }
+  const myBidWhere = { bidder: account ? account.toLowerCase(): null, askOrder: nftToken.orders[0].id }
   const {
     data: myBid,
     loading: myBidLoading,
@@ -89,14 +90,10 @@ export function NFTEnglandAuction(props) {
     const override = {
       value: myBid.bidOrders[0].price
     }
-    exchangeContract
-      .claimByHash(askOrderHash, override)
-      .then(res => {
-        console.log(res)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    transactor(exchangeContract
+      .claimByHash(askOrderHash, override), t, () => {
+      console.log()
+    })
   }
 
   const newProp = {

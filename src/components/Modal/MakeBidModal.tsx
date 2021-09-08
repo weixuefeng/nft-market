@@ -202,7 +202,7 @@ export function MakeBidModal(props) {
                       <span className="for_input">{cSymbol()}</span>
                     </div>
 
-                    <dl hidden>
+                    <dl>
                       <dt>{t('seller will receive')}</dt>
                       <dd>
                         <NumberFormat
@@ -215,7 +215,7 @@ export function MakeBidModal(props) {
                         {cSymbol()}
                       </dd>
                     </dl>
-                    <dl hidden>
+                    <dl>
                       <dt>
                         {t('royalty fee')} ({parseInt(contractFee.royaltyFee * 100 + '')}%)
                       </dt>
