@@ -210,5 +210,6 @@
   "floor price": "地板价",
   "designated sale": "指定买家购买",
   "target address": "指定买家地址",
-  "operation fee": "运营费"
+  "operation fee": "运营费",
+  "approve_NewMall_for_sale": "授权给NewMall销售"
 }
