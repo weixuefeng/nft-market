@@ -30,6 +30,9 @@ function NFTFixedPriceNotForSale(props) {
   const [isApproved, setIsApproved] = useState<boolean>(false)
   const isOwner = useOwner(nftToken.owners[0].owner.id)
   const contract = useERC721Contract(nftToken.contract.id)
+  const approve = t('approve_NewMall_for_sale')
+  const [approveText, setApproveText] = useState(approve)
+  const [approveEnable, setApproveEnable] = useState(true)
   const exchangeContract = useNFTExchangeContract()
 
   function checkApprove() {
@@ -83,16 +86,21 @@ function NFTFixedPriceNotForSale(props) {
         <div hidden={isApproved}>
           <button
             onClick={() => {
+              if(approveEnable) {
+                setApproveEnable(false)
+                setApproveText(t("approving"))
                 transactor(contract.approve(NEW_NFT_EXCHANGE_CONTRACT_ADDRESS, nftToken.tokenId), t, () => {
-                  console.log("")
-                }
-              )
+                    setApproveEnable(true)
+                    setApproveText(approve);
+                  }
+                )
+              }
             }}
             type="button"
             disabled={isApproved}
             className="primary secondary small yellow"
           >
-            {t('approve_NewMall_for_sale')}
+            {approveText}
           </button>
         </div>
         <div hidden={!isOwner}>
