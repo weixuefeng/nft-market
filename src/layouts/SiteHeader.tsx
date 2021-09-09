@@ -44,7 +44,7 @@ function SiteNavMenu(props) {
 const Nav = props => {
   const { userMenu } = props
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
 
   return (
     <>
@@ -145,7 +145,7 @@ const Nav = props => {
                     <NewMallText className="w-auto h-7" />
                   </a>
                 </Link>
-                {'global.slogan'}
+                {t('global.slogan')}
               </head>
               <nav>
                 <div className="px-2 space-y-2" onClick={() => setMobileSidebarOpen(false)}>
@@ -158,6 +158,7 @@ const Nav = props => {
                       className="flex bg-white dark:bg-black rounded-lg items-center flex-row text-center p-2 text-gray-500 hover:text-gray-800 dark:hover:text-gray-300 hover:bg-gray-200 justify-center"
                       role="menuitem"
                       onClick={e => {
+                        i18n.changeLanguage(i18n.language === 'en' ? 'zh' : 'en')
                         e.preventDefault()
                       }}
                     >
