@@ -94,7 +94,7 @@ export function MakeBidModal(props) {
       return
     }
 
-    if (parseEther(_newPrice + '') <= startPrice || parseEther(_newPrice + '') <= highestPrice) {
+    if (parseEther(_newPrice + '') < startPrice || parseEther(_newPrice + '') <= highestPrice) {
       setButtonText(t('invalid bid amount'))
       setButtonDisabled(true)
       return
