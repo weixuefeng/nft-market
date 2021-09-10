@@ -86,14 +86,13 @@ function NFTFixedPriceNotForSale(props) {
         <div hidden={isApproved}>
           <button
             onClick={() => {
-              if(approveEnable) {
+              if (approveEnable) {
                 setApproveEnable(false)
-                setApproveText(t("approving"))
+                setApproveText(t('approving'))
                 transactor(contract.approve(NEW_NFT_EXCHANGE_CONTRACT_ADDRESS, nftToken.tokenId), t, () => {
-                    setApproveEnable(true)
-                    setApproveText(approve);
-                  }
-                )
+                  setApproveEnable(true)
+                  setApproveText(approve)
+                })
               }
             }}
             type="button"

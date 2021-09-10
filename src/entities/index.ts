@@ -1,3 +1,5 @@
+import exp from 'constants'
+
 export enum NFTokenType {
   NRC7 = 'NRC7',
   NRC50 = 'NRC50',
@@ -141,4 +143,8 @@ export interface OwnerPerDataList {
 
 export interface AskOrderDataList {
   askOrders: Array<AskOrder>
+}
+
+export interface BidderDataList {
+  bidOrders: Array<BidOrder>
 }

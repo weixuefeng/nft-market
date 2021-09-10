@@ -45,7 +45,7 @@ export function NFTEnglandAuction(props) {
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL
   })
-  const myBidWhere = { bidder: account ? account.toLowerCase(): null, askOrder: nftToken.orders[0].id }
+  const myBidWhere = { bidder: account ? account.toLowerCase() : null, askOrder: nftToken.orders[0].id }
   const {
     data: myBid,
     loading: myBidLoading,
@@ -90,8 +90,7 @@ export function NFTEnglandAuction(props) {
     const override = {
       value: myBid.bidOrders[0].price
     }
-    transactor(exchangeContract
-      .claimByHash(askOrderHash, override), t, () => {
+    transactor(exchangeContract.claimByHash(askOrderHash, override), t, () => {
       console.log()
     })
   }

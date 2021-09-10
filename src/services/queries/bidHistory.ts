@@ -11,7 +11,19 @@ export const GET_BID_HISTORY = gql(`
     bidOrders(skip: $skip, first: $first, orderBy: $orderBy, orderDirection: $orderDirection, where: $where) {
       id
       askOrder {
+        deadline
         id
+        numBids
+        status
+        token {
+          tokenId
+          id
+          uri
+        }
+        price
+        finalBidder {
+          id        
+        }
       }
       bidder {
         id

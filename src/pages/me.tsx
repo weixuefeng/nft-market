@@ -7,46 +7,56 @@ import { useState } from 'react'
 import { pageSize, POLLING_INTERVAL } from '../constant'
 import NFTList from '../components/lists/NFTList'
 import { MyAuctions } from '../components/lists/MyAuctions'
-import { MyBidsList } from '../components/lists/MyBidsList'
+import { MyBids } from '../components/lists/MyBids'
 
 enum ActiveTab {
-  ME= "me",
-  MY_AUCTION = "my-auctions",
-  MY_BID = "my-bids"
+  ME = 'me',
+  MY_AUCTION = 'my-auctions',
+  MY_BID = 'my-bids'
 }
 
-function MenuOfMe (props) {
-  const {t} = useTranslation()
+function MenuOfMe(props) {
+  const { t } = useTranslation()
 
-  const { activeTab, setActiveTab} = props
+  const { activeTab, setActiveTab } = props
+  const [currentTab, setCurrentTab] = useState(activeTab)
 
   return (
-    <nav className='subnav'>
-      <div className='menu'>
+    <nav className="subnav">
+      <div className="menu">
         <a
-          onClick={ () => setActiveTab(ActiveTab.ME) }
-          className={activeTab === ActiveTab.ME ? "active" : ""}
-          aria-current='page'
+          onClick={() => {
+            setCurrentTab(ActiveTab.ME)
+            setActiveTab(ActiveTab.ME)
+          }}
+          className={currentTab === ActiveTab.ME ? 'active' : ''}
+          aria-current="page"
         >
-          {t("my nfts")}
+          {t('my nfts')}
         </a>
         <a
-          onClick={ () => setActiveTab(ActiveTab.MY_AUCTION)}
-          className={activeTab === ActiveTab.MY_AUCTION ? "active" : ""}
-          aria-current='page'
+          onClick={() => {
+            setCurrentTab(ActiveTab.MY_AUCTION)
+            setActiveTab(ActiveTab.MY_AUCTION)
+          }}
+          className={currentTab === ActiveTab.MY_AUCTION ? 'active' : ''}
+          aria-current="page"
         >
-          {t("my auctions")}
+          {t('my auctions')}
         </a>
         <a
-          onClick={ () => setActiveTab(ActiveTab.MY_BID)}
-          className={activeTab === ActiveTab.MY_BID ? "active" : ""}
-          aria-current='page'
+          onClick={() => {
+            setCurrentTab(ActiveTab.MY_BID)
+            setActiveTab(ActiveTab.MY_BID)
+          }}
+          className={currentTab === ActiveTab.MY_BID ? 'active' : ''}
+          aria-current="page"
         >
-          {t("my bids")}
+          {t('my bids')}
         </a>
       </div>
 
-      <div className='options' hidden></div>
+      <div className="options" hidden></div>
     </nav>
   )
 }
@@ -57,10 +67,9 @@ function Me() {
   const [activeTab, setActiveTab] = useState(ActiveTab.ME)
   const [orderBy, setOrderBy] = useState('amount')
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC)
-  const nftWhere = { owner: account ? account.toLowerCase(): null}
+  const nftWhere = { owner: account ? account.toLowerCase() : null }
   const where = {}
   const [filter, setFilter] = useState(where)
-
 
   const { loading, data, fetchMore, error } = useQuery<OwnerPerDataList>(NFT_MY_TOKEN, {
     variables: {
@@ -113,18 +122,18 @@ function Me() {
     where,
     showSubNav: false
   }
-  return <>
-    <MenuOfMe activeTab={ActiveTab.ME}
-      setActiveTab={setActiveTab}
-    />
-    {
-      activeTab === ActiveTab.ME
-        ?
+  return (
+    <>
+      <MenuOfMe activeTab={ActiveTab.ME} setActiveTab={setActiveTab} />
+      {activeTab === ActiveTab.ME ? (
         <NFTList {...info} />
-        :
-        (activeTab === ActiveTab.MY_AUCTION ? <MyAuctions/> : <MyBidsList/>)
-    }
-  </>
+      ) : activeTab === ActiveTab.MY_AUCTION ? (
+        <MyAuctions />
+      ) : (
+        <MyBids />
+      )}
+    </>
+  )
 }
 
 export default Me
