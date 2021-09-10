@@ -10,23 +10,28 @@ import { AdjustmentsIcon, CheckIcon } from '@heroicons/react/outline'
 import { default as React, Fragment, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { GET_ASK_ORDER_HISTORY } from '../../services/queries/askOrders'
-import { AskOrderDataList, NFTokenSaleType, OrderDirection, OrderStatus, TokenOrderBy } from '../../entities'
+import { AskOrderDataList, NFTokenSaleType, OrderDirection, OrderStatus} from '../../entities'
 import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
 import { useWeb3React } from '@web3-react/core'
 import { getNftDetailPath } from '../../functions'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
-import { DateTime, RelativeTime } from '../../functions/DateTime'
+import { DateTime} from '../../functions/DateTime'
 import { formatEther } from 'ethers/lib/utils'
-import NewAddress from '../layouts/NewAddress'
 import transactor from '../../functions/Transactor'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 
+enum AuctionFilter {
+  IN_AUCTION = "in auction",
+  COMPLETED = "ended",
+  CANCELED = "canceled",
+  ALL = "all"
+}
+
 const filterOptions = [
-  { title: 'all' },
-  { title: 'in auction' },
-  { title: 'pending start' },
-  { title: 'ended' },
-  { title: 'canceled' }
+  { title: AuctionFilter.ALL },
+  { title: AuctionFilter.IN_AUCTION },
+  { title: AuctionFilter.COMPLETED },
+  { title: AuctionFilter.CANCELED }
 ]
 
 const MyAuctionsNavFilter = props => {
@@ -216,12 +221,35 @@ const MyAuctionsRow = props => {
 
 const MyAuctionsList = props => {
   const { account } = useWeb3React()
+  const { selected } = props
   const { t } = useTranslation()
 
-  const where = {
-    strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-    owner: account ? account.toLowerCase() : null
+  let where = null
+  if(selected.title === AuctionFilter.IN_AUCTION) {
+    where = {
+      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+      owner: account ? account.toLowerCase() : null,
+      status: OrderStatus.NORMAL
+    }
+  } else if (selected.title === AuctionFilter.CANCELED) {
+    where = {
+      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+      owner: account ? account.toLowerCase() : null,
+      status: OrderStatus.CANCELED
+    }
+  } else if(selected.title === AuctionFilter.COMPLETED) {
+    where = {
+      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+      owner: account ? account.toLowerCase() : null,
+      status: OrderStatus.COMPLETED
+    }
+  } else {
+    where = {
+      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+      owner: account ? account.toLowerCase() : null
+    }
   }
+
 
   const { data, error, loading, fetchMore } = useQuery<AskOrderDataList>(GET_ASK_ORDER_HISTORY, {
     variables: {
