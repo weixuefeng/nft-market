@@ -89,6 +89,7 @@ export class AskOrder {
   finalBidOrder: BidOrder
   status: OrderStatus
   numBids: number
+  token: NFToken
 }
 
 export class BidOrder {
@@ -136,4 +137,8 @@ export interface NFTokenData {
 
 export interface OwnerPerDataList {
   ownerPerTokens: Array<OwnerPerToken>
+}
+
+export interface AskOrderDataList {
+  askOrders: Array<AskOrder>
 }

@@ -6,18 +6,62 @@ import { useWeb3React } from '@web3-react/core'
 import { useState } from 'react'
 import { pageSize, POLLING_INTERVAL } from '../constant'
 import NFTList from '../components/lists/NFTList'
+import { MyAuctions } from '../components/lists/MyAuctions'
+import { MyBidsList } from '../components/lists/MyBidsList'
+
+enum ActiveTab {
+  ME= "me",
+  MY_AUCTION = "my-auctions",
+  MY_BID = "my-bids"
+}
+
+function MenuOfMe (props) {
+  const {t} = useTranslation()
+
+  const { activeTab, setActiveTab} = props
+
+  return (
+    <nav className='subnav'>
+      <div className='menu'>
+        <a
+          onClick={ () => setActiveTab(ActiveTab.ME) }
+          className={activeTab === ActiveTab.ME ? "active" : ""}
+          aria-current='page'
+        >
+          {t("my nfts")}
+        </a>
+        <a
+          onClick={ () => setActiveTab(ActiveTab.MY_AUCTION)}
+          className={activeTab === ActiveTab.MY_AUCTION ? "active" : ""}
+          aria-current='page'
+        >
+          {t("my auctions")}
+        </a>
+        <a
+          onClick={ () => setActiveTab(ActiveTab.MY_BID)}
+          className={activeTab === ActiveTab.MY_BID ? "active" : ""}
+          aria-current='page'
+        >
+          {t("my bids")}
+        </a>
+      </div>
+
+      <div className='options' hidden></div>
+    </nav>
+  )
+}
 
 function Me() {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  if (!account) {
-    return <>Please Connect Wallet</>
-  }
+  const [activeTab, setActiveTab] = useState(ActiveTab.ME)
   const [orderBy, setOrderBy] = useState('amount')
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC)
-  const nftWhere = { owner: account.toLowerCase() }
+  const nftWhere = { owner: account ? account.toLowerCase(): null}
   const where = {}
   const [filter, setFilter] = useState(where)
+
+
   const { loading, data, fetchMore, error } = useQuery<OwnerPerDataList>(NFT_MY_TOKEN, {
     variables: {
       skip: 0,
@@ -29,6 +73,10 @@ function Me() {
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL
   })
+
+  if (!account) {
+    return <>Please Connect Wallet</>
+  }
 
   if (error) {
     console.log(error)
@@ -65,7 +113,18 @@ function Me() {
     where,
     showSubNav: false
   }
-  return <NFTList {...info} />
+  return <>
+    <MenuOfMe activeTab={ActiveTab.ME}
+      setActiveTab={setActiveTab}
+    />
+    {
+      activeTab === ActiveTab.ME
+        ?
+        <NFTList {...info} />
+        :
+        (activeTab === ActiveTab.MY_AUCTION ? <MyAuctions/> : <MyBidsList/>)
+    }
+  </>
 }
 
 export default Me
