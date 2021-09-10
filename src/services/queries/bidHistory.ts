@@ -24,6 +24,7 @@ export const GET_BID_HISTORY = gql(`
           tokenId
           id
           uri
+          lastPrice
         }
         price
         finalBidder {

@@ -134,17 +134,20 @@ const MyAuctionsRow = props => {
 
   function cancelAuction() {
     const askHash = auction.id
-    transactor(exchangeContract.cancelByHash(askHash), t, () => {
-
-    })
+    transactor(exchangeContract.cancelByHash(askHash), t, () => {})
   }
 
   function auctionAction() {
-    if(auction.numBids == null || parseInt(auction.numBids) === 0) {
-      return <a onClick={() => {
-        cancelAuction()
-        }
-      }>{t('put off sale')}</a>
+    if (auction.numBids == null || parseInt(auction.numBids) === 0) {
+      return (
+        <a
+          onClick={() => {
+            cancelAuction()
+          }}
+        >
+          {t('put off sale')}
+        </a>
+      )
     } else {
       return <a href={getNftDetailPath(auction.token.id)}>{t('view nft')}</a>
     }

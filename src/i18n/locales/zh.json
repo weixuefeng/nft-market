@@ -212,5 +212,6 @@
   "target address": "指定买家地址",
   "operation fee": "运营费",
   "approve_NewMall_for_sale": "授权给NewMall销售",
-  "approving": "授权中..."
+  "approving": "授权中...",
+  "can claim": "可领取"
 }

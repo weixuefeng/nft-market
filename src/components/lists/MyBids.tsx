@@ -20,7 +20,7 @@ import { DateTime } from '../../functions/DateTime'
 import transactor from '../../functions/Transactor'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 
-const filterOptions = [{ title: 'all' }, { title: 'need attention' }]
+const filterOptions = [{ title: 'all' }, { title: 'can claim' }]
 
 const MyBidsNavFilter = props => {
   let { t } = useTranslation()
@@ -70,13 +70,12 @@ function MyBidsRow(props) {
     e.preventDefault()
     const askOrderHash = bid.askOrder.id
     const override = {
-      value: bid.askOrder.price
+      value: bid.price
     }
     transactor(exchangeContract.claimByHash(askOrderHash, override), t, () => {
       console.log()
     })
   }
-
 
   function auctionStatus() {
     if (bid.askOrder.status === OrderStatus.NORMAL) {
@@ -106,10 +105,6 @@ function MyBidsRow(props) {
     return null
   }
 
-  function auctionRound() {
-    // return t("round") + ": " + auction.round
-  }
-
   function auctionWithdrawed() {
     // if (item.status === "ended" && bid.withdrawTx !== null) {
     //   return (
@@ -134,14 +129,10 @@ function MyBidsRow(props) {
   }
 
   function auctionAction() {
-    let now = Date.now()
-    if(now > bid.auctionDeadline && now < bid.auctionClaimDeadline && bid.auctionBestBid) {
+    let now = Date.now() / 1000
+    if (now > bid.auctionDeadline && now < bid.auctionClaimDeadline && bid.auctionBestBid) {
       // can claim
-        return (
-          <a onClick={onWithdrawBidClicked} href='#nft-page'>
-            {t("claim nft")}
-          </a>
-        )
+      return <a onClick={onWithdrawBidClicked}>{t('claim nft')}</a>
     } else {
       return <p>-</p>
     }
@@ -156,7 +147,9 @@ function MyBidsRow(props) {
           title={'Universal #' + bid.askOrder.token.tokenId + ' ' + tokenMetaData.tokenName}
         >
           <img src={tokenMetaData.tokenImage} alt="" />
-          <p>{tokenMetaData.tokenName}#{bid.askOrder.token.tokenId}</p>
+          <p>
+            {tokenMetaData.tokenName}#{bid.askOrder.token.tokenId}
+          </p>
         </a>
         <p>
           <span className="status">{auctionStatus()}</span>
@@ -165,7 +158,7 @@ function MyBidsRow(props) {
       </td>
       <td>{bid.askOrder.numBids}</td>
       <td>
-        {formatEther(bid.askOrder.price)} {cSymbol()}
+        {formatEther(bid.askOrder.token.lastPrice)} {cSymbol()}
       </td>
       <td>
         <p>
@@ -183,7 +176,12 @@ const MyBidsList = props => {
   let { t } = useTranslation()
   const { selected } = props
   const { account } = useWeb3React()
-  const where = { bidder: account ? account.toLowerCase() : null }
+  let where = null
+  if (selected.title === 'can claim') {
+    where = { bidder: account ? account.toLowerCase() : null, auctionBestBid: true }
+  } else {
+    where = { bidder: account ? account.toLowerCase() : null }
+  }
   const { loading, error, data, fetchMore } = useQuery<BidderDataList>(GET_BID_HISTORY, {
     variables: {
       skip: 0,
