@@ -130,7 +130,7 @@ function MyBidsRow(props) {
 
   function auctionAction() {
     let now = Date.now() / 1000
-    if (now > bid.auctionDeadline && now < bid.auctionClaimDeadline && bid.auctionBestBid) {
+    if (now > bid.auctionDeadline && now < bid.auctionClaimDeadline && bid.auctionBestBid && bid.askOrder.status === OrderStatus.NORMAL) {
       // can claim
       return <a onClick={onWithdrawBidClicked}>{t('claim nft')}</a>
     } else {
