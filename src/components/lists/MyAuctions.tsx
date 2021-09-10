@@ -18,6 +18,8 @@ import { useTokenDescription } from '../../hooks/useTokenDescription'
 import { DateTime, RelativeTime } from '../../functions/DateTime'
 import { formatEther } from 'ethers/lib/utils'
 import NewAddress from '../layouts/NewAddress'
+import transactor from '../../functions/Transactor'
+import { useNFTExchangeContract } from '../../hooks/useContract'
 
 const filterOptions = [
   { title: 'all' },
@@ -128,16 +130,24 @@ const MyAuctionsRow = props => {
       '-'
     )
   }
+  const exchangeContract = useNFTExchangeContract()
+
+  function cancelAuction() {
+    const askHash = auction.id
+    transactor(exchangeContract.cancelByHash(askHash), t, () => {
+
+    })
+  }
 
   function auctionAction() {
-    if (auction.status === OrderStatus.CANCELED) {
+    if(auction.numBids == null || parseInt(auction.numBids) === 0) {
+      return <a onClick={() => {
+        cancelAuction()
+        }
+      }>{t('put off sale')}</a>
+    } else {
       return <a href={getNftDetailPath(auction.token.id)}>{t('view nft')}</a>
     }
-
-    if (auction.status === OrderStatus.COMPLETED) {
-      return <a href={getNftDetailPath(auction.token.id)}>{t('view nft')}</a>
-    }
-    return null
   }
 
   function auctionExchangeTx() {
