@@ -320,7 +320,7 @@ export default function NewDutchAuctionModal(props) {
                     </dl>
                     <dl>
                       <dt>
-                        {t('protocol fee')} ({parseInt(contractFee.protocolFee * 100 + '')}%)
+                        {t('protocol fee')} ({(contractFee.protocolFee * 100 + '')}%)
                       </dt>
                       <dd>
                         <NumberFormat
