@@ -17,6 +17,7 @@ export const GET_ASK_ORDER_HISTORY = gql(`
       id
       startPrice
       deadline
+      claimDeadline
       amount
       numBids
       price

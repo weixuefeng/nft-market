@@ -92,6 +92,7 @@ export class AskOrder {
   status: OrderStatus
   numBids: number
   token: NFToken
+  claimDeadline: number
 }
 
 export class BidOrder {
