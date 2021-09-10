@@ -138,7 +138,7 @@ const MyAuctionsRow = props => {
   }
 
   function auctionAction() {
-    if (auction.numBids == null || parseInt(auction.numBids) === 0) {
+    if ((auction.numBids == null || parseInt(auction.numBids) === 0) && auction.status !== OrderStatus.CANCELED) {
       return (
         <a
           onClick={() => {
