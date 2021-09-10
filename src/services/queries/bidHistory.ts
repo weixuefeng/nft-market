@@ -10,6 +10,11 @@ export const GET_BID_HISTORY = gql(`
   query getBidHistory($skip: Int, $first: Int, $orderBy: String, $orderDirection: String, $where: BidOrder_filter) {
     bidOrders(skip: $skip, first: $first, orderBy: $orderBy, orderDirection: $orderDirection, where: $where) {
       id
+      strategy
+      strategyType
+      auctionDeadline
+      auctionClaimDeadline
+      auctionBestBid
       askOrder {
         deadline
         id

@@ -17,6 +17,8 @@ import { getNftDetailPath } from '../../functions'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
 import { formatEther } from 'ethers/lib/utils'
 import { DateTime } from '../../functions/DateTime'
+import transactor from '../../functions/Transactor'
+import { useNFTExchangeContract } from '../../hooks/useContract'
 
 const filterOptions = [{ title: 'all' }, { title: 'need attention' }]
 
@@ -62,10 +64,19 @@ function MyBidsRow(props) {
   let { t } = useTranslation()
   let { bid } = props
   const tokenMetaData = useTokenDescription(bid.askOrder.token.uri)
+  const exchangeContract = useNFTExchangeContract()
 
   function onWithdrawBidClicked(e) {
     e.preventDefault()
+    const askOrderHash = bid.askOrder.id
+    const override = {
+      value: bid.askOrder.price
+    }
+    transactor(exchangeContract.claimByHash(askOrderHash, override), t, () => {
+      console.log()
+    })
   }
+
 
   function auctionStatus() {
     if (bid.askOrder.status === OrderStatus.NORMAL) {
@@ -81,7 +92,7 @@ function MyBidsRow(props) {
     if (bid.askOrder.status === OrderStatus.NORMAL) {
       return (
         <span className={'in-auction'}>
-          {t('ends in')} {DateTime(bid.askOrder.deadline)}
+          {t('ends in s1')} {DateTime(bid.askOrder.deadline)}
         </span>
       )
     }
@@ -123,36 +134,17 @@ function MyBidsRow(props) {
   }
 
   function auctionAction() {
-    // if (item.status === "in-auction" && auction.highestBid !== bid.bid) {
-    //   return (
-    //     <ChangeBidModal
-    //       auction={auction}
-    //       item={{ ...item, image: tokenImage, name: tokenName }}
-    //       myBidValueInNEW={myFundValueInNEW}
-    //       asLink
-    //     />
-    //   )
-    // }
-    // if (item.status === "ended" && sameAddress(auction.highestBidder, address) && auction.tokenExchanged === false) {
-    //   return (
-    //     <a onClick={onWithdrawBidClicked} href='#nft-page'>
-    //       {t("claim nft")}
-    //     </a>
-    //   )
-    // }
-    // if (
-    //   item.status === "ended" &&
-    //   !sameAddress(auction.highestBidder, address) &&
-    //   myFundValueInNEW > 0 &&
-    //   !bid.withdrawTx
-    // ) {
-    //   return (
-    //     <a onClick={onWithdrawBidClicked} href='/'>
-    //       {t("withdraw")}
-    //     </a>
-    //   )
-    // }
-    return <p>-</p>
+    let now = Date.now()
+    if(now > bid.auctionDeadline && now < bid.auctionClaimDeadline && bid.auctionBestBid) {
+      // can claim
+        return (
+          <a onClick={onWithdrawBidClicked} href='#nft-page'>
+            {t("claim nft")}
+          </a>
+        )
+    } else {
+      return <p>-</p>
+    }
   }
 
   return (
@@ -164,7 +156,7 @@ function MyBidsRow(props) {
           title={'Universal #' + bid.askOrder.token.tokenId + ' ' + tokenMetaData.tokenName}
         >
           <img src={tokenMetaData.tokenImage} alt="" />
-          <p>{tokenMetaData.tokenName}</p>
+          <p>{tokenMetaData.tokenName}#{bid.askOrder.token.tokenId}</p>
         </a>
         <p>
           <span className="status">{auctionStatus()}</span>

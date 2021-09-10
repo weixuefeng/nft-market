@@ -104,6 +104,11 @@ export class BidOrder {
   createdTx: string
   recipient: Account
   referrer: Account
+  strategy: string
+  strategyType: NFTokenSaleType
+  auctionDeadline: number
+  auctionClaimDeadline: number
+  auctionBestBid: boolean
 }
 
 export class NFToken {
