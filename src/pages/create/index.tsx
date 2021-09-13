@@ -2,19 +2,14 @@ import 'i18n'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import {
-  hexAddress2NewAddress,
-  isValidHexAddress,
-  isValidNewAddress,
-  newAddress2HexAddress
-} from '../utils/NewChainUtils'
-import { FILE_UPLOAD_URL, JSON_UPLOAD_URL } from '../constant'
+import { hexAddress2NewAddress, isValidHexAddress, isValidNewAddress, newAddress2HexAddress } from 'utils/NewChainUtils'
+import { FILE_UPLOAD_URL, JSON_UPLOAD_URL } from '../../constant'
 import { message, Upload } from 'antd'
 import axios from 'axios'
-import { UriResolver } from '../functions/UriResolver'
-import { useERC721Contract, useNFTExchangeContract } from '../hooks/useContract'
-import transactor from '../functions/Transactor'
-import { NFT_CONTRACT_ADDRESS } from '../constant/settings'
+import { UriResolver } from '../../functions/UriResolver'
+import { useERC721Contract, useNFTExchangeContract } from '../../hooks/useContract'
+import transactor from '../../functions/Transactor'
+import { NFT_CONTRACT_ADDRESS } from '../../constant/settings'
 
 export default function Me() {
   let { t } = useTranslation()
