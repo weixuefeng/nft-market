@@ -203,7 +203,9 @@ const MyAuctionsRow = props => {
           title={'Universal #' + auction.token.id + ' ' + tokenMetaData.tokenName}
         >
           <img src={tokenMetaData.tokenImage} alt="" />
-          <p>{tokenMetaData.tokenName} #{auction.token.tokenId}</p>
+          <p>
+            {tokenMetaData.tokenName} #{auction.token.tokenId}
+          </p>
         </a>
         <p>
           <span className="status">{getAuctionStatus()}</span>

@@ -9,7 +9,7 @@ import axios from 'axios'
 import { UriResolver } from '../../functions/UriResolver'
 import { useERC721Contract, useNFTExchangeContract } from '../../hooks/useContract'
 import transactor from '../../functions/Transactor'
-import { NFT_CONTRACT_ADDRESS } from '../../constant/settings'
+import { NEWMALL_COLLECTION_CONTRACT } from '../../constant/settings'
 
 export default function Me() {
   let { t } = useTranslation()
@@ -20,7 +20,7 @@ export default function Me() {
   const [tokenImageIpfsHash, setTokenImageIpfsHash] = useState('')
   const [royaltyRecipient, setRoyaltyRecipient] = useState('')
   const [userChangedRoyaltyRecipient, setUserChangedRoyaltyRecipient] = useState(false)
-  const nftExchangeContract = useERC721Contract(NFT_CONTRACT_ADDRESS)
+  const nftExchangeContract = useERC721Contract(NEWMALL_COLLECTION_CONTRACT)
   function onUserChangeRoyaltyRecipient(e) {
     setUserChangedRoyaltyRecipient(true)
     setRoyaltyRecipient(e.target.value)

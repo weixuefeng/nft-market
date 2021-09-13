@@ -65,7 +65,7 @@ function newAddress2HexAddress(newAddress) {
   if (newAddress === undefined) {
     return ''
   }
-  if(newAddress.startsWith("0x")) {
+  if (newAddress.startsWith('0x')) {
     return newAddress
   }
   newAddress = newAddress.trim()

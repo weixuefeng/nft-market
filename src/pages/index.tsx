@@ -4,7 +4,7 @@ import { NFTokenDataList, OrderDirection } from '../entities'
 import { NFT_TOKEN_LIST } from '../services/queries/list'
 import { POLLING_INTERVAL } from '../constant'
 import { useState } from 'react'
-import { NEWTON_PROJECT_NFT_CONTRACT } from '../constant/settings'
+import { NEWTON_COLLECTION_NFT_CONTRACT } from '../constant/settings'
 import Link from 'next/link'
 import { VideoCameraIcon } from '@heroicons/react/solid'
 import { useTokenDescription } from 'hooks/useTokenDescription'
@@ -15,7 +15,7 @@ export default function Home() {
   const { t } = useTranslation()
   const [orderBy, setOrderBy] = useState('mintBlock')
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC)
-  const where = { contract: NEWTON_PROJECT_NFT_CONTRACT }
+  const where = { contract: NEWTON_COLLECTION_NFT_CONTRACT.toLowerCase() }
   const [filter, setFilter] = useState(where)
   const { loading, data, fetchMore, error } = useQuery<NFTokenDataList>(NFT_TOKEN_LIST, {
     variables: {
