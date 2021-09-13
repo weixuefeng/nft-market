@@ -23,7 +23,7 @@ export function NFTFixedPriceForSale(props) {
   const isOwner = useOwner(nftToken.owners[0].owner.id)
   const owners = nftToken.owners
   const askOwner = nftToken.askOrder.owner
-  const isAskOwner = askOwner.id.toLowerCase() === account.toLowerCase()
+  const isAskOwner = account ? askOwner.id.toLowerCase() === account.toLowerCase() : false
 
   function checkRealOwner(owner: Account, owners: Array<OwnerPerToken>) {
     for (let i = 0; i < owners.length; i++) {
