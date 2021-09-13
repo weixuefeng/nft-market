@@ -104,12 +104,15 @@ function Me() {
   })
 
   function onFetchMore() {
+    console.log("featch more")
+    console.log(data.ownerPerTokens.length)
     fetchMore({
       variables: {
         skip: data.ownerPerTokens.length,
         first: pageSize,
         orderBy: orderBy,
-        orderDirection: orderDirection
+        orderDirection: orderDirection,
+        where: nftWhere
       }
     })
   }
