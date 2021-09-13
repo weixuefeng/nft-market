@@ -94,6 +94,7 @@ export class AskOrder {
   token: NFToken
   claimDeadline: number
   finalTx: string
+  bestPrice: number
 }
 
 export class BidOrder {

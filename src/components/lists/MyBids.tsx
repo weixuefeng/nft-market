@@ -12,7 +12,7 @@ import { useQuery } from '@apollo/client'
 import { GET_BID_HISTORY } from '../../services/queries/bidHistory'
 import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
 import { useWeb3React } from '@web3-react/core'
-import { BidderDataList, OrderStatus } from '../../entities'
+import { BidderDataList, NFTokenSaleType, OrderStatus } from '../../entities'
 import { getNftDetailPath, splitTx } from '../../functions'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
 import { formatEther } from 'ethers/lib/utils'
@@ -181,7 +181,7 @@ function MyBidsRow(props) {
       </td>
       <td>{bid.askOrder.numBids}</td>
       <td>
-        {formatEther(bid.askOrder.token.price)} {cSymbol()}
+        {formatEther(bid.askOrder.bestPrice)} {cSymbol()}
       </td>
       <td>
         <p>
@@ -206,10 +206,11 @@ const MyBidsList = props => {
       bidder: account ? account.toLowerCase() : null,
       auctionBestBid: true,
       auctionDeadline_lte: now,
-      auctionClaimDeadline_gte: now
+      auctionClaimDeadline_gte: now,
+      strategyType: NFTokenSaleType.ENGLAND_AUCTION
     }
   } else {
-    where = { bidder: account ? account.toLowerCase() : null }
+    where = { bidder: account ? account.toLowerCase() : null, strategyType: NFTokenSaleType.ENGLAND_AUCTION }
   }
   const { loading, error, data, fetchMore } = useQuery<BidderDataList>(GET_BID_HISTORY, {
     variables: {

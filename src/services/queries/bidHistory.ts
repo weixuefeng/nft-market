@@ -20,6 +20,7 @@ export const GET_BID_HISTORY = gql(`
         id
         numBids
         finalTx
+        bestPrice
         status
         token {
           tokenId
