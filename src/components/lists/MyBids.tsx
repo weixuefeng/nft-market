@@ -87,6 +87,9 @@ function MyBidsRow(props) {
     if (bid.askOrder.status === OrderStatus.COMPLETED) {
       return <span className={'ended'}>{t('ended')}</span>
     }
+    if(bid.askOrder.status === OrderStatus.CANCELED) {
+      return <span className={'canceled'}>{t('canceled')}</span>
+    }
     return null
   }
 

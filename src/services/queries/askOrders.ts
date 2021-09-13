@@ -13,6 +13,7 @@ export const GET_ASK_ORDER_HISTORY = gql(`
       token {
         id
         uri
+        tokenId
       }
       id
       startPrice
