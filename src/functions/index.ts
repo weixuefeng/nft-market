@@ -58,3 +58,13 @@ export function getTradingStatus(event: string, t) {
   }
   return res
 }
+
+export function splitTx(tx: string | null) {
+  if (tx === null) {
+    return tx
+  }
+  if (tx.length < 30) {
+    return tx
+  }
+  return tx.substring(0, 10) + '......' + tx.substring(tx.length - 10, tx.length)
+}

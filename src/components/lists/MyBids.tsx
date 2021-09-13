@@ -13,12 +13,15 @@ import { GET_BID_HISTORY } from '../../services/queries/bidHistory'
 import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
 import { useWeb3React } from '@web3-react/core'
 import { BidderDataList, OrderStatus } from '../../entities'
-import { getNftDetailPath } from '../../functions'
+import { getNftDetailPath, splitTx } from '../../functions'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
 import { formatEther } from 'ethers/lib/utils'
 import { DateTime } from '../../functions/DateTime'
 import transactor from '../../functions/Transactor'
 import { useNFTExchangeContract } from '../../hooks/useContract'
+import { getNewChainExplorerUrl } from '../../utils/NewChainUtils'
+import { TARGET_CHAINID } from '../../constant/settings'
+import { AddressZero } from '@ethersproject/constants'
 
 const filterOptions = [{ title: 'all' }, { title: 'can claim' }]
 
@@ -123,14 +126,31 @@ function MyBidsRow(props) {
   function auctionExchangeTx() {
     return (
       <>
-        <p>-</p>
+        {bid.askOrder.finalTx.startsWith(AddressZero) ? (
+          <p>-</p>
+        ) : (
+          <p>
+            <a
+              rel="noopener noreferrer"
+              href={`${getNewChainExplorerUrl(TARGET_CHAINID)}/tx/${bid.askOrder.finalTx}`}
+              target="blank"
+            >
+              {splitTx(bid.askOrder.finalTx)}
+            </a>
+          </p>
+        )}
       </>
     )
   }
 
   function auctionAction() {
     let now = Date.now() / 1000
-    if (now > bid.auctionDeadline && now < bid.auctionClaimDeadline && bid.auctionBestBid && bid.askOrder.status === OrderStatus.NORMAL) {
+    if (
+      now > bid.auctionDeadline &&
+      now < bid.auctionClaimDeadline &&
+      bid.auctionBestBid &&
+      bid.askOrder.status === OrderStatus.NORMAL
+    ) {
       // can claim
       return <a onClick={onWithdrawBidClicked}>{t('claim nft')}</a>
     } else {
@@ -158,7 +178,7 @@ function MyBidsRow(props) {
       </td>
       <td>{bid.askOrder.numBids}</td>
       <td>
-        {formatEther(bid.askOrder.token.lastPrice)} {cSymbol()}
+        {formatEther(bid.askOrder.token.price)} {cSymbol()}
       </td>
       <td>
         <p>
@@ -178,7 +198,13 @@ const MyBidsList = props => {
   const { account } = useWeb3React()
   let where = null
   if (selected.title === 'can claim') {
-    where = { bidder: account ? account.toLowerCase() : null, auctionBestBid: true }
+    const now = parseInt(Date.now() / 1000 + '')
+    where = {
+      bidder: account ? account.toLowerCase() : null,
+      auctionBestBid: true,
+      auctionDeadline_lte: now,
+      auctionClaimDeadline_gte: now
+    }
   } else {
     where = { bidder: account ? account.toLowerCase() : null }
   }

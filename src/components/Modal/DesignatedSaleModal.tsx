@@ -211,7 +211,7 @@ export function DesignatedSaleModal(props) {
                     </dl>
                     <dl>
                       <dt>
-                        {t('protocol fee')} ({(contractFee.protocolFee * 100 + '')} %)
+                        {t('protocol fee')} ({contractFee.protocolFee * 100 + ''} %)
                       </dt>
                       <dd>
                         <NumberFormat

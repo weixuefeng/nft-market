@@ -10,21 +10,21 @@ import { AdjustmentsIcon, CheckIcon } from '@heroicons/react/outline'
 import { default as React, Fragment, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { GET_ASK_ORDER_HISTORY } from '../../services/queries/askOrders'
-import { AskOrderDataList, NFTokenSaleType, OrderDirection, OrderStatus} from '../../entities'
+import { AskOrderDataList, NFTokenSaleType, OrderDirection, OrderStatus } from '../../entities'
 import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
 import { useWeb3React } from '@web3-react/core'
 import { getNftDetailPath } from '../../functions'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
-import { DateTime} from '../../functions/DateTime'
+import { DateTime } from '../../functions/DateTime'
 import { formatEther } from 'ethers/lib/utils'
 import transactor from '../../functions/Transactor'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 
 enum AuctionFilter {
-  IN_AUCTION = "in auction",
-  COMPLETED = "ended",
-  CANCELED = "canceled",
-  ALL = "all"
+  IN_AUCTION = 'in auction',
+  COMPLETED = 'ended',
+  CANCELED = 'canceled',
+  ALL = 'all'
 }
 
 const filterOptions = [
@@ -225,7 +225,7 @@ const MyAuctionsList = props => {
   const { t } = useTranslation()
 
   let where = null
-  if(selected.title === AuctionFilter.IN_AUCTION) {
+  if (selected.title === AuctionFilter.IN_AUCTION) {
     where = {
       strategyType: NFTokenSaleType.ENGLAND_AUCTION,
       owner: account ? account.toLowerCase() : null,
@@ -237,7 +237,7 @@ const MyAuctionsList = props => {
       owner: account ? account.toLowerCase() : null,
       status: OrderStatus.CANCELED
     }
-  } else if(selected.title === AuctionFilter.COMPLETED) {
+  } else if (selected.title === AuctionFilter.COMPLETED) {
     where = {
       strategyType: NFTokenSaleType.ENGLAND_AUCTION,
       owner: account ? account.toLowerCase() : null,
@@ -249,7 +249,6 @@ const MyAuctionsList = props => {
       owner: account ? account.toLowerCase() : null
     }
   }
-
 
   const { data, error, loading, fetchMore } = useQuery<AskOrderDataList>(GET_ASK_ORDER_HISTORY, {
     variables: {

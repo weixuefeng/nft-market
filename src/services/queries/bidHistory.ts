@@ -19,12 +19,14 @@ export const GET_BID_HISTORY = gql(`
         deadline
         id
         numBids
+        finalTx
         status
         token {
           tokenId
           id
           uri
           lastPrice
+          price
         }
         price
         finalBidder {
