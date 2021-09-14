@@ -6,8 +6,9 @@
  */
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment'
-// import DateCountdown from 'react-date-countdown-timer'
+//  import DateCountdown from "react-date-countdown-timer"
+
+const moment = require('moment/min/moment-with-locales')
 
 // timestamp using unix timestamp in milliseconds
 
@@ -29,16 +30,16 @@ export function RelativeTimeLocale(timestamp = Date.now(), locale = 'en-us') {
 }
 
 // Countdown using DateCountdown
-// export function Countdown(timestampInS = 0) {
-//   let { t } = useTranslation()
-//   return CountdownLocale(timestampInS, t('time locale'))
-// }
+//  export function Countdown(timestampInS = 0) {
+//    let { t } = useTranslation()
+//    return CountdownLocale(timestampInS, t('time locale'))
+//  }
 
-// export function CountdownLocale(timestampInS = 0, locale = 'en-us') {
-//   const _time = moment(timestampInS * 1000)
-//   let _ls = ['Y', 'M', 'D', 'h', 'm', 's']
-//   if (locale.toLowerCase() === 'zh-cn') {
-//     _ls = ['年', '月', '天', '时', '分', '秒']
-//   }
-//   return <DateCountdown dateTo={_time.toString()} locales={_ls} locales_plural={_ls} numberOfFigures={3} />
-// }
+//  export function CountdownLocale(timestampInS = 0, locale = 'en-us') {
+//    const _time = moment(timestampInS * 1000)
+//    let _ls = ['Y', 'M', 'D', 'h', 'm', 's']
+//    if (locale.toLowerCase() === 'zh-cn') {
+//      _ls = ['年', '月', '天', '时', '分', '秒']
+//    }
+//    return <DateCountdown dateTo={_time.toString()} locales={_ls} locales_plural={_ls} numberOfFigures={3} />
+//  }
