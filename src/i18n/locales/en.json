@@ -36,6 +36,7 @@
   "cancel auction description": "You are about to remove this item from auction listing",
   "cancel_auction_tip": "You can't cancel auction once it's started.",
   "canceled": "Canceled",
+  "cat_tx_hash": "View On Explorer",
   "change to auction": "Change To Auction",
   "change to sale": "Change To Sale",
   "claim nft": "Claim NFT",
@@ -45,8 +46,10 @@
   "copy address": "Copy Address",
   "cover image": "Cover Image",
   "create": "Create",
+  "Create another": "Create Another NFT",
   "create nft": "Create NFT",
   "create now": "Create Now",
+  "create success": "Create Success",
   "created on": "Created",
   "creator": "Creator",
   "current block": "Current block",
@@ -104,6 +107,7 @@
   "invalid price": "Invalid Price",
   "invalid start price": "Invalid Start Price",
   "invalid start time": "Invalid Start Time",
+  "jump_to_mine": "Go to Mine",
   "last bid": "Last Bid",
   "last price": "Last Price",
   "load more": "Load More",
@@ -203,7 +207,8 @@
   "transfer to": "Transfer To",
   "up to": "up to ",
   "upload a file": "Upload a file",
-  "view in explorer": "View In Explorer",
+  "view in blockchain explorer": "View In Blockchain Explorer",
+  "view in nft explorer": "View In NFT Explorer",
   "view nft": "View NFT",
   "wallet": {
     "balance": "Balance",
@@ -219,9 +224,5 @@
   "withdrawed": "Withdrawed",
   "you will receive": "You will receive",
   "your bid": "Your bid",
-  "your last bid": "Your last bid",
-  "create success": "Create Success",
-  "cat_tx_hash": "View On Explorer",
-  "jump_to_mine": "Go to Mine",
-  "Create another": "Create Another NFT"
+  "your last bid": "Your last bid"
 }

@@ -36,6 +36,7 @@
   "cancel auction description": "取消此物品的拍卖？",
   "cancel_auction_tip": "拍卖一旦开始就不能取消。",
   "canceled": "已取消",
+  "cat_tx_hash": "前往浏览器查看创建信息",
   "change to auction": "变更为拍卖",
   "change to sale": "变更为销售",
   "claim nft": "领取 NFT",
@@ -45,8 +46,10 @@
   "copy address": "复制地址",
   "cover image": "封面图片",
   "create": "创建",
+  "Create another": "继续创建",
   "create nft": "创建 NFT",
   "create now": "立即创建",
+  "create success": "创建成功",
   "created on": "创建于",
   "creator": "作者",
   "current block": "当前区块",
@@ -104,6 +107,7 @@
   "invalid price": "无效的价格",
   "invalid start price": "无效的起拍价格",
   "invalid start time": "无效的开始时间",
+  "jump_to_mine": "前往我的 NFT 查看",
   "last bid": "最后价格",
   "last price": "最后价格",
   "load more": "加载更多",
@@ -203,7 +207,8 @@
   "transfer to": "发送至",
   "up to": "最大",
   "upload a file": "上传文件",
-  "view in explorer": "在浏览器中查看",
+  "view in blockchain explorer": "在区块链浏览器中查看",
+  "view in nft explorer": "在 NFT 浏览器中查看",
   "view nft": "查看 NFT",
   "wallet": {
     "balance": "余额",
@@ -219,9 +224,5 @@
   "withdrawed": "已提取",
   "you will receive": "你将收到",
   "your bid": "你的出价",
-  "your last bid": "你的最后出价",
-  "create success": "创建成功",
-  "cat_tx_hash": "前往浏览器查看创建信息",
-  "jump_to_mine": "前往我的 NFT 查看",
-  "Create another": "继续创建"
+  "your last bid": "你的最后出价"
 }
