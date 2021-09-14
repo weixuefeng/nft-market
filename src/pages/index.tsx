@@ -6,10 +6,8 @@ import { POLLING_INTERVAL } from '../constant'
 import { useState } from 'react'
 import { NEWTON_COLLECTION_NFT_CONTRACT } from '../constant/settings'
 import Link from 'next/link'
-import { VideoCameraIcon } from '@heroicons/react/solid'
 import { useTokenDescription } from 'hooks/useTokenDescription'
 import { getNftDetailPath } from 'functions'
-import NftCardFooter from 'components/lists/NFTCardFooter'
 
 export default function Home() {
   const { t } = useTranslation()
@@ -20,12 +18,12 @@ export default function Home() {
   const { loading, data, fetchMore, error } = useQuery<NFTokenDataList>(NFT_TOKEN_LIST, {
     variables: {
       skip: 0,
-      first: 8,
+      first: 4,
       orderBy: orderBy,
       orderDirection: orderDirection,
       where: filter
     },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'no-cache',
     pollInterval: POLLING_INTERVAL
   })
 
@@ -104,56 +102,31 @@ function NFTListCard(props) {
     <div className="profile">
       <Link href={getNftDetailPath(item.id)}>
         <a>
-          <h3>{tokenMetaData.tokenName}</h3>
+          <h3 className="text-center p-5">{tokenMetaData.tokenName}</h3>
         </a>
       </Link>
     </div>
   )
-
-  if (tokenMetaData.nftType === 'video') {
-    return (
-      <li className="item">
-        <Link href={getNftDetailPath(item.id)}>
-          <a>
-            {/* NFT Cover */}
-            <div className="cover">
-              <div className="perfect_square">
-                <video controls loop muted playsInline poster={tokenMetaData.tokenImage}>
-                  <source src={tokenMetaData.tokenVideo}></source>
-                </video>
-              </div>
-              <div className="bl collection_name" hidden>
-                <p className="collection_name">CollectionName: #{item.tokenId}</p>
-              </div>
-              <div className="tr">
-                <VideoCameraIcon className="w-6 h-6" />
-              </div>
+  return (
+    <li className="item">
+      <Link href={getNftDetailPath(item.id)}>
+        <a>
+          {/* NFT Cover */}
+          <div className="cover">
+            <div className="perfect_square">
+              <img src={tokenMetaData.tokenImage} alt="" />
             </div>
-          </a>
-        </Link>
-        {tokenProfile}
-        <Link href={getNftDetailPath(item.id)}>
-          <NftCardFooter {...props} />
-        </Link>
-      </li>
-    )
-  } else {
-    return (
-      <li className="item">
-        <Link href={getNftDetailPath(item.id)}>
-          <a>
-            {/* NFT Cover */}
-            <div className="cover">
-              <div className="perfect_square">
-                <img src={tokenMetaData.tokenImage} alt="" />
-              </div>
+            <div className="tl collection_name">
+              <p className="collection_name">
+                {item.contract.name} (#{item.tokenId})
+              </p>
             </div>
-          </a>
-        </Link>
-        {tokenProfile}
-      </li>
-    )
-  }
+          </div>
+        </a>
+      </Link>
+      {tokenProfile}
+    </li>
+  )
 }
 
 function HomeHero() {

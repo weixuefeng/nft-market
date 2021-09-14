@@ -107,7 +107,7 @@ export default function View() {
         </dl>
         <dl>
           <dt>{t('created on')}</dt>
-          <dd>#{DateTime(data.token.mintTime)}</dd>
+          <dd>{DateTime(data.token.mintTime)}</dd>
         </dl>
         {/* <dl>
           <dt>{t('royalty')}</dt>
