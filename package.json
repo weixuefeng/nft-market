@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start -p 8900",
     "fc": "npx prettier --check ./src",
-    "ff": "npx prettier --write ./src"
+    "ff": "npx prettier --write ./src",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@apollo/client": "^3.4.8",
@@ -36,6 +37,7 @@
     "graphql-request": "^3.5.0",
     "i18next": "^19.8.3",
     "i18next-browser-languagedetector": "^6.1.0",
+    "moment": "^2.29.1",
     "next": "^11.1.0",
     "next-themes": "^0.0.15",
     "react": "17.0.2",
@@ -51,6 +53,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.3.1",
+    "patch-package": "^6.4.7",
     "postcss": "^8.3.6",
     "prettier": "^2.3.1",
     "tailwindcss": "^2.2.7"
