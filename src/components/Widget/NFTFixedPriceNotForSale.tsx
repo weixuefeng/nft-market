@@ -40,13 +40,9 @@ function NFTFixedPriceNotForSale(props) {
       return
     }
     contract
-      .getApproved(nftToken.tokenId)
+      .isApprovedForAll(account, NEW_NFT_EXCHANGE_CONTRACT_ADDRESS)
       .then(res => {
-        if (res.toLowerCase() === NEW_NFT_EXCHANGE_CONTRACT_ADDRESS.toLowerCase()) {
-          setIsApproved(true)
-        } else {
-          setIsApproved(false)
-        }
+        setIsApproved(res)
       })
       .catch(error => {
         console.log(tag, error)
@@ -89,7 +85,7 @@ function NFTFixedPriceNotForSale(props) {
               if (approveEnable) {
                 setApproveEnable(false)
                 setApproveText(t('approving'))
-                transactor(contract.approve(NEW_NFT_EXCHANGE_CONTRACT_ADDRESS, nftToken.tokenId), t, () => {
+                transactor(contract.setApprovalForAll(NEW_NFT_EXCHANGE_CONTRACT_ADDRESS, true), t, () => {
                   setApproveEnable(true)
                   setApproveText(approve)
                 })
