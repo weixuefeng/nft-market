@@ -110,8 +110,8 @@ export class BidOrder {
   referrer: Account
   strategy: string
   strategyType: NFTokenSaleType
-  auctionDeadline: number
-  auctionClaimDeadline: number
+  deadline: number
+  claimDeadline: number
   auctionBestBid: boolean
 }
 

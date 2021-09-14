@@ -149,8 +149,8 @@ function MyBidsRow(props) {
   function auctionAction() {
     let now = Date.now() / 1000
     if (
-      now > bid.auctionDeadline &&
-      now < bid.auctionClaimDeadline &&
+      now > bid.deadline &&
+      now < bid.claimDeadline &&
       bid.auctionBestBid &&
       bid.askOrder.status === OrderStatus.NORMAL
     ) {

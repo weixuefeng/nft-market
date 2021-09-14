@@ -18,7 +18,7 @@ export default function PutOffSaleModal(props) {
   const [showModal, setShowModal] = useState(false)
   const exchangeContract = useNFTExchangeContract()
   function onConfirm() {
-    const askHash = nftToken.orders[0].id
+    const askHash = nftToken.askOrder.id
     transactor(exchangeContract.cancelByHash(askHash), t, () => {
       setShowModal(false)
     })
