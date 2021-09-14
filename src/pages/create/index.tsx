@@ -110,6 +110,10 @@ export default function Me() {
     }
   }
 
+  function closeModal() {
+    setShowModal(false)
+  }
+
   const coverImagePreview =
     tokenImageIpfsHash === '' ? (
       ''
@@ -259,7 +263,7 @@ export default function Me() {
             <button disabled={!account} type="button" onClick={onMintClicked} className="primary">
               {t('create now')}
             </button>
-            <CreateConfirmModal showModal={showModal} setShowModal={setShowModal} txHash={createTx} s />
+            <CreateConfirmModal showModal={showModal} closeModal={closeModal} txHash={createTx} s />
           </div>
         </section>
       </div>

@@ -5,20 +5,15 @@
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
 import { useTranslation } from 'react-i18next'
-import React, { useState } from 'react'
+import React from 'react'
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/solid'
-import { splitTx } from '../../functions'
-import { getNewChainExplorerUrl, getTxUrl } from '../../utils/NewChainUtils'
+import { getTxUrl } from '../../utils/NewChainUtils'
 
 function CreateConfirmModal(props) {
   const { t } = useTranslation()
-  const { showModal, setShowModal, txHash } = props
-
-  function closeModal() {
-    setShowModal(false)
-  }
+  const { showModal, closeModal, txHash } = props
 
   return (
     <>
@@ -61,14 +56,14 @@ function CreateConfirmModal(props) {
                       <dd>
                         <dt>
                           {' '}
-                          <a href={getTxUrl(txHash)} onClick={setShowModal(false)}>
+                          <a href={getTxUrl(txHash)} onClick={() => closeModal()}>
                             {t('cat_tx_hash')}
                           </a>
                         </dt>
                       </dd>
                       <dd>
                         <dt>
-                          <a href={'/me'} onClick={setShowModal(false)}>
+                          <a href={'/me'} onClick={() => closeModal()}>
                             {t('jump_to_mine')}
                           </a>
                         </dt>
@@ -81,7 +76,7 @@ function CreateConfirmModal(props) {
                   <button
                     disabled={false}
                     onClick={() => {
-                      setShowModal(false)
+                      closeModal()
                     }}
                     type="button"
                     className="primary"
