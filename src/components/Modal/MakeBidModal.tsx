@@ -42,7 +42,7 @@ export function MakeBidModal(props) {
   const payTotal = bidPrice
   const payTotalInNEW = formatEther(payTotal.toString())
 
-  const startPrice = nftToken.orders[0].startPrice
+  const startPrice = nftToken.askOrder.startPrice
   const highestPrice = highPrice ? highPrice : startPrice
   const exchangeContract = useNFTExchangeContract()
 
@@ -56,7 +56,7 @@ export function MakeBidModal(props) {
   }
 
   function dutchAuctionConfirm() {
-    const orderHash = nftToken.orders[0].id
+    const orderHash = nftToken.askOrder.id
     const bidAmount = 1
     const bidPrice = parseEther(bidPriceInNEW + '')
     const bidRecipient = AddressZero
@@ -75,7 +75,7 @@ export function MakeBidModal(props) {
   }
 
   function englishAuctionConfirm() {
-    const orderHash = nftToken.orders[0].id
+    const orderHash = nftToken.askOrder.id
     const bidAmount = 1
     const bidPrice = parseEther(bidPriceInNEW + '')
     const bidRecipient = AddressZero
@@ -94,7 +94,10 @@ export function MakeBidModal(props) {
       return
     }
 
-    if (parseEther(_newPrice + '') < startPrice || parseEther(_newPrice + '') <= highestPrice) {
+    if (
+      Number(parseEther(_newPrice + '')) < Number(startPrice) ||
+      Number(parseEther(_newPrice + '')) <= Number(highestPrice)
+    ) {
       setButtonText(t('invalid bid amount'))
       setButtonDisabled(true)
       return

@@ -23,8 +23,8 @@ export function NFTDutchAuction(props) {
   let { t } = useTranslation()
   const { account } = useWeb3React()
   const { nftToken, nftTokenMetaData, contractFee } = props
-  const isOwner = useOwner(nftToken.orders[0].owner.id)
-  const where = { askOrder: nftToken.orders[0].id }
+  const isOwner = useOwner(nftToken.askOrder.owner.id)
+  const where = { askOrder: nftToken.askOrder.id }
 
   const { data, loading, error } = useQuery(GET_BID_HISTORY, {
     variables: {
@@ -62,7 +62,7 @@ export function NFTDutchAuction(props) {
   }
   const bidHistories = data.bidOrders
   const highestBid = bidHistories.length === 0 ? '0' : bidHistories[0].price
-  const deadLine: number = nftToken.orders[0].deadline
+  const deadLine: number = nftToken.askOrder.deadline
   const myLastBidPrice = myBid.bidOrders.length === 0 ? '0' : parseInt(formatEther(myBid.bidOrders[0].price))
   const title = myLastBidPrice > 0 ? t('make bid') : t('raise bid')
   const newProp = {
@@ -81,7 +81,7 @@ export function NFTDutchAuction(props) {
               displayType={'text'}
               decimalScale={0}
               fixedDecimalScale={true}
-              value={formatEther(nftToken.orders[0].startPrice + '')}
+              value={formatEther(nftToken.askOrder.startPrice + '')}
             />{' '}
             {cSymbol()}
           </h3>

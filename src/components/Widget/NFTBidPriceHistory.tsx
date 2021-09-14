@@ -17,7 +17,7 @@ import React from 'react'
 export function NFTBidPriceHistory(props) {
   let { t } = useTranslation()
   const { nftToken, nftTokenMetaData } = props
-  const orderId = nftToken.orders[0].id
+  const orderId = nftToken.askOrder.id
   const where = { askOrder: orderId }
   const { loading, error, data } = useQuery(GET_BID_HISTORY, {
     variables: {

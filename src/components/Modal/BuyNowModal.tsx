@@ -46,7 +46,7 @@ export default function BuyNowModal(props) {
   function onConfirm(e) {
     setButtonDisabled(true)
     // todo: add 1155 check
-    const orderHash = nftToken.orders[0].id
+    const orderHash = nftToken.askOrder.id
     const bidAmount = 1
     const bidPrice = nftToken.price
     const bidRecipient = AddressZero

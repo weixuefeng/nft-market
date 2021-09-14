@@ -28,8 +28,8 @@ export function NFTEnglandAuction(props) {
   let { t } = useTranslation()
   const { account } = useWeb3React()
   const { nftToken, nftTokenMetaData, contractFee } = props
-  const isOwner = useOwner(nftToken.orders[0].owner.id)
-  const where = { askOrder: nftToken.orders[0].id }
+  const isOwner = useOwner(nftToken.askOrder.owner.id)
+  const where = { askOrder: nftToken.askOrder.id }
   const exchangeContract = useNFTExchangeContract()
   const { theme } = useTheme()
   const [isEnded, setIsEnded] = useState(false)
@@ -46,7 +46,7 @@ export function NFTEnglandAuction(props) {
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL
   })
-  const myBidWhere = { bidder: account ? account.toLowerCase() : null, askOrder: nftToken.orders[0].id }
+  const myBidWhere = { bidder: account ? account.toLowerCase() : null, askOrder: nftToken.askOrder.id }
   const {
     data: myBid,
     loading: myBidLoading,
@@ -72,7 +72,7 @@ export function NFTEnglandAuction(props) {
   const bidHistories = data.bidOrders
   const hasBid = bidHistories.length > 0
   const highestBid = bidHistories.length === 0 ? '0' : bidHistories[0].price
-  const deadLine: number = nftToken.orders[0].deadline
+  const deadLine: number = nftToken.askOrder.deadline
   const myLastBidPrice = myBid.bidOrders.length === 0 ? '0' : parseInt(formatEther(myBid.bidOrders[0].price))
   const title = myLastBidPrice > 0 ? t('raise bid') : t('make bid')
   const isHigher = highestBid > 0 && myBid.bidOrders.length > 0 && highestBid === myBid.bidOrders[0].price
@@ -87,7 +87,7 @@ export function NFTEnglandAuction(props) {
   }
 
   function claimNft() {
-    const askOrderHash = nftToken.orders[0].id
+    const askOrderHash = nftToken.askOrder.id
     const override = {
       value: myBid.bidOrders[0].price
     }
@@ -114,7 +114,7 @@ export function NFTEnglandAuction(props) {
               displayType={'text'}
               decimalScale={0}
               fixedDecimalScale={true}
-              value={formatEther(nftToken.orders[0].startPrice + '')}
+              value={formatEther(nftToken.askOrder.startPrice + '')}
             />{' '}
             {cSymbol()}
           </h3>
