@@ -126,7 +126,7 @@ export function NFTEnglandAuction(props) {
             <NumberFormat
               thousandSeparator={true}
               displayType={'text'}
-              decimalScale={0}
+              decimalScale={2}
               fixedDecimalScale={true}
               value={formatEther(highestBid)}
             />{' '}
@@ -142,7 +142,6 @@ export function NFTEnglandAuction(props) {
               shouldShowSeparator={false}
               shouldShowTimeUnits={true}
               shouldHidePrecedingZeros={true}
-              s
               onCountdownCompletion={() => updateTime()}
               style={{ whiteSpace: 'nowrap', color: color }}
             />
