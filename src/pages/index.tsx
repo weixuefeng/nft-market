@@ -114,20 +114,22 @@ function NFTListCard(props) {
     return (
       <li className="item">
         <Link href={getNftDetailPath(item.id)}>
-          {/* NFT Cover */}
-          <div className="cover">
-            <div className="perfect_square">
-              <video controls loop muted playsInline poster={tokenMetaData.tokenImage}>
-                <source src={tokenMetaData.tokenVideo}></source>
-              </video>
+          <a>
+            {/* NFT Cover */}
+            <div className="cover">
+              <div className="perfect_square">
+                <video controls loop muted playsInline poster={tokenMetaData.tokenImage}>
+                  <source src={tokenMetaData.tokenVideo}></source>
+                </video>
+              </div>
+              <div className="bl collection_name" hidden>
+                <p className="collection_name">CollectionName: #{item.tokenId}</p>
+              </div>
+              <div className="tr">
+                <VideoCameraIcon className="w-6 h-6" />
+              </div>
             </div>
-            <div className="bl collection_name" hidden>
-              <p className="collection_name">CollectionName: #{item.tokenId}</p>
-            </div>
-            <div className="tr">
-              <VideoCameraIcon className="w-6 h-6" />
-            </div>
-          </div>
+          </a>
         </Link>
         {tokenProfile}
         <Link href={getNftDetailPath(item.id)}>
@@ -139,12 +141,14 @@ function NFTListCard(props) {
     return (
       <li className="item">
         <Link href={getNftDetailPath(item.id)}>
-          {/* NFT Cover */}
-          <div className="cover">
-            <div className="perfect_square">
-              <img src={tokenMetaData.tokenImage} alt="" />
+          <a>
+            {/* NFT Cover */}
+            <div className="cover">
+              <div className="perfect_square">
+                <img src={tokenMetaData.tokenImage} alt="" />
+              </div>
             </div>
-          </div>
+          </a>
         </Link>
         {tokenProfile}
       </li>

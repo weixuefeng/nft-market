@@ -438,5 +438,15 @@
     ],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "outputs": [],
+    "name": "mintWithTokenURI",
+    "inputs": [
+      { "type": "address", "name": "to", "internalType": "address" },
+      { "type": "string", "name": "_tokenURI", "internalType": "string" }
+    ]
   }
 ]
