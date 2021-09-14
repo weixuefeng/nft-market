@@ -111,6 +111,8 @@ export default function Me() {
   }
 
   function closeModal() {
+    setNftName(null)
+    setNftDesc(null)
     setShowModal(false)
   }
 
