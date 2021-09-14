@@ -5,7 +5,7 @@ import { VideoCameraIcon } from '@heroicons/react/solid'
 import { useTokenDescription } from 'hooks/useTokenDescription'
 import { getNftDetailPath } from 'functions'
 import NftCardFooter from './NFTCardFooter'
-import { DateTime } from '../../functions/DateTime'
+import { RelativeTimeLocale } from 'functions/DateTime'
 
 export function NFTListCard(props) {
   const { t } = useTranslation()
@@ -23,7 +23,8 @@ export function NFTListCard(props) {
           <dl>
             <dd>
               <span className="font-mono">
-                <NewAddress size="short" address={item.minter} /> {t('created on')} {DateTime(item.mintTime)}
+                <NewAddress size="short" address={item.minter} /> {t('created on')}{' '}
+                {RelativeTimeLocale(item.mintTime, t('time locale'))}
               </span>
             </dd>
           </dl>
