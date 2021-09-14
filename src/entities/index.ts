@@ -65,6 +65,7 @@ export type Account = {
 export class OwnerPerToken {
   id: string
   owner: Account
+  updateTime: number
   amount: number
   token: NFToken
 }

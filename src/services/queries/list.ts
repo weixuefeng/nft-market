@@ -107,6 +107,7 @@ export const NFT_MY_TOKEN = gql(`
   query GetMyNFTToken($skip: Int, $first: Int, $orderBy: String, $orderDirection: String, $where: OwnerPerToken_filter) {
     ownerPerTokens(skip: $skip, first: $first, orderBy: $orderBy, orderDirection: $orderDirection, where: $where) {
       amount
+      updateTime
       token {
         ...TokenFields
       }

@@ -65,7 +65,7 @@ function Me() {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const [activeTab, setActiveTab] = useState(ActiveTab.ME)
-  const [orderBy, setOrderBy] = useState('amount')
+  const [orderBy, setOrderBy] = useState('updateTime')
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC)
   const nftWhere = { owner: account ? account.toLowerCase() : null }
   const where = {}
