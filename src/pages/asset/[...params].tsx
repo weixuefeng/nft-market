@@ -109,10 +109,10 @@ export default function View() {
           <dt>{t('created on')}</dt>
           <dd>#{DateTime(data.token.mintTime)}</dd>
         </dl>
-        <dl>
+        {/* <dl>
           <dt>{t('royalty')}</dt>
           <dd>{parseInt(contractFee.royaltyFee * 100 + '')}%</dd>
-        </dl>
+        </dl> */}
       </div>
     </section>
   )
