@@ -10,6 +10,7 @@ import { UriResolver } from '../../functions/UriResolver'
 import { useERC721Contract, useNFTExchangeContract } from '../../hooks/useContract'
 import transactor from '../../functions/Transactor'
 import { NEWMALL_COLLECTION_CONTRACT } from '../../constant/settings'
+import CreateConfirmModal from '../../components/Modal/CreateConfirmModal'
 
 export default function Me() {
   let { t } = useTranslation()
@@ -21,6 +22,8 @@ export default function Me() {
   const [royaltyRecipient, setRoyaltyRecipient] = useState('')
   const [userChangedRoyaltyRecipient, setUserChangedRoyaltyRecipient] = useState(false)
   const nftExchangeContract = useERC721Contract(NEWMALL_COLLECTION_CONTRACT)
+  const [showModal, setShowModal] = useState(false)
+  const [createTx, setCreateTx] = useState('')
   function onUserChangeRoyaltyRecipient(e) {
     setUserChangedRoyaltyRecipient(true)
     setRoyaltyRecipient(e.target.value)
@@ -93,9 +96,12 @@ export default function Me() {
         console.log('tokenURI:', tokenURI)
         // todo: call erc721 contract to mint item
         //tx(writeContracts.NewtonNFT.mintItem(tokenURI, nftRoyaltyRate * 10, recipient))
-        transactor(nftExchangeContract.mintItem(tokenURI, 0, account), t, () => {
-          console.log('create success')
+        let res = await transactor(nftExchangeContract.mintItem(tokenURI, 0, account), t, () => {
+          setShowModal(true)
         })
+        if (res) {
+          setCreateTx(res.hash)
+        }
       }
       // console.log("RESULT:", result)
     } catch (e) {
@@ -253,6 +259,7 @@ export default function Me() {
             <button disabled={!account} type="button" onClick={onMintClicked} className="primary">
               {t('create now')}
             </button>
+            <CreateConfirmModal showModal={showModal} setShowModal={setShowModal} txHash={createTx} s />
           </div>
         </section>
       </div>

@@ -219,5 +219,9 @@
   "withdrawed": "Withdrawed",
   "you will receive": "You will receive",
   "your bid": "Your bid",
-  "your last bid": "Your last bid"
+  "your last bid": "Your last bid",
+  "create success": "Create Success",
+  "cat_tx_hash": "View On Explorer",
+  "jump_to_mine": "Go to Mine",
+  "create_next": "Create Next NFT"
 }

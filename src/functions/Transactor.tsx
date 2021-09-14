@@ -27,8 +27,8 @@ export default function transactor(transaction, t, callback) {
       }
       notification.error(err)
       callback()
+      return false
     }
   }
-  sendTx(transaction)
-  return true
+  return sendTx(transaction)
 }

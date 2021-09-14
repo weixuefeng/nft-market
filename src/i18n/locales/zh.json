@@ -219,5 +219,9 @@
   "withdrawed": "已提取",
   "you will receive": "你将收到",
   "your bid": "你的出价",
-  "your last bid": "你的最后出价"
+  "your last bid": "你的最后出价",
+  "create success": "创建成功",
+  "cat_tx_hash": "前往浏览器查看创建信息",
+  "jump_to_mine": "前往我的 NFT 查看",
+  "create_next": "继续创建"
 }

@@ -1,4 +1,5 @@
 import base58check from 'base58check'
+import { TARGET_CHAINID } from '../constant/settings'
 
 // config chain ID
 const NewChainDevNetId = 1002
@@ -27,6 +28,10 @@ function getNewChainExplorerUrl(chainId) {
     return NewChainTestNetExplorerUrl
   }
   return NewChainMainNetExplorerUrl
+}
+
+function getTxUrl(txHash) {
+  return getNewChainExplorerUrl(TARGET_CHAINID) + '/tx/' + txHash
 }
 
 /**
@@ -138,5 +143,6 @@ export {
   newAddress2HexAddress,
   isValidNewAddressHead,
   isValidNewAddress,
-  isValidHexAddress
+  isValidHexAddress,
+  getTxUrl
 }
