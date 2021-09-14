@@ -12,8 +12,8 @@ export const GET_BID_HISTORY = gql(`
       id
       strategy
       strategyType
-      auctionDeadline
-      auctionClaimDeadline
+      deadline
+      claimDeadline
       auctionBestBid
       askOrder {
         deadline
