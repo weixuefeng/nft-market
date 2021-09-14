@@ -2,48 +2,21 @@ import 'i18n'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { hexAddress2NewAddress, isValidHexAddress, isValidNewAddress, newAddress2HexAddress } from 'utils/NewChainUtils'
 import { FILE_UPLOAD_URL, JSON_UPLOAD_URL } from 'constant'
 import { message, Upload } from 'antd'
 import axios from 'axios'
 import { UriResolver } from 'functions/UriResolver'
 import { useERC721Contract, useNFTExchangeContract } from 'hooks/useContract'
 import transactor from 'functions/Transactor'
-import { NEWMALL_COLLECTION_CONTRACT } from 'constant/settings'
+import { NEWTON_COLLECTION_NFT_CONTRACT } from 'constant/settings'
 
 export default function Me() {
   let { t } = useTranslation()
   const { account, chainId } = useWeb3React()
   const [nftName, setNftName] = useState('')
   const [nftDesc, setNftDesc] = useState('')
-  const [nftRoyaltyRate, setNftRoyaltyRate] = useState('0')
   const [tokenImageIpfsHash, setTokenImageIpfsHash] = useState('')
-  const [royaltyRecipient, setRoyaltyRecipient] = useState('')
-  const [userChangedRoyaltyRecipient, setUserChangedRoyaltyRecipient] = useState(false)
-  const nftExchangeContract = useERC721Contract(NEWMALL_COLLECTION_CONTRACT)
-  function onUserChangeRoyaltyRecipient(e) {
-    setUserChangedRoyaltyRecipient(true)
-    setRoyaltyRecipient(e.target.value)
-  }
-
-  function getRoyaltyRecipient() {
-    if (userChangedRoyaltyRecipient) {
-      return royaltyRecipient
-    } else {
-      return account ? hexAddress2NewAddress(account, chainId) : account
-    }
-  }
-
-  function getHexRoyaltyRecipient() {
-    const recipient = getRoyaltyRecipient()
-    if (isValidNewAddress(recipient)) {
-      return newAddress2HexAddress(recipient)
-    }
-    if (isValidHexAddress(recipient)) {
-      return recipient
-    }
-    return false
-  }
+  const nftExchangeContract = useERC721Contract(NEWTON_COLLECTION_NFT_CONTRACT)
 
   const uploadProps = {
     name: 'saveThisFileSafely',
@@ -75,11 +48,6 @@ export default function Me() {
       console.log('token metadata is not valid.')
       return
     }
-    const recipient = getHexRoyaltyRecipient()
-    if (!recipient) {
-      console.log('invalid royalty recipient')
-      return
-    }
     const tokenMetaData = {
       name: nftName,
       description: nftDesc,
@@ -90,11 +58,11 @@ export default function Me() {
       const result = await axios.post(url, tokenMetaData)
       if (result?.status === 200 && result?.data?.cid) {
         const tokenURI = 'ipfs://' + result.data.cid
-        console.log('tokenURI:', tokenURI)
+        // console.log('tokenURI:', tokenURI)
         // todo: call erc721 contract to mint item
         //tx(writeContracts.NewtonNFT.mintItem(tokenURI, nftRoyaltyRate * 10, recipient))
-        transactor(nftExchangeContract.mintItem(tokenURI, 0, account), t, () => {
-          console.log('create success')
+        transactor(nftExchangeContract.mintWithTokenURI(account, tokenURI), t, () => {
+          // console.log('create success')
         })
       }
       // console.log("RESULT:", result)
@@ -184,69 +152,6 @@ export default function Me() {
             </div>
           </div>
         </section>
-
-        {/* Royalty Options */}
-        {/*<section>*/}
-        {/*  <header>*/}
-        {/*    <h3>{t('royalty')}</h3>*/}
-        {/*    <p>{t('royalty description')}</p>*/}
-        {/*  </header>*/}
-
-        {/*  <div className="group">*/}
-        {/*    <div>*/}
-        {/*      <label htmlFor="royalty_rate">{t('royalty rate')}</label>*/}
-
-        {/*      <div className="mt-1 flex rounded-md">*/}
-        {/*        <input*/}
-        {/*          value={nftRoyaltyRate}*/}
-        {/*          id="royalty_rate"*/}
-        {/*          name="royalty_rate"*/}
-        {/*          type="number"*/}
-        {/*          inputMode="decimal"*/}
-        {/*          className="focus:border-gray-300 block rounded-none rounded-l-md sm:text-sm border-gray-300 dark:bg-gray-800 dark:border-gray-800 text-center w-16"*/}
-        {/*          onChange={e => {*/}
-        {/*            setNftRoyaltyRate(parseFloat(e.target.value).toFixed(1))*/}
-        {/*          }}*/}
-        {/*          autoComplete="off"*/}
-        {/*        />*/}
-        {/*        <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 dark:bg-gray-800 dark:border-gray-800 text-gray-500 text-sm">*/}
-        {/*          %*/}
-        {/*        </span>*/}
-        {/*      </div>*/}
-
-        {/*      <div className="mt-2 flex rounded-md text-sm">*/}
-        {/*        <span>0%</span>*/}
-        {/*        <input*/}
-        {/*          type="range"*/}
-        {/*          id="royalty_rate_slider"*/}
-        {/*          min={0}*/}
-        {/*          max={10}*/}
-        {/*          step={0.1}*/}
-        {/*          value={nftRoyaltyRate}*/}
-        {/*          className="w-full mx-2"*/}
-        {/*          onChange={e => {*/}
-        {/*            setNftRoyaltyRate(parseFloat(e.target.value).toFixed(1))*/}
-        {/*          }}*/}
-        {/*        />*/}
-        {/*        <span>10%</span>*/}
-        {/*      </div>*/}
-        {/*    </div>*/}
-
-        {/*    <div>*/}
-        {/*      <label htmlFor="royalty_address">{t('royalty receiving address')}</label>*/}
-        {/*      <input*/}
-        {/*        onChange={onUserChangeRoyaltyRecipient}*/}
-        {/*        value={getRoyaltyRecipient()}*/}
-        {/*        id="royalty_address"*/}
-        {/*        name="royalty_address"*/}
-        {/*        type="text"*/}
-        {/*        autoComplete="off"*/}
-        {/*      />*/}
-        {/*      <p>{t('for royalty receiving address')}</p>*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-        {/*</section>*/}
-
         <section>
           <div></div>
           <div>
