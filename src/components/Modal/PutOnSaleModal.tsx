@@ -46,7 +46,7 @@ function PutOnSaleModal(props) {
 
   function onConfirm() {
     const nftAddress = nftToken.contract.id
-    const deadline = parseInt(Date.now() / 1000 + '') + 3600
+    const deadline = 0
     const params = abi.encode(['uint256'], [parseEther(userItemPriceInNEW + '')])
     const operationalFeeRecipient = OPERATION_FEE_RECEIPT_ADDRESS
     const permils = [parseInt(OPERATION_FEE), 50] // 第一个值为运营合约地址手续费值，第二个值为推荐人手续费值。
