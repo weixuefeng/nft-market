@@ -141,7 +141,7 @@ export function NFTEnglandAuction(props) {
               dateTime={new Date(deadLine * 1000).toISOString()}
               shouldShowSeparator={false}
               shouldShowTimeUnits={true}
-              shouldHidePrecedingZeros={true}
+              shouldHidePrecedingZeros={false}
               onCountdownCompletion={() => updateTime()}
               style={{ whiteSpace: 'nowrap', color: color }}
             />
