@@ -104,8 +104,6 @@ function Me() {
   })
 
   function onFetchMore() {
-    console.log("featch more")
-    console.log(data.ownerPerTokens.length)
     fetchMore({
       variables: {
         skip: data.ownerPerTokens.length,

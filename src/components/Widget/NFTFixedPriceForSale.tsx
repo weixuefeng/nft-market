@@ -66,7 +66,7 @@ export function NFTFixedPriceForSale(props) {
           </dd>
         </dl>
       </main> */}
-      <footer>
+      <footer hidden={!account}>
         <div hidden={isOwner || !isRealOwner}>
           <BuyNowModal {...props} />
         </div>

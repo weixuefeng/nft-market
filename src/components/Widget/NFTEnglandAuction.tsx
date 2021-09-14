@@ -148,7 +148,7 @@ export function NFTEnglandAuction(props) {
         </div>
       </header>
 
-      <footer className="">
+      <footer hidden={!account}>
         <p hidden={isOwner}>
           {t('my bid')}: {myLastBidPrice} {cSymbol()}
         </p>
