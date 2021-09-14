@@ -24,6 +24,7 @@ export default function Me() {
   const nftExchangeContract = useERC721Contract(NEWMALL_COLLECTION_CONTRACT)
   const [showModal, setShowModal] = useState(false)
   const [createTx, setCreateTx] = useState('')
+
   function onUserChangeRoyaltyRecipient(e) {
     setUserChangedRoyaltyRecipient(true)
     setRoyaltyRecipient(e.target.value)
@@ -111,8 +112,9 @@ export default function Me() {
   }
 
   function closeModal() {
-    setNftName(null)
-    setNftDesc(null)
+    setNftName('')
+    setNftDesc('')
+    setTokenImageIpfsHash('')
     setShowModal(false)
   }
 
