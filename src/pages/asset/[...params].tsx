@@ -69,7 +69,9 @@ export default function View() {
     <header>
       <div className="tags-a">
         <div className="token-uid">
-          <span>#{data.token.tokenId}</span>
+          <span>
+            {data.token.contract.name} (#{data.token.tokenId})
+          </span>
         </div>
       </div>
       <h1>{metaData.tokenName}</h1>
