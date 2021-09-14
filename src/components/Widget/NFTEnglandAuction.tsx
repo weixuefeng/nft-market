@@ -20,6 +20,7 @@ import { useNFTExchangeContract } from '../../hooks/useContract'
 import CountDownTimer from '@inlightmedia/react-countdown-timer'
 import { AuctionType } from '../../entities'
 import transactor from '../../functions/Transactor'
+import { useTheme } from 'next-themes'
 
 export function NFTEnglandAuction(props) {
   // isOwner: cancel auction
@@ -30,7 +31,7 @@ export function NFTEnglandAuction(props) {
   const isOwner = useOwner(nftToken.orders[0].owner.id)
   const where = { askOrder: nftToken.orders[0].id }
   const exchangeContract = useNFTExchangeContract()
-
+  const { theme } = useTheme()
   const [isEnded, setIsEnded] = useState(false)
   const [canClaimNFT, setCanClaimNFT] = useState(false)
 
@@ -101,6 +102,7 @@ export function NFTEnglandAuction(props) {
     highPrice: highestBid,
     auctionType: AuctionType.ENGLISH_AUCTION
   }
+  const color = theme === 'dark' ? 'white' : 'black'
   return (
     <section className="offer-card auction mobile">
       <header>
@@ -140,8 +142,9 @@ export function NFTEnglandAuction(props) {
               shouldShowSeparator={false}
               shouldShowTimeUnits={true}
               shouldHidePrecedingZeros={true}
+              s
               onCountdownCompletion={() => updateTime()}
-              style={{ whiteSpace: 'nowrap' }}
+              style={{ whiteSpace: 'nowrap', color: color }}
             />
           </span>
           <span hidden={!(end || isEnded)}>{t('auction is over')}</span>
