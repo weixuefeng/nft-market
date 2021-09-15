@@ -223,5 +223,6 @@
   "create success": "创建成功",
   "cat_tx_hash": "前往浏览器查看创建信息",
   "jump_to_mine": "前往我的 NFT 查看",
-  "Create another": "继续创建"
+  "Create another": "继续创建",
+  "claim_ends_in": "领取截止时间"
 }

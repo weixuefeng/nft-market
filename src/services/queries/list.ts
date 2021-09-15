@@ -48,6 +48,7 @@ export const TOKEN_FIELDS = `
         deadline
         price
         designee
+        claimDeadline
         startPrice
         endPrice
         startBlock
