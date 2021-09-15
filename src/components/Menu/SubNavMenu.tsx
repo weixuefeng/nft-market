@@ -48,9 +48,11 @@ const SubNavMenu = props => {
         strategyType: NFTokenSaleType.DIRECT_SALE
       })
     } else if (order === '2') {
+      const now = parseInt(Date.now() / 1000 + "")
       setFilter({
         ...where,
-        strategyType: NFTokenSaleType.ENGLAND_AUCTION
+        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+        deadline_gte: now
       })
     } else if (order === '3') {
       setFilter({
