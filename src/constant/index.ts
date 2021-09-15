@@ -147,4 +147,4 @@ export function cSymbol() {
 }
 
 export const NetworkContextName = 'NETWORK'
-export const POLLING_INTERVAL = 3000
+export const POLLING_INTERVAL = 6000
