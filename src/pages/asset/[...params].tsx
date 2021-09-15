@@ -86,13 +86,17 @@ export default function View() {
   const nftMoreMenu = (
     <MoreMenu>
       <div>
-      <Menu.Item>
+        <Menu.Item>
           <a href={NFT_VIEWER_URL + '/view/' + param[0] + '/' + param[1]} target="_blank" rel="noopener noreferrer">
             {t('view in nft explorer')}
           </a>
         </Menu.Item>
         <Menu.Item>
-          <a href={`${getNewChainExplorerUrl(TARGET_CHAINID)}/tokens/${param[0]}/instance}/${param[1]}`} target="_blank" rel="noopener noreferrer">
+          <a
+            href={`${getNewChainExplorerUrl(TARGET_CHAINID)}/tokens/${param[0]}/instance}/${param[1]}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {t('view in blockchain explorer')}
           </a>
         </Menu.Item>
