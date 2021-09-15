@@ -205,8 +205,8 @@ const MyBidsList = props => {
     where = {
       bidder: account ? account.toLowerCase() : null,
       auctionBestBid: true,
-      auctionDeadline_lte: now,
-      auctionClaimDeadline_gte: now,
+      deadline_lte: now,
+      claimDeadline_gte: now,
       strategyType: NFTokenSaleType.ENGLAND_AUCTION
     }
   } else {
