@@ -81,7 +81,7 @@ function CreateConfirmModal(props) {
                     type="button"
                     className="primary"
                   >
-                    {'Create another'}
+                    {t('create_another')}
                   </button>
                 </footer>
                 <div className="tfoot"></div>
