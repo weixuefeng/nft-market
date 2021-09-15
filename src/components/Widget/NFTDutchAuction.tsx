@@ -53,8 +53,8 @@ export function NFTDutchAuction(props) {
     fetchPolicy: 'cache-and-network'
   })
   if (error || myBidError) {
-    console.log(error)
-    console.log(myBidError)
+    console.debug(error)
+    console.debug(myBidError)
     return <>Error :(</>
   }
   if (loading || myBidLoading) {

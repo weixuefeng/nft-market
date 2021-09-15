@@ -6,17 +6,19 @@ import NewAddress from 'components/layouts/NewAddress'
 import MoreMenu from 'components/Menu/MoreMenu'
 import { Menu } from '@headlessui/react'
 import VerifiedAddress from 'components/Widget/VerifiedAddress'
-import NftAuctionCard from '../../components/Widget/NFTAuctionCard'
-import { getTokenInfoById, NFT_TOKEN } from '../../services/queries/list'
-import { NFTPriceHistory } from '../../components/Widget/NFTPriceHistory'
-import { useContractFee } from '../../hooks/useContractFee'
+import NftAuctionCard from 'components/Widget/NFTAuctionCard'
+import { getTokenInfoById, NFT_TOKEN } from 'services/queries/list'
+import { NFTPriceHistory } from 'components/Widget/NFTPriceHistory'
+import { useContractFee } from 'hooks/useContractFee'
 import { useQuery } from '@apollo/client'
-import { NFTBidPriceHistory } from '../../components/Widget/NFTBidPriceHistory'
-import { NFTokenSaleType, NFTokenType } from '../../entities'
-import { POLLING_INTERVAL } from '../../constant'
-import MainLoadingView from '../../components/layouts/MainLoadingView'
-import { NFT_VIEWER_URL } from '../../constant/settings'
-import { DateTime } from '../../functions/DateTime'
+import { NFTBidPriceHistory } from 'components/Widget/NFTBidPriceHistory'
+import { NFTokenSaleType, NFTokenType } from 'entities'
+import { POLLING_INTERVAL } from 'constant'
+import MainLoadingView from 'components/layouts/MainLoadingView'
+import { NFT_VIEWER_URL } from 'constant/settings'
+import { DateTime } from 'functions/DateTime'
+import { getNewChainExplorerUrl } from 'utils/NewChainUtils'
+import { TARGET_CHAINID } from 'constant/settings'
 
 function DetailSideBar(props) {
   const { nftToken } = props
@@ -84,9 +86,14 @@ export default function View() {
   const nftMoreMenu = (
     <MoreMenu>
       <div>
-        <Menu.Item>
+      <Menu.Item>
           <a href={NFT_VIEWER_URL + '/view/' + param[0] + '/' + param[1]} target="_blank" rel="noopener noreferrer">
-            {t('view in explorer')}
+            {t('view in nft explorer')}
+          </a>
+        </Menu.Item>
+        <Menu.Item>
+          <a href={`${getNewChainExplorerUrl(TARGET_CHAINID)}/tokens/${param[0]}/instance}/${param[1]}`} target="_blank" rel="noopener noreferrer">
+            {t('view in blockchain explorer')}
           </a>
         </Menu.Item>
       </div>

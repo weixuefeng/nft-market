@@ -45,7 +45,7 @@ function NFTFixedPriceNotForSale(props) {
         setIsApproved(res)
       })
       .catch(error => {
-        console.log(tag, error)
+        console.debug(tag, error)
       })
   }
 

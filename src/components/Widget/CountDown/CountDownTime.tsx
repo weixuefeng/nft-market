@@ -42,7 +42,6 @@ const CountDownUp: React.FunctionComponent<ComponentProps> = ({
 
     if (ISO8601RegEx.test(dateTime)) {
       if (moment(dateTime).isValid()) {
-        console.log(`setCountDownTime: ${dateTime}`)
         setCountDownTime(moment(dateTime));
       } else {
         console.error("Error: Expected valid date. The date supplied conforms to ISO 8601 but is not a real date.")
@@ -50,11 +49,12 @@ const CountDownUp: React.FunctionComponent<ComponentProps> = ({
     } else {
       console.error('Error: Expected ISO8601 formatted string. See this example: 2020-07-25T21:22:19Z. For more information on ISO8601 read:  ')
     }
+
     return (() => {
       clearInterval(clockInterval);
     });
-  }, [dateTime])
-  let i = 0;
+  }, [])
+
   const clockInterval = setInterval(() => {
     if (countDownTime) {
       const yearsLeft = countDownTime.diff(moment(), 'years');
@@ -62,13 +62,11 @@ const CountDownUp: React.FunctionComponent<ComponentProps> = ({
       const hoursLeft = countDownTime.diff(moment(), 'hours') % 24;
       const minutesLeft = countDownTime.diff(moment(), 'minutes') % 60;
       const secondsLeft = countDownTime.diff(moment(), 'seconds') % 60;
-      i += 1;
-      console.log(`i is:${i}`)
+
       setYear((yearsLeft < 0 ? yearsLeft * -1 : yearsLeft))
       setHour((hoursLeft < 0 ? hoursLeft * -1 : hoursLeft))
       setDay((daysLeft < 0 ? daysLeft * -1 : daysLeft))
       setMinute(minutesLeft < 0 ? minutesLeft * -1 : minutesLeft)
-      console.log(`second:${secondsLeft < 0 ? secondsLeft * -1 : secondsLeft}`)
       setSecond(secondsLeft < 0 ? secondsLeft * -1 : secondsLeft)
       setCountDownTimeElapsed(secondsLeft < 0 || minutesLeft < 0 || hoursLeft < 0);
     }
@@ -141,3 +139,4 @@ const CountDownUp: React.FunctionComponent<ComponentProps> = ({
 }
 
 export default CountDownUp;
+

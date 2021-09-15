@@ -20,8 +20,8 @@ import { useNFTExchangeContract } from '../../hooks/useContract'
 import { AuctionType } from '../../entities'
 import transactor from '../../functions/Transactor'
 import { useTheme } from 'next-themes'
-import { DateTime } from '../../functions/DateTime'
-import CountDownTimer from './CountDown/CountDownTimer'
+import CountDownTime from './CountDown/CountDownTime'
+
 
 /**
  * 1. 拍卖进行中
@@ -52,8 +52,6 @@ export function NFTEnglandAuction(props) {
   const [canClaimNFT, setCanClaimNFT] = useState(false)
   // claim expired
   const [expired, setExpired] = useState(false)
-  // is best bidder
-  const [isBestBidder, setIsBestBidder] = useState(false)
 
   const auctionEndTimeStr = t('auction_ends_in')
   const auctionClaimEndTimeStr = t('claim_ends_in')
@@ -70,7 +68,9 @@ export function NFTEnglandAuction(props) {
   // hide claim ?
   const [hideClaimNFT, setHideClaimNFT] = useState(true)
   // hide countDown span?
-  const [hideCountDown, setHideCountDown] = useState(false)
+  const [hideDeadlineCountDown, setHideDeadlineCountDown] = useState(false)
+  const [hideClaimDeadlineCountDown, setHideClaimDeadlineCountDown] = useState(false)
+
   // hide put off sale ?
   const [hidePutOffSale, setHidePutOffSale] = useState(true)
 
@@ -125,22 +125,16 @@ export function NFTEnglandAuction(props) {
   // current ask order's highest bid
   const highestBid = bidHistories.length === 0 ? '0' : bidHistories[0].price
 
+  const auctionClaimDeadLine = parseInt(nftToken.askOrder.claimDeadline)
+  // auction's deadline
+  const auctionDeadLine = parseInt(nftToken.askOrder.deadline)
   // my latest bid
   const myLastBidPrice = myBid.bidOrders.length === 0 ? '0' : parseInt(formatEther(myBid.bidOrders[0].price))
   // end time title
   const title = myLastBidPrice > 0 ? t('raise bid') : t('make bid')
+  const isBestBidder = highestBid > 0 && myBid.bidOrders.length > 0 && highestBid === myBid.bidOrders[0].price
 
   function initData() {
-    // current account is highest bid
-    const isHigher = highestBid > 0 && myBid.bidOrders.length > 0 && highestBid === myBid.bidOrders[0].price
-    const claimDeadLine = parseInt(nftToken.askOrder.claimDeadline)
-    // auction's deadline
-    const deadLine: number = parseInt(nftToken.askOrder.deadline)
-    setClaimDeadLine(claimDeadLine)
-    setDeadline(deadLine)
-    console.log(`isHigher:${isHigher}`)
-    setIsBestBidder(isHigher)
-    setCountDownTime(deadline * 1000)
     updateTime()
   }
 
@@ -149,41 +143,46 @@ export function NFTEnglandAuction(props) {
 
     // auction has not end, hide claim, hide auction over, show countDown
     if(!end) {
-      console.log(`isEnd: ${end}`)
+      console.debug(`isEnd: ${end} 显示拍卖倒计时，隐藏领取倒计时`)
       setHideClaimNFT(true)
       setHideAuctionOver(true)
-      setHideCountDown(false)
+      setHideDeadlineCountDown(false)
+      setHideClaimDeadlineCountDown(true)
       return
     }
     // auction claim expired, hide claim, show auction over, hide countDown
     if(claimExpired) {
-      console.log(`expired 隐藏 claim: ${claimExpired}`)
+      console.debug(`expired 隐藏 claim: ${claimExpired}， 隐藏拍卖倒计时，隐藏领取倒计时`)
       setHideClaimNFT(true)
       setHideAuctionOver(false)
-      setHideCountDown(true)
+      setHideDeadlineCountDown(true)
+      setHideClaimDeadlineCountDown(true)
       return
     }
     // not owner, hide claim, show auction over, hide countDown
     if(isOwner) {
-      console.log(`isOwner 隐藏 claim: ${isOwner}`)
+      console.debug(`isOwner 隐藏 claim: ${isOwner},隐藏拍卖倒计时，隐藏领取倒计时`)
       setHideClaimNFT(true)
       setHideAuctionOver(false)
-      setHideCountDown(true)
+      setHideDeadlineCountDown(true)
+      setHideClaimDeadlineCountDown(true)
       return
     }
     // not best bidder, hide claim, show auction over, hide countDown
     if(!isBestBidder) {
-      console.log(`isBestBidder 隐藏 claim: ${isBestBidder}`)
+      console.debug(`isBestBidder 隐藏 claim: ${isBestBidder}, 隐藏拍卖倒计时，隐藏领取倒计时`)
       setHideClaimNFT(true)
       setHideAuctionOver(false)
-      setHideCountDown(true)
+      setHideDeadlineCountDown(true)
+      setHideClaimDeadlineCountDown(true)
       return
     }
     // is best bidder, show claim, hide auction over
-    console.log(`isBestBidder true: 显示 claim`)
+    console.debug(`isBestBidder true: 显示 claim, 隐藏拍卖倒计时，显示领取倒计时`)
     setHideClaimNFT(false)
     setHideAuctionOver(true)
-    setHideCountDown(false)
+    setHideDeadlineCountDown(true)
+    setHideClaimDeadlineCountDown(false)
     setEndTimeStr(auctionClaimEndTimeStr)
   }
 
@@ -191,44 +190,39 @@ export function NFTEnglandAuction(props) {
     // not owner, hide put off sale
     const {end, claimExpired} = checkTime()
     if(!isOwner) {
-      console.log("checkHidePutOffSale isOwner: " + isOwner)
+      console.debug("不是 owner，隐藏取消销售")
       setHidePutOffSale(true)
       return
     }
-    console.log(`checkHidePutOffSale isOwner ${claimExpired}`)
     // claim expired, show put off sale
     if(claimExpired) {
-      console.log("checkHidePutOffSale : expired")
+      console.debug("是 owner，超时领取，显示取消销售")
       setHidePutOffSale(false)
       // not claim expired, but no bid, show put off sale
     } else if(!hasBid) {
-      console.log("checkHidePutOffSale : not hasBid")
+      console.debug("是 owner，没超时，没人出价，显示取消销售")
       setHidePutOffSale(false)
     } else {
+      console.debug("是 owner，没超时，有人出价，隐藏取消销售")
       setHidePutOffSale(true)
     }
   }
 
   function checkTime() {
     const now = parseInt(Date.now() / 1000 + "")
-    const end = now > Number(deadline)
-    const claimExpired = now > Number(claimDeadLine)
+    const end = now > Number(auctionDeadLine)
+    const claimExpired = now > Number(auctionClaimDeadLine)
+    console.debug(`now: ${now}`)
+    console.debug(`deadline: ${auctionDeadLine},  ${now - Number(auctionDeadLine)}`)
+    console.debug(`claimDeadLine:${auctionClaimDeadLine}, ${now- Number(auctionClaimDeadLine)}`)
+    console.debug(`是否拍卖结束: ${end}`)
+    console.debug(`是否领取超时: ${claimExpired}`)
     setIsEnded(end)
     setExpired(claimExpired)
     return {end, claimExpired}
   }
 
   function updateTime() {
-    const {end, claimExpired} = checkTime()
-    if(!end) {
-      console.log('没有结束')
-      setCountDownTime(deadline * 1000)
-    } else if(!claimExpired) {
-      console.log('没有超时')
-      setCountDownTime(claimDeadLine * 1000)
-    } else {
-      console.log('超时啦')
-    }
     checkHideCanClaim()
     checkHidePutOffSale()
   }
@@ -239,7 +233,7 @@ export function NFTEnglandAuction(props) {
       value: myBid.bidOrders[0].price
     }
     transactor(exchangeContract.claimByHash(askOrderHash, override), t, () => {
-      console.log()
+      console.debug()
     })
   }
 
@@ -285,9 +279,19 @@ export function NFTEnglandAuction(props) {
 
         <div className="status">
           <h4>{endTimeStr}</h4>
-          <span hidden={hideCountDown}>
-            <CountDownTimer
-              dateTime={new Date(countDownTime).toISOString()}
+          <span hidden={hideDeadlineCountDown}>
+            <CountDownTime
+              dateTime={new Date(auctionDeadLine * 1000).toISOString()}
+              shouldShowSeparator={false}
+              shouldShowTimeUnits={true}
+              shouldHidePrecedingZeros={false}
+              onCountdownCompletion={() => updateTime()}
+              style={{ whiteSpace: 'nowrap', color: color }}
+            />
+          </span>
+          <span hidden={hideClaimDeadlineCountDown}>
+            <CountDownTime
+              dateTime={new Date(auctionClaimDeadLine * 1000).toISOString()}
               shouldShowSeparator={false}
               shouldShowTimeUnits={true}
               shouldHidePrecedingZeros={false}
