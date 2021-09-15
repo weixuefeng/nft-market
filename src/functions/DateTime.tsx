@@ -1,12 +1,6 @@
-/**
- * @author weixuefeng@diynova.com
- * @time  2021/8/20 2:10 下午
- * @description:
- * @copyright (c) 2021 Newton Foundation. All rights reserved.
- */
-import React, { useEffect } from 'react'
+import React, { useEffect, Component, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-//  import DateCountdown from "react-date-countdown-timer"
+// import DateCountdown from "react-date-countdown-timer"
 
 const moment = require('moment/min/moment-with-locales')
 
@@ -29,17 +23,44 @@ export function RelativeTimeLocale(timestamp = Date.now(), locale = 'en-us') {
   return moment(timestamp * 1000).fromNow()
 }
 
-// Countdown using DateCountdown
-//  export function Countdown(timestampInS = 0) {
-//    let { t } = useTranslation()
-//    return CountdownLocale(timestampInS, t('time locale'))
-//  }
+// Countdown
+export function Countdown(timstamp) {
+  const calculateTimeLeft = () => {
+    const difference = +new Date(timstamp * 1000) - +new Date()
+    let timeLeft = {}
 
-//  export function CountdownLocale(timestampInS = 0, locale = 'en-us') {
-//    const _time = moment(timestampInS * 1000)
-//    let _ls = ['Y', 'M', 'D', 'h', 'm', 's']
-//    if (locale.toLowerCase() === 'zh-cn') {
-//      _ls = ['年', '月', '天', '时', '分', '秒']
-//    }
-//    return <DateCountdown dateTo={_time.toString()} locales={_ls} locales_plural={_ls} numberOfFigures={3} />
-//  }
+    if (difference > 0) {
+      timeLeft = {
+        d: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        h: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        m: Math.floor((difference / 1000 / 60) % 60),
+        s: Math.floor((difference / 1000) % 60)
+      }
+    }
+
+    return timeLeft
+  }
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft())
+
+  useEffect(() => {
+    setTimeout(() => {
+      setTimeLeft(calculateTimeLeft())
+    }, 1000)
+  })
+
+  const timerComponents = []
+
+  Object.keys(timeLeft).forEach(interval => {
+    if (!timeLeft[interval]) {
+      return
+    }
+    timerComponents.push(
+      <span>
+        {timeLeft[interval]}
+        {interval}{' '}
+      </span>
+    )
+  })
+  return <>{timerComponents.length ? timerComponents : '-'}</>
+}
