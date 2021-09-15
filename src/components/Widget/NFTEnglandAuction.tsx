@@ -231,7 +231,7 @@ export function NFTEnglandAuction(props) {
 
   return (
     <section className="offer-card auction mobile">
-      <header onClick={updateTime}>
+      <header>
         <div className="price" hidden={bidHistories.length > 0}>
           <h4>{t('starting price')}</h4>
           <h3>
