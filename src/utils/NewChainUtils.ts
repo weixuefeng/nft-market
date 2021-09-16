@@ -9,7 +9,7 @@ const NewChainMainNetId = 1012
 const NewChainTestNetRpcUrl = 'https://rpc6.newchain.cloud.diynova.com'
 const NewChainMainNetRpcUrl = 'https://cn.rpc.mainnet.diynova.com'
 
-const NewChainTestNetExplorerUrl = 'https://explorer.testnet.newtonproject.org'
+const NewChainTestNetExplorerUrl = 'http://e.testnet.diynova.com/'
 const NewChainMainNetExplorerUrl = 'https://explorer.newtonproject.org'
 
 const PREFIX = 'NEW'

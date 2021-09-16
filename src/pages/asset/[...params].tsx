@@ -93,7 +93,7 @@ export default function View() {
         </Menu.Item>
         <Menu.Item>
           <a
-            href={`${getNewChainExplorerUrl(TARGET_CHAINID)}/tokens/${param[0]}/instance}/${param[1]}`}
+            href={`${getNewChainExplorerUrl(TARGET_CHAINID)}/tokens/${param[0]}/instance/${param[1]}`}
             target="_blank"
             rel="noopener noreferrer"
           >
