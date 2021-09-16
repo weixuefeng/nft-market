@@ -38,28 +38,36 @@ const SubNavMenu = props => {
   // filter contract & id: where id_not_in: [] ....
   function onSaleModeChange(e) {
     const order = e.target.value
+    const idNotIn = [
+      "0xe1d4de8c157094eb39589625a16a1b8eccaf0467-84",
+      "0xe1d4de8c157094eb39589625a16a1b8eccaf0467-82"
+    ]
     if (order === '0') {
       setFilter({
-        ...where
+        ...where,
+        id_not_in: idNotIn
       })
     } else if (order === '1') {
       setFilter({
         ...where,
-        strategyType: NFTokenSaleType.DIRECT_SALE
+        strategyType: NFTokenSaleType.DIRECT_SALE,
+        id_not_in: idNotIn
       })
     } else if (order === '2') {
       const now = parseInt(Date.now() / 1000 + '')
       setFilter({
         ...where,
         strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-        deadline_gte: now
+        deadline_gte: now,
+        id_not_in: idNotIn
       })
     } else if (order === '3') {
       const now = parseInt(Date.now() / 1000 + '')
       setFilter({
         ...where,
         strategyType_not_in: [NFTokenSaleType.NOT_SALE],
-        deadline_gte: now
+        deadline_gte: now,
+        id_not_in: idNotIn
       })
     }
   }
