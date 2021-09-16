@@ -1,4 +1,6 @@
 // MY INFURA_ID, SWAP IN YOURS FROM https://infura.io/dashboard/ethereum
+import { TARGET_CHAINID } from './settings'
+
 export const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad'
 
 export const zeroAddress = '0x0000000000000000000000000000000000000000'
@@ -83,6 +85,25 @@ export const NETWORKS = {
     bearBrickAddress: '0x8215e1464cef8575edd81d80ceee9077d5c7c2b3',
     chineseCharactorAddress: '0x1774253cfaa39015fa5e7c4c6a0deb8c1a994937',
     useNewAddress: true,
+    currencySymbol: 'NEW',
+    contract: {
+      NewtonNFT: '0xdECe7b73E056368F568007c75dbcA26ece919f53',
+      NewtonNFTCommander: '0x83884EfA4BB00045AF1BB2404E30CD89De9F2EAB'
+    }
+  },
+  NewChainMainNet: {
+    name: 'NewChainMainNet',
+    networkBrand: 'newchain',
+    mainnet: true,
+    color: '#ff8b9e',
+    chainId: 1012,
+    rpcUrl: `https://global.rpc.mainnet.newtonproject.org`,
+    blockExplorer: 'https://explorer.newtonproject.org/',
+    subgraphUri: 'https://testnetnft.cloud.diynova.com/subgraphs/name/NewtonNFT/NFT',
+    bearBrickAddress: '0x8215e1464cef8575edd81d80ceee9077d5c7c2b3',
+    chineseCharactorAddress: '0x1774253cfaa39015fa5e7c4c6a0deb8c1a994937',
+    useNewAddress: true,
+    currencySymbol: 'NEW',
     contract: {
       NewtonNFT: '0xdECe7b73E056368F568007c75dbcA26ece919f53',
       NewtonNFTCommander: '0x83884EfA4BB00045AF1BB2404E30CD89De9F2EAB'
@@ -135,7 +156,7 @@ export const NETWORKS = {
   }
 }
 
-const network = process.env.REACT_APP_NETWORK ? process.env.REACT_APP_NETWORK : 'NewChainTestNet'
+const network = parseInt(TARGET_CHAINID) === 1012 ? 'NewChainMainNet' : 'NewChainTestNet'
 export const targetNetwork = NETWORKS[network]
 
 export function cSymbol() {
