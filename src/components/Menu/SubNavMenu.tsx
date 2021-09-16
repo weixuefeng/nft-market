@@ -55,9 +55,11 @@ const SubNavMenu = props => {
         deadline_gte: now
       })
     } else if (order === '3') {
+      const now = parseInt(Date.now() / 1000 + '')
       setFilter({
         ...where,
-        strategyType: NFTokenSaleType.DUTCH_AUCTION
+        strategyType_not_in: [NFTokenSaleType.NOT_SALE],
+        deadline_gte: now
       })
     }
   }
@@ -74,16 +76,17 @@ const SubNavMenu = props => {
           <select onChange={onSaleModeChange} id="filter" name="filter" defaultValue={0}>
             <option value={0}>{t('all')}</option>
             <option value={1}>{t('fixed price sale')}</option>
-            <option value={2}>{t('english auction')}</option>s{/*<option value={3}>{t('dutch auction')}</option>*/}
+            <option value={2}>{t('english auction')}</option>
+            {/*<option value={3}>{t('on sale')}</option>*/}
           </select>
         </div>
         <div>
           <label htmlFor="order">{t('order by')}</label>
           <select onChange={onOrderChange} id="order" name="order" defaultValue={0}>
-            <option value={0}>{t('newest created')}</option>
-            <option value={1}>{t('oldest created')}</option>
             <option value={2}>{t('price_high_to_low')}</option>
             <option value={3}>{t('price_low_to_high')}</option>
+            <option value={0}>{t('newest created')}</option>
+            <option value={1}>{t('oldest created')}</option>
           </select>
         </div>
       </div>
