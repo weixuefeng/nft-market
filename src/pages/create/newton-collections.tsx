@@ -81,7 +81,7 @@ export default function Me() {
 
   return (
     <div className="flex justify-center">
-      <div className="space-y-6  max-w-4xl form">
+      <div className="space-y-6 max-w-4xl form w-full">
         <section>
           <h2>+ Newton Collections</h2>
         </section>
