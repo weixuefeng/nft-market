@@ -38,6 +38,67 @@ export default function Home() {
     return <p>Error :(</p>
   }
 
+  if (loading) {
+    return (
+      <>
+        <HomeHero />
+        <div className="">
+          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:py-8 lg:px-8">
+            <p className="text-center text-base font-semibold uppercase text-gray-800 dark:text-white tracking-wider">
+              Featured: Newton Collections
+            </p>
+          </div>
+        </div>
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={10}
+          pagination={{
+            clickable: true
+          }}
+          navigation={true}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false
+          }}
+          breakpoints={{
+            '640': {
+              slidesPerView: 2,
+              spaceBetween: 10
+            },
+            '768': {
+              slidesPerView: 3,
+              spaceBetween: 10
+            },
+            '1024': {
+              slidesPerView: 5,
+              spaceBetween: 10
+            }
+          }}
+          className="homeSwiper"
+        >
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+        </Swiper>
+      </>
+    )
+  }
+
   function uniqBy(a, key) {
     let seen = new Set()
     return a.filter(item => {
@@ -107,7 +168,7 @@ export function HomeNewtonCollection(props) {
             spaceBetween: 10
           },
           '1024': {
-            slidesPerView: 4,
+            slidesPerView: 5,
             spaceBetween: 10
           }
         }}
@@ -116,8 +177,8 @@ export function HomeNewtonCollection(props) {
         {data &&
           data.map(item => {
             return (
-              <SwiperSlide>
-                <NFTListCard key={item.id} item={item} />
+              <SwiperSlide key={item.id}>
+                <NFTListCard item={item} />
               </SwiperSlide>
             )
           })}
@@ -172,6 +233,19 @@ function HomeHero() {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+function Loader1() {
+  return (
+    <div className="item loading">
+      <a>
+        <div className="cover">
+          <div className="perfect_square"></div>
+        </div>
+        <div className="title">~</div>
+      </a>
     </div>
   )
 }
