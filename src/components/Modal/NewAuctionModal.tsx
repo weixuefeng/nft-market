@@ -90,20 +90,19 @@ export default function NewAuctionModal(props) {
   }
 
   function updateButtonStatus() {
-    const _timestampNow = Date.now()
-    const _startTime = startTime
+    const _timestampNow = Date.now() / 1000
     const _endTime = endTime
     // if (_timestampNow > _startTime) {
     //   setButtonDisabled(true)
     //   setButtonText(t('invalid start time'))
     //   return
     // }
-    if (_endTime > _timestampNow) {
+    if (undefined === _endTime || _endTime < _timestampNow) {
       setButtonDisabled(true)
       setButtonText(t('invalid end time'))
       return
     }
-    if (startPriceInNEW <= 0 || startPriceInNEW >= 100000000000) {
+    if (startPriceInNEW <= 0) {
       setButtonDisabled(true)
       setButtonText(t('invalid start price'))
       return
@@ -142,15 +141,11 @@ export default function NewAuctionModal(props) {
 
   function onChangeEndTime(e) {
     const _timestamp = inputToTimestamp(e.target.value)
-    if (_timestamp === false || isNaN(_timestamp) || _timestamp === undefined) return
     setEndTime(_timestamp)
   }
 
   function onUserChangePrice(e) {
     const _newPrice = Number(e.target.value)
-    if (_newPrice === Infinity || isNaN(_newPrice) || _newPrice >= 100000000000 || _newPrice <= 0) {
-      return
-    }
     setStartPriceInNEW(_newPrice)
   }
 
