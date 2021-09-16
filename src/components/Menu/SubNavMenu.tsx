@@ -82,8 +82,8 @@ const SubNavMenu = props => {
           <select onChange={onOrderChange} id="order" name="order" defaultValue={0}>
             <option value={0}>{t('newest created')}</option>
             <option value={1}>{t('oldest created')}</option>
-            <option value={2}>{t('lowest price')}</option>
-            <option value={3}>{t('highest price')}</option>
+            <option value={2}>{t('price_high_to_low')}</option>
+            <option value={3}>{t('price_low_to_high')}</option>
           </select>
         </div>
       </div>
