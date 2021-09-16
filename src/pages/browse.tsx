@@ -12,7 +12,11 @@ export default function Browse() {
   const { t } = useTranslation()
   const [orderBy, setOrderBy] = useState('mintBlock')
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC)
-  const where = { mintBlock_gt: FILTER_START_BLOCK }
+  const idNotIn = [
+    "0xe1d4de8c157094eb39589625a16a1b8eccaf0467-84",
+    "0xe1d4de8c157094eb39589625a16a1b8eccaf0467-82"
+  ]
+  const where = { mintBlock_gt: FILTER_START_BLOCK, id_not_in: idNotIn }
   const [filter, setFilter] = useState(where)
   const { loading, data, fetchMore, error } = useQuery<NFTokenDataList>(NFT_TOKEN_LIST, {
     variables: {
