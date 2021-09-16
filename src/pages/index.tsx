@@ -8,6 +8,12 @@ import { NEWTON_COLLECTION_NFT_CONTRACT } from '../constant/settings'
 import Link from 'next/link'
 import { useTokenDescription } from 'hooks/useTokenDescription'
 import { getNftDetailPath } from 'functions'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper'
+import 'swiper/css'
+import 'swiper/css/pagination'
+
+SwiperCore.use([Autoplay, Pagination, Navigation])
 
 export default function Home() {
   const { t } = useTranslation()
@@ -18,7 +24,7 @@ export default function Home() {
   const { loading, data, fetchMore, error } = useQuery<NFTokenDataList>(NFT_TOKEN_LIST, {
     variables: {
       skip: 0,
-      first: 4,
+      first: 20,
       orderBy: orderBy,
       orderDirection: orderDirection,
       where: filter
@@ -30,6 +36,67 @@ export default function Home() {
   if (error) {
     console.log(error)
     return <p>Error :(</p>
+  }
+
+  if (loading) {
+    return (
+      <>
+        <HomeHero />
+        <div className="">
+          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:py-8 lg:px-8">
+            <p className="text-center text-base font-semibold uppercase text-gray-800 dark:text-white tracking-wider">
+              Featured: Newton Collections
+            </p>
+          </div>
+        </div>
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={10}
+          pagination={{
+            clickable: true
+          }}
+          navigation={true}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false
+          }}
+          breakpoints={{
+            '640': {
+              slidesPerView: 2,
+              spaceBetween: 10
+            },
+            '768': {
+              slidesPerView: 3,
+              spaceBetween: 10
+            },
+            '1024': {
+              slidesPerView: 5,
+              spaceBetween: 10
+            }
+          }}
+          className="homeSwiper"
+        >
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Loader1 />
+          </SwiperSlide>
+        </Swiper>
+      </>
+    )
   }
 
   function uniqBy(a, key) {
@@ -64,7 +131,7 @@ export default function Home() {
     <>
       <HomeHero />
       <div className="">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:py-10 lg:px-8">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:py-8 lg:px-8">
           <p className="text-center text-base font-semibold uppercase text-gray-800 dark:text-white tracking-wider">
             Featured: Newton Collections
           </p>
@@ -80,52 +147,63 @@ export function HomeNewtonCollection(props) {
 
   return (
     <>
-      <ul className="list nft_card_list">
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={10}
+        pagination={{
+          clickable: true
+        }}
+        navigation={true}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false
+        }}
+        breakpoints={{
+          '640': {
+            slidesPerView: 2,
+            spaceBetween: 10
+          },
+          '768': {
+            slidesPerView: 3,
+            spaceBetween: 10
+          },
+          '1024': {
+            slidesPerView: 5,
+            spaceBetween: 10
+          }
+        }}
+        className="homeSwiper"
+      >
         {data &&
           data.map(item => {
-            return <NFTListCard key={item.id} item={item} />
+            return (
+              <SwiperSlide key={item.id}>
+                <NFTListCard item={item} />
+              </SwiperSlide>
+            )
           })}
-      </ul>
+      </Swiper>
     </>
   )
 }
 
 function NFTListCard(props) {
-  const { t } = useTranslation()
   const { item } = props
-
   const tokenMetaData = useTokenDescription(item.uri)
-  if (!tokenMetaData) {
-    return <div>loading...</div>
-  }
-  const tokenProfile = (
-    <div className="profile">
-      <Link href={getNftDetailPath(item.id)}>
-        <a>
-          <h3 className="text-center p-5">{tokenMetaData.tokenName}</h3>
-        </a>
-      </Link>
-    </div>
-  )
+  const tokenProfile = <div className="title">{tokenMetaData.tokenName}</div>
   return (
-    <li className="item">
+    <div className="item">
       <Link href={getNftDetailPath(item.id)}>
         <a>
-          {/* NFT Cover */}
           <div className="cover">
             <div className="perfect_square">
               <img src={tokenMetaData.tokenImage} alt="" />
             </div>
-            <div className="tl collection_name">
-              <p className="collection_name">
-                {item.contract.name} (#{item.tokenId})
-              </p>
-            </div>
           </div>
+          {tokenProfile}
         </a>
       </Link>
-      {tokenProfile}
-    </li>
+    </div>
   )
 }
 
@@ -155,6 +233,19 @@ function HomeHero() {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+function Loader1() {
+  return (
+    <div className="item loading">
+      <a>
+        <div className="cover">
+          <div className="perfect_square"></div>
+        </div>
+        <div className="title">~</div>
+      </a>
     </div>
   )
 }
