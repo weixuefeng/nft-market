@@ -97,8 +97,7 @@ export default function Me() {
         console.log('tokenURI:', tokenURI)
         // todo: call erc721 contract to mint item
         //tx(writeContracts.NewtonNFT.mintItem(tokenURI, nftRoyaltyRate * 10, recipient))
-        let res = await transactor(nftExchangeContract.mintItem(tokenURI, 0, account), t, () => {
-        })
+        let res = await transactor(nftExchangeContract.mintItem(tokenURI, 0, account), t, () => {})
         if (res) {
           setShowModal(true)
           setCreateTx(res.hash)

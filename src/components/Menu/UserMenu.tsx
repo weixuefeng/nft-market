@@ -45,7 +45,6 @@ export default function UserMenu(props) {
   }
 
   if (account) {
-    console.log(`account:${account}, chainId:${chainId}`)
     const newAddress = hexAddress2NewAddress(account, chainId)
     return (
       <>
