@@ -772,6 +772,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@tailwindcss/aspect-ratio@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/aspect-ratio/-/aspect-ratio-0.2.1.tgz#a7ce776688b8218d9559a6918f0bccc58f0f16dd"
+  integrity sha512-aDFi80aHQ3JM3symJ5iKU70lm151ugIGFCI0yRZGpyjgQSDS+Fbe93QwypC1tCEllQE8p0S7TUu20ih1b9IKLA==
+
 "@tailwindcss/forms@^0.3.3":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@tailwindcss/forms/-/forms-0.3.3.tgz#a29d22668804f3dae293dcadbef1aa6315c45b64"
@@ -2237,6 +2242,13 @@ dom-walk@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.2.tgz#0c548bef048f4d1f2a97249002236060daa3fd84"
   integrity sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==
+
+dom7@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/dom7/-/dom7-4.0.0.tgz#69c8fb9b170c92d64f385fdc37f81456e82b80a1"
+  integrity sha512-xOJ0LAHFwktyj8Xljz4R2wzRI+Y9mR0plkMP0WlqtwqAkqn/vbdAyRifiW/w8mXe17LGktntcAwsQ5fKVDBNYg==
+  dependencies:
+    ssr-window "^4.0.0"
 
 domain-browser@4.19.0:
   version "4.19.0"
@@ -5245,6 +5257,11 @@ sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
+ssr-window@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ssr-window/-/ssr-window-4.0.0.tgz#4ee82fc360c5f88a022f321740bcfec59ada1a61"
+  integrity sha512-qCg6wJNeGNTVcPK2KFNfwtHU1gA3UZDZdxogu+Ys5+Ue5PMOENxUb7sscpAWWo4mWOBkJRCwQ50IlyA7qZ0hxw==
+
 stacktrace-parser@0.1.10:
   version "0.1.10"
   resolved "https://registry.yarnpkg.com/stacktrace-parser/-/stacktrace-parser-0.1.10.tgz#29fb0cae4e0d0b85155879402857a1639eb6051a"
@@ -5453,6 +5470,14 @@ supports-color@^8.0.0:
   integrity sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==
   dependencies:
     has-flag "^4.0.0"
+
+swiper@^7.0.5:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-7.0.5.tgz#80e7631798811e95c00aecab68d12a74e84896c0"
+  integrity sha512-ERFXjBwUZ4ZDYjGbYjuMBfwy/s80zVCDkf229NG7ycptgJ4r5WgOh6WCILf/1iMwkV8afxYZW7QUru/b0bdD6g==
+  dependencies:
+    dom7 "^4.0.0"
+    ssr-window "^4.0.0"
 
 symbol-observable@^1.0.2:
   version "1.2.0"
