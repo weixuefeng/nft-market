@@ -63,7 +63,8 @@ export function getSaleModeInfo(saleModeIndex: SaleModeIndex) {
     case SaleModeIndex.FIXED_PRICE:
       where = {
         ...defaultFilter,
-        strategyType: NFTokenSaleType.DIRECT_SALE
+        strategyType: NFTokenSaleType.DIRECT_SALE,
+        deadline_gte: now
       }
       break
     case SaleModeIndex.ON_SALE:

@@ -11,7 +11,7 @@ import SubNavMenu from '../Menu/SubNavMenu'
 
 export default function NFTList(props) {
   const { data, onFetchMore, showSubNav, pageNumber } = props
-  const isNoData = pageNumber === 1
+  const isNoData = pageNumber === 1 && data.length === 0
   let { t } = useTranslation()
   return (
     <>
