@@ -1,7 +1,6 @@
 import { FilterIndex, SaleModeIndex } from '../components/Menu/SubNavMenu'
 import { NFTokenSaleType, OrderDirection, TokenOrderBy } from '../entities'
 import { FILTER_START_BLOCK } from '../constant/settings'
-import exp from 'constants'
 import { AuctionFilter } from '../components/lists/MyAuctions'
 
 /**
