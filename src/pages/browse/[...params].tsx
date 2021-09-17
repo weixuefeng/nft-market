@@ -9,10 +9,11 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from '@apollo/client'
 import { NFTokenDataList } from '../../entities'
 import { NFT_TOKEN_LIST } from '../../services/queries/list'
-import { pageSize, POLLING_INTERVAL } from '../../constant'
+import { pageShowSize, pageSize, POLLING_INTERVAL } from '../../constant'
 import NFTList from '../../components/lists/NFTList'
 import { useRouter } from 'next/router'
 import { getOrderInfo, getSaleModeInfo } from '../../functions/FilterOrderUtil'
+import { useState } from 'react'
 
 export default function Browse() {
   const { t } = useTranslation()
@@ -27,7 +28,9 @@ export default function Browse() {
   }
   const { orderBy, orderDirection } = getOrderInfo(orderIndex)
   const where = getSaleModeInfo(saleModeIndex)
-
+  const [pageNumber, setPageNumber] = useState(1)
+  const [tokenData, setTokenData] = useState([])
+  const [hasMore, setHasMore] = useState(true)
   const { loading, data, fetchMore, error } = useQuery<NFTokenDataList>(NFT_TOKEN_LIST, {
     variables: {
       skip: 0,
@@ -37,7 +40,21 @@ export default function Browse() {
       where: where
     },
     fetchPolicy: 'cache-and-network',
-    pollInterval: POLLING_INTERVAL
+    pollInterval: POLLING_INTERVAL,
+    onCompleted: data => {
+      const uniqData = uniqBy(data?.tokens ?? [], item => {
+        return item.id
+      })
+      if (uniqData.length > pageShowSize * pageNumber) {
+        // has more
+        uniqData.pop()
+        setHasMore(true)
+        setTokenData(uniqData)
+      } else {
+        setHasMore(false)
+        setTokenData(uniqData)
+      }
+    }
   })
 
   if (error) {
@@ -52,14 +69,11 @@ export default function Browse() {
     })
   }
 
-  const uniqData = uniqBy(data?.tokens ?? [], item => {
-    return item.id
-  })
-
   function onFetchMore() {
+    setPageNumber(pageNumber + 1)
     fetchMore({
       variables: {
-        skip: data.tokens.length,
+        skip: tokenData.length,
         first: pageSize,
         orderBy: orderBy,
         orderDirection: orderDirection
@@ -68,11 +82,12 @@ export default function Browse() {
   }
 
   const info = {
-    data: uniqData,
-    onFetchMore,
+    data: tokenData,
+    onFetchMore: hasMore ? onFetchMore : null,
     showSubNav: true,
     saleModeIndex: saleModeIndex,
-    filterIndex: orderIndex
+    filterIndex: orderIndex,
+    pageNumber
   }
   return <NFTList {...info} />
 }

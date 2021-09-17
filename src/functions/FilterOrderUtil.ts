@@ -1,6 +1,8 @@
 import { FilterIndex, SaleModeIndex } from '../components/Menu/SubNavMenu'
 import { NFTokenSaleType, OrderDirection, TokenOrderBy } from '../entities'
 import { FILTER_START_BLOCK } from '../constant/settings'
+import exp from 'constants'
+import { AuctionFilter } from '../components/lists/MyAuctions'
 
 /**
  * @author weixuefeng@diynova.com
@@ -42,8 +44,8 @@ export function getSaleModeInfo(saleModeIndex: SaleModeIndex) {
   let where
   const defaultFilter = {
     mintBlock_gt: FILTER_START_BLOCK,
-    id_not_in: idNotIn,
-    black: false
+    id_not_in: idNotIn
+    // black: false
   }
   switch (saleModeIndex) {
     case SaleModeIndex.ALL:
@@ -77,3 +79,5 @@ export function getSaleModeInfo(saleModeIndex: SaleModeIndex) {
   }
   return where
 }
+
+export function getAuctionFilter(auctionFilter: AuctionFilter) {}

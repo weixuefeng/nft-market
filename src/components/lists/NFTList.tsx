@@ -10,16 +10,12 @@ import { NFTListCard } from './NFTListCard'
 import SubNavMenu from '../Menu/SubNavMenu'
 
 export default function NFTList(props) {
-  const { data, onFetchMore, showSubNav } = props
+  const { data, onFetchMore, showSubNav, pageNumber } = props
+  const isNoData = pageNumber === 1
   let { t } = useTranslation()
-
   return (
     <>
       {showSubNav && <SubNavMenu {...props} />}
-
-      {/* <button className='primary outline small' onClick={onRefetch}>
-        {t("refresh")}
-      </button> */}
 
       <ul className="list nft_card_list">
         {data &&
@@ -29,7 +25,11 @@ export default function NFTList(props) {
       </ul>
 
       {!onFetchMore ? (
-        <div></div>
+        isNoData ? (
+          <>{t('no data')}</>
+        ) : (
+          <></>
+        )
       ) : (
         <button className="tertiary outline small" onClick={onFetchMore}>
           {t('load more')}

@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import { NFT_MY_TOKEN } from '../services/queries/list'
 import { useWeb3React } from '@web3-react/core'
 import { useState } from 'react'
-import { pageSize, POLLING_INTERVAL } from '../constant'
+import { pageShowSize, pageSize, POLLING_INTERVAL } from '../constant'
 import NFTList from '../components/lists/NFTList'
 import { MyAuctions } from '../components/lists/MyAuctions'
 import { MyBids } from '../components/lists/MyBids'
@@ -68,6 +68,9 @@ function Me() {
   const [activeTab, setActiveTab] = useState(ActiveTab.ME)
   const [orderBy, setOrderBy] = useState('updateTime')
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC)
+  const [pageNumber, setPageNumber] = useState(1)
+  const [tokenData, setTokenData] = useState([])
+  const [hasMore, setHasMore] = useState(true)
   const nftWhere = { owner: account ? account.toLowerCase() : null }
   const where = {}
   const [filter, setFilter] = useState(where)
@@ -81,7 +84,21 @@ function Me() {
       where: nftWhere
     },
     fetchPolicy: 'cache-and-network',
-    pollInterval: POLLING_INTERVAL
+    pollInterval: POLLING_INTERVAL,
+    onCompleted: data => {
+      const uniqData = uniqBy(data?.ownerPerTokens ?? [], item => {
+        return item.id
+      })
+      if (uniqData.length > pageShowSize * pageNumber) {
+        // has more
+        uniqData.pop()
+        setHasMore(true)
+        setTokenData(uniqData)
+      } else {
+        setHasMore(false)
+        setTokenData(uniqData)
+      }
+    }
   })
 
   if (!account) {
@@ -105,9 +122,10 @@ function Me() {
   })
 
   function onFetchMore() {
+    setPageNumber(pageNumber + 1)
     fetchMore({
       variables: {
-        skip: data.ownerPerTokens.length,
+        skip: tokenData.length,
         first: pageSize,
         orderBy: orderBy,
         orderDirection: orderDirection,
@@ -116,11 +134,12 @@ function Me() {
     })
   }
   const info = {
-    data: uniqData,
-    onFetchMore,
+    data: tokenData,
+    onFetchMore: hasMore ? onFetchMore : null,
     saleModeIndex: SaleModeIndex.ALL,
     filterIndex: FilterIndex.PRICE_LOW_TO_HIGH,
-    showSubNav: false
+    showSubNav: false,
+    pageNumber
   }
   return (
     <>

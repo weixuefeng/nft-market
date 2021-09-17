@@ -20,7 +20,7 @@ import { formatEther } from 'ethers/lib/utils'
 import transactor from '../../functions/Transactor'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 
-enum AuctionFilter {
+export enum AuctionFilter {
   IN_AUCTION = 'in auction',
   COMPLETED = 'ended',
   CANCELED = 'canceled',
