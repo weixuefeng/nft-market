@@ -17,7 +17,7 @@ export async function getInfo(url) {
       return res.data
     } catch (e) {
       console.error(e)
-      return ''
+      return null
     }
   }
 }
