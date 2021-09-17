@@ -10,17 +10,17 @@ import { useRouter } from 'next/router'
 import { getBrowsePath } from '../../functions'
 
 export enum SaleModeIndex {
-  ALL = 0,
+  ON_SALE = 0,
   FIXED_PRICE = 1,
   ENGLISH_AUCTION = 2,
-  ON_SALE = 3
+  ALL = 3
 }
 
 export enum FilterIndex {
-  NEWEST_CREATE = 0,
-  OLDEST_CREATE = 1,
-  PRICE_HIGH_TO_LOW = 2,
-  PRICE_LOW_TO_HIGH = 3
+  PRICE_HIGH_TO_LOW = 0,
+  PRICE_LOW_TO_HIGH = 1,
+  NEWEST_CREATE = 2,
+  OLDEST_CREATE = 3
 }
 
 const SubNavMenu = props => {
@@ -48,10 +48,10 @@ const SubNavMenu = props => {
         <div>
           <label htmlFor="filter">{t('filter')}</label>
           <select onChange={onSaleModeChange} id="filter" name="filter" defaultValue={saleModeIndex}>
-            <option value={SaleModeIndex.ALL}>{t('all')}</option>
+            <option value={SaleModeIndex.ON_SALE}>{t('on sale')}</option>
             <option value={SaleModeIndex.FIXED_PRICE}>{t('fixed price sale')}</option>
             <option value={SaleModeIndex.ENGLISH_AUCTION}>{t('english auction')}</option>
-            {/*<option value={3}>{t('on sale')}</option>*/}
+            <option value={SaleModeIndex.ALL}>{t('all')}</option>
           </select>
         </div>
         <div>
