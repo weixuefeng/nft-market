@@ -6,63 +6,36 @@
  */
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { NFTokenSaleType, OrderDirection, TokenOrderBy } from '../../entities'
-import { FILTER_START_BLOCK } from '../../constant/settings'
+import { useRouter } from 'next/router'
+import { getBrowsePath } from '../../functions'
+
+export enum SaleModeIndex {
+  ALL = 0,
+  FIXED_PRICE = 1,
+  ENGLISH_AUCTION = 2,
+  ON_SALE = 3
+}
+
+export enum FilterIndex {
+  NEWEST_CREATE = 0,
+  OLDEST_CREATE = 1,
+  PRICE_HIGH_TO_LOW = 2,
+  PRICE_LOW_TO_HIGH = 3
+}
 
 const SubNavMenu = props => {
   let { t } = useTranslation()
-  const { setOrderBy, setOrderDirection, setFilter, where } = props
+  const router = useRouter()
+  const { saleModeIndex, filterIndex } = props
 
   function onOrderChange(e) {
-    const order = e.target.value
-    if (order === '0') {
-      setOrderBy(TokenOrderBy.mintBlock)
-      setOrderDirection(OrderDirection.DESC)
-    }
-    if (order === '1') {
-      setOrderBy(TokenOrderBy.mintBlock)
-      setOrderDirection(OrderDirection.ASC)
-    }
-    if (order === '2') {
-      setOrderBy(TokenOrderBy.price)
-      setOrderDirection(OrderDirection.DESC)
-    }
-    if (order === '3') {
-      setOrderBy(TokenOrderBy.price)
-      setOrderDirection(OrderDirection.ASC)
-    }
+    const filter = parseInt(e.target.value)
+    router.push(getBrowsePath(filter, saleModeIndex))
   }
 
-  // TODO: filter contract
-  // filter contract: where: contract_not_in: []...
-  // filter contract & id: where id_not_in: [] ....
   function onSaleModeChange(e) {
-    const order = e.target.value
-
-    if (order === '0') {
-      setFilter({
-        ...where,
-      })
-    } else if (order === '1') {
-      setFilter({
-        ...where,
-        strategyType: NFTokenSaleType.DIRECT_SALE,
-      })
-    } else if (order === '2') {
-      const now = parseInt(Date.now() / 1000 + '')
-      setFilter({
-        ...where,
-        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-        deadline_gte: now,
-      })
-    } else if (order === '3') {
-      const now = parseInt(Date.now() / 1000 + '')
-      setFilter({
-        ...where,
-        strategyType_not_in: [NFTokenSaleType.NOT_SALE],
-        deadline_gte: now,
-      })
-    }
+    const saleMode = parseInt(e.target.value)
+    router.push(getBrowsePath(filterIndex, saleMode))
   }
 
   return (
@@ -74,20 +47,20 @@ const SubNavMenu = props => {
       <div id="sub-filters">
         <div>
           <label htmlFor="filter">{t('filter')}</label>
-          <select onChange={onSaleModeChange} id="filter" name="filter" defaultValue={0}>
-            <option value={0}>{t('all')}</option>
-            <option value={1}>{t('fixed price sale')}</option>
-            <option value={2}>{t('english auction')}</option>
+          <select onChange={onSaleModeChange} id="filter" name="filter" defaultValue={saleModeIndex}>
+            <option value={SaleModeIndex.ALL}>{t('all')}</option>
+            <option value={SaleModeIndex.FIXED_PRICE}>{t('fixed price sale')}</option>
+            <option value={SaleModeIndex.ENGLISH_AUCTION}>{t('english auction')}</option>
             {/*<option value={3}>{t('on sale')}</option>*/}
           </select>
         </div>
         <div>
           <label htmlFor="order">{t('order by')}</label>
-          <select onChange={onOrderChange} id="order" name="order" defaultValue={0}>
-            <option value={2}>{t('price_high_to_low')}</option>
-            <option value={3}>{t('price_low_to_high')}</option>
-            <option value={0}>{t('newest created')}</option>
-            <option value={1}>{t('oldest created')}</option>
+          <select onChange={onOrderChange} id="order" name="order" defaultValue={filterIndex}>
+            <option value={FilterIndex.PRICE_HIGH_TO_LOW}>{t('price_high_to_low')}</option>
+            <option value={FilterIndex.PRICE_LOW_TO_HIGH}>{t('price_low_to_high')}</option>
+            <option value={FilterIndex.NEWEST_CREATE}>{t('newest created')}</option>
+            <option value={FilterIndex.OLDEST_CREATE}>{t('oldest created')}</option>
           </select>
         </div>
       </div>

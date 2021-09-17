@@ -8,6 +8,7 @@ import { pageSize, POLLING_INTERVAL } from '../constant'
 import NFTList from '../components/lists/NFTList'
 import { MyAuctions } from '../components/lists/MyAuctions'
 import { MyBids } from '../components/lists/MyBids'
+import { FilterIndex, SaleModeIndex } from '../components/Menu/SubNavMenu'
 
 enum ActiveTab {
   ME = 'me',
@@ -117,10 +118,8 @@ function Me() {
   const info = {
     data: uniqData,
     onFetchMore,
-    setOrderBy,
-    setOrderDirection,
-    setFilter,
-    where,
+    saleModeIndex: SaleModeIndex.ALL,
+    filterIndex: FilterIndex.PRICE_LOW_TO_HIGH,
     showSubNav: false
   }
   return (

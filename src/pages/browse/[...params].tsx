@@ -1,30 +1,40 @@
+/**
+ * @author weixuefeng@diynova.com
+ * @time  2021/9/17 11:24 上午
+ * @description:
+ * @copyright (c) 2021 Newton Foundation. All rights reserved.
+ */
 import 'i18n'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
-import { FILTER_START_BLOCK } from '../constant/settings'
 import { useQuery } from '@apollo/client'
-import { NFTokenDataList, OrderDirection } from '../entities'
-import { NFT_TOKEN_LIST } from '../services/queries/list'
-import { pageSize, POLLING_INTERVAL } from '../constant'
-import NFTList from '../components/lists/NFTList'
+import { NFTokenDataList } from '../../entities'
+import { NFT_TOKEN_LIST } from '../../services/queries/list'
+import { pageSize, POLLING_INTERVAL } from '../../constant'
+import NFTList from '../../components/lists/NFTList'
+import { useRouter } from 'next/router'
+import { getOrderInfo, getSaleModeInfo } from '../../functions/FilterOrderUtil'
 
 export default function Browse() {
   const { t } = useTranslation()
-  const [orderBy, setOrderBy] = useState('mintBlock')
-  const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC)
-  const idNotIn = [
-    "0xe1d4de8c157094eb39589625a16a1b8eccaf0467-84",
-    "0xe1d4de8c157094eb39589625a16a1b8eccaf0467-82"
-  ]
-  const where = { mintBlock_gt: FILTER_START_BLOCK, id_not_in: idNotIn }
-  const [filter, setFilter] = useState(where)
+  const router = useRouter()
+  const param = router.query.params || []
+
+  let orderIndex = 0
+  let saleModeIndex = 0
+  if (param.length === 2) {
+    orderIndex = parseInt(param[0].toString().split('=')[1])
+    saleModeIndex = parseInt(param[1].toString().split('=')[1])
+  }
+  const { orderBy, orderDirection } = getOrderInfo(orderIndex)
+  const where = getSaleModeInfo(saleModeIndex)
+
   const { loading, data, fetchMore, error } = useQuery<NFTokenDataList>(NFT_TOKEN_LIST, {
     variables: {
       skip: 0,
       first: pageSize,
       orderBy: orderBy,
       orderDirection: orderDirection,
-      where: filter
+      where: where
     },
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL
@@ -41,6 +51,7 @@ export default function Browse() {
       return seen.has(k) ? false : seen.add(k)
     })
   }
+
   const uniqData = uniqBy(data?.tokens ?? [], item => {
     return item.id
   })
@@ -59,11 +70,9 @@ export default function Browse() {
   const info = {
     data: uniqData,
     onFetchMore,
-    setOrderBy,
-    setOrderDirection,
-    setFilter,
-    where,
-    showSubNav: true
+    showSubNav: true,
+    saleModeIndex: saleModeIndex,
+    filterIndex: orderIndex
   }
   return <NFTList {...info} />
 }
