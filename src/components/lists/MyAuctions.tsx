@@ -11,7 +11,7 @@ import { default as React, Fragment, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { GET_ASK_ORDER_HISTORY } from '../../services/queries/askOrders'
 import { AskOrderDataList, NFTokenSaleType, OrderDirection, OrderStatus } from '../../entities'
-import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
+import { cSymbol, pageShowSize, pageSize, POLLING_INTERVAL } from '../../constant'
 import { useWeb3React } from '@web3-react/core'
 import { getNftDetailPath } from '../../functions'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
@@ -225,6 +225,9 @@ const MyAuctionsList = props => {
   const { account } = useWeb3React()
   const { selected } = props
   const { t } = useTranslation()
+  const [pageNumber, setPageNumber] = useState(1)
+  const [orderData, setOrderData] = useState([])
+  const [hasMore, setHasMore] = useState(true)
 
   let where = null
   if (selected.title === AuctionFilter.IN_AUCTION) {
@@ -261,7 +264,18 @@ const MyAuctionsList = props => {
       where: where
     },
     fetchPolicy: 'cache-and-network',
-    pollInterval: POLLING_INTERVAL
+    pollInterval: POLLING_INTERVAL,
+    onCompleted: data => {
+      if (data.askOrders.length > pageShowSize * pageNumber) {
+        // has more
+        data.askOrders.pop()
+        setHasMore(true)
+        setOrderData(data.askOrders)
+      } else {
+        setHasMore(false)
+        setOrderData(data.askOrders)
+      }
+    }
   })
 
   if (loading) {
@@ -270,11 +284,9 @@ const MyAuctionsList = props => {
   if (error) {
     return <>Error :(</>
   }
-
-  const myAuctionsData = data.askOrders
-
   const onFetchMore = () => {
-    fetchMore({ variables: { skip: myAuctionsData.length } })
+    setPageNumber(pageNumber + 1)
+    fetchMore({ variables: { skip: orderData.length } })
   }
 
   return (
@@ -292,10 +304,8 @@ const MyAuctionsList = props => {
               </tr>
             </thead>
             <tbody>
-              {myAuctionsData.length > 0 &&
-                myAuctionsData.map(auction => <MyAuctionsRow key={auction.id} auction={auction} />)}
-
-              {myAuctionsData.length === 0 && (
+              {orderData.length > 0 && orderData.map(auction => <MyAuctionsRow key={auction.id} auction={auction} />)}
+              {orderData.length === 0 && (
                 <tr>
                   <td colSpan={5}>{t('no records')}</td>
                 </tr>
@@ -304,9 +314,13 @@ const MyAuctionsList = props => {
           </table>
         </div>
       </div>
-      <button onClick={onFetchMore} className="secondary small">
-        {t('load more')}
-      </button>
+      {hasMore ? (
+        <button onClick={onFetchMore} className="secondary small">
+          {t('load more')}
+        </button>
+      ) : (
+        <></>
+      )}
     </>
   )
 }

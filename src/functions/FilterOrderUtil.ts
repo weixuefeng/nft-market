@@ -44,8 +44,8 @@ export function getSaleModeInfo(saleModeIndex: SaleModeIndex) {
   let where
   const defaultFilter = {
     mintBlock_gt: FILTER_START_BLOCK,
-    id_not_in: idNotIn
-    // black: false
+    id_not_in: idNotIn,
+    black: false
   }
   switch (saleModeIndex) {
     case SaleModeIndex.ALL:
