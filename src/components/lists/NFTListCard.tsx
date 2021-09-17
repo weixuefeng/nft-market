@@ -42,12 +42,12 @@ export function NFTListCard(props) {
             <div className="cover">
               <div className="perfect_square">
                 <video controls loop muted playsInline poster={tokenMetaData.tokenImage}>
-                  <source src={tokenMetaData.tokenVideo}></source>
+                  <source src={tokenMetaData.tokenVideo} />
                 </video>
               </div>
               <div className="tl collection_name">
                 <p className="collection_name">
-                  {item.contract.name} (#{item.tokenId})
+                  {item.contract?.name} (#{item?.tokenId})
                 </p>
               </div>
               <div className="tr">
@@ -76,7 +76,7 @@ export function NFTListCard(props) {
               </div>
               <div className="tl collection_name">
                 <p className="collection_name">
-                  {item.contract.name} (#{item.tokenId})
+                  {item.contract?.name} (#{item.tokenId})
                 </p>
               </div>
             </div>

@@ -86,7 +86,7 @@ function Me() {
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL,
     onCompleted: data => {
-      const uniqData = uniqBy(data?.ownerPerTokens ?? [], item => {
+      const uniqData = uniqBy(data?.ownerPerTokens.map(info => info.token) ?? [], item => {
         return item.id
       })
       if (uniqData.length > pageShowSize * pageNumber) {
@@ -100,7 +100,9 @@ function Me() {
       }
     }
   })
-
+  if (loading) {
+    return <></>
+  }
   if (!account) {
     return <>Please Connect Wallet</>
   }

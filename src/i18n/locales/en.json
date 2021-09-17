@@ -229,5 +229,7 @@
   "price_high_to_low": "Price: High to Low",
   "price_low_to_high": "Price: Low to High",
   "on sale": "On Sale",
-  "no data": "No Data"
+  "no data": "No Data",
+  "insufficient balance": "Insufficient Balance",
+  "claim nft(insufficient balance)": "Claim NFT (Insufficient Balance)"
 }

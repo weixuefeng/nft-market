@@ -23,6 +23,10 @@ export async function getInfo(url) {
 }
 
 export function getNftDetailPath(nftId: string) {
+  console.log(`nftId:${nftId}`)
+  if (nftId === undefined) {
+    return '/'
+  }
   const [tokenAddress, tokenId] = nftId.split('-')
   return `/asset/${tokenAddress}/${tokenId}`
 }

@@ -16,9 +16,14 @@ import { formatEther, parseEther } from '@ethersproject/units'
 import transactor from '../../functions/Transactor'
 import { AuctionType } from '../../entities'
 import { OPERATION_FEE } from '../../constant/settings'
+import { useWeb3React } from '@web3-react/core'
+import useBalance from '../../hooks/useBalance'
 
 export function MakeBidModal(props) {
   let { t } = useTranslation()
+  const { library, account } = useWeb3React()
+  const balance = useBalance(library, account)
+
   const { nftToken, nftTokenMetaData, title, contractFee, auctionType, highPrice } = props
   const [showModal, setShowModal] = useState(false)
   const [buttonText, setButtonText] = useState(t('invalid bid amount'))
@@ -44,6 +49,8 @@ export function MakeBidModal(props) {
 
   const startPrice = nftToken.askOrder.startPrice
   const highestPrice = highPrice ? highPrice : startPrice
+  const balanceEnough = parseInt(balance + '') > highestPrice
+
   const exchangeContract = useNFTExchangeContract()
 
   const onConfirm = e => {
@@ -102,6 +109,11 @@ export function MakeBidModal(props) {
       setButtonDisabled(true)
       return
     }
+    if (Number(parseEther(_newPrice + '')) > parseInt(balance + '')) {
+      setButtonText(t('insufficient balance'))
+      setButtonDisabled(true)
+      return
+    }
 
     setBidPriceInNEW(_newPrice)
     setButtonText(t('confirm'))
@@ -117,8 +129,8 @@ export function MakeBidModal(props) {
 
   return (
     <>
-      <button className="primary yellow" onClick={() => setShowModal(true)}>
-        {title}
+      <button disabled={!balanceEnough} className="primary yellow" onClick={() => setShowModal(true)}>
+        {balanceEnough ? title : t('insufficient balance')}
       </button>
       <Transition.Root show={showModal} as={Fragment}>
         <Dialog as="div" static className="dialog_wrapper" open={showModal} onClose={closeModal}>
