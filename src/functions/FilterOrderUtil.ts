@@ -23,11 +23,11 @@ export function getOrderInfo(filterIndex: FilterIndex) {
       break
     case FilterIndex.PRICE_LOW_TO_HIGH:
       orderBy = TokenOrderBy.price
-      orderDirection = OrderDirection.DESC
+      orderDirection = OrderDirection.ASC
       break
     case FilterIndex.PRICE_HIGH_TO_LOW:
       orderBy = TokenOrderBy.price
-      orderDirection = OrderDirection.ASC
+      orderDirection = OrderDirection.DESC
       break
     default:
       orderBy = TokenOrderBy.mintBlock
@@ -80,4 +80,3 @@ export function getSaleModeInfo(saleModeIndex: SaleModeIndex) {
   return where
 }
 
-export function getAuctionFilter(auctionFilter: AuctionFilter) {}
