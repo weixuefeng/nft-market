@@ -31,7 +31,10 @@ const SubNavMenu = props => {
   function onOrderChange(e) {
     const filter = parseInt(e.target.value)
     let saleMode = saleModeIndex
-    if((filter === FilterIndex.PRICE_HIGH_TO_LOW || filter === FilterIndex.PRICE_LOW_TO_HIGH) && saleModeIndex == SaleModeIndex.ALL) {
+    if (
+      (filter === FilterIndex.PRICE_HIGH_TO_LOW || filter === FilterIndex.PRICE_LOW_TO_HIGH) &&
+      saleModeIndex == SaleModeIndex.ALL
+    ) {
       saleMode = SaleModeIndex.ON_SALE
     }
     router.push(getBrowsePath(filter, saleMode))
