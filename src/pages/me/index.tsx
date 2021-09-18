@@ -142,7 +142,8 @@ function Index() {
     saleModeIndex: SaleModeIndex.ALL,
     filterIndex: FilterIndex.PRICE_LOW_TO_HIGH,
     showSubNav: false,
-    pageNumber
+    pageNumber,
+    setPageNumber
   }
   return (
     <>

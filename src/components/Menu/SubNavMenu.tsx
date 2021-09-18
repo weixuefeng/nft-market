@@ -17,28 +17,41 @@ export enum SaleModeIndex {
 }
 
 export enum FilterIndex {
-  PRICE_HIGH_TO_LOW = 0,
-  PRICE_LOW_TO_HIGH = 1,
-  NEWEST_CREATE = 2,
-  OLDEST_CREATE = 3
+  NEWEST_CREATE = 0,
+  OLDEST_CREATE = 1,
+  PRICE_HIGH_TO_LOW = 2,
+  PRICE_LOW_TO_HIGH = 3
 }
 
 const SubNavMenu = props => {
   let { t } = useTranslation()
   const router = useRouter()
-  const { saleModeIndex, filterIndex } = props
+  const { saleModeIndex, filterIndex, setPageNumber, setTimeNow } = props
 
   function onOrderChange(e) {
     const filter = parseInt(e.target.value)
     let saleMode = saleModeIndex
-    if((filter === FilterIndex.PRICE_HIGH_TO_LOW || filter === FilterIndex.PRICE_LOW_TO_HIGH) && saleModeIndex == SaleModeIndex.ALL) {
+    if (
+      (filter === FilterIndex.PRICE_HIGH_TO_LOW || filter === FilterIndex.PRICE_LOW_TO_HIGH) &&
+      saleModeIndex == SaleModeIndex.ALL
+    ) {
       saleMode = SaleModeIndex.ON_SALE
     }
+    setPageNumber(1)
+    resetTime()
     router.push(getBrowsePath(filter, saleMode))
+  }
+
+  function resetTime() {
+    if (setTimeNow) {
+      setTimeNow(parseInt(Date.now() / 1000 + ''))
+    }
   }
 
   function onSaleModeChange(e) {
     const saleMode = parseInt(e.target.value)
+    setPageNumber(1)
+    resetTime()
     router.push(getBrowsePath(filterIndex, saleMode))
   }
 
