@@ -1,24 +1,23 @@
 import { useTranslation } from 'react-i18next'
-import { OrderDirection, OwnerPerDataList } from '../entities'
+import { OrderDirection, OwnerPerDataList } from '../../entities'
 import { useQuery } from '@apollo/client'
-import { NFT_MY_TOKEN } from '../services/queries/list'
+import { NFT_MY_TOKEN } from '../../services/queries/list'
 import { useWeb3React } from '@web3-react/core'
 import { useState } from 'react'
-import { pageShowSize, pageSize, POLLING_INTERVAL } from '../constant'
-import NFTList from '../components/lists/NFTList'
-import { MyAuctions } from '../components/lists/MyAuctions'
-import { MyBids } from '../components/lists/MyBids'
-import { FilterIndex, SaleModeIndex } from '../components/Menu/SubNavMenu'
+import { pageShowSize, pageSize, POLLING_INTERVAL } from '../../constant'
+import NFTList from '../../components/lists/NFTList'
+import { FilterIndex, SaleModeIndex } from '../../components/Menu/SubNavMenu'
+import { useRouter } from 'next/router'
 
-enum ActiveTab {
+export enum ActiveTab {
   ME = 'me',
   MY_AUCTION = 'my-auctions',
   MY_BID = 'my-bids'
 }
 
-function MenuOfMe(props) {
+export function MenuOfMe(props) {
   const { t } = useTranslation()
-
+  const router = useRouter()
   const { activeTab, setActiveTab } = props
   const [currentTab, setCurrentTab] = useState(activeTab)
 
@@ -29,6 +28,7 @@ function MenuOfMe(props) {
           onClick={() => {
             setCurrentTab(ActiveTab.ME)
             setActiveTab(ActiveTab.ME)
+            router.push('/me')
           }}
           className={currentTab === ActiveTab.ME ? 'active' : ''}
           aria-current="page"
@@ -39,6 +39,7 @@ function MenuOfMe(props) {
           onClick={() => {
             setCurrentTab(ActiveTab.MY_AUCTION)
             setActiveTab(ActiveTab.MY_AUCTION)
+            router.push('/me/auctions')
           }}
           className={currentTab === ActiveTab.MY_AUCTION ? 'active' : ''}
           aria-current="page"
@@ -49,6 +50,7 @@ function MenuOfMe(props) {
           onClick={() => {
             setCurrentTab(ActiveTab.MY_BID)
             setActiveTab(ActiveTab.MY_BID)
+            router.push('/me/bids')
           }}
           className={currentTab === ActiveTab.MY_BID ? 'active' : ''}
           aria-current="page"
@@ -62,7 +64,7 @@ function MenuOfMe(props) {
   )
 }
 
-function Me() {
+function Index() {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const [activeTab, setActiveTab] = useState(ActiveTab.ME)
@@ -145,15 +147,9 @@ function Me() {
   return (
     <>
       <MenuOfMe activeTab={ActiveTab.ME} setActiveTab={setActiveTab} />
-      {activeTab === ActiveTab.ME ? (
-        <NFTList {...info} />
-      ) : activeTab === ActiveTab.MY_AUCTION ? (
-        <MyAuctions />
-      ) : (
-        <MyBids />
-      )}
+      <NFTList {...info} />
     </>
   )
 }
 
-export default Me
+export default Index
