@@ -10,7 +10,7 @@ import { AdjustmentsIcon, CheckIcon } from '@heroicons/react/outline'
 import { default as React, Fragment, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { GET_ASK_ORDER_HISTORY } from '../../services/queries/askOrders'
-import { AskOrderDataList, NFTokenSaleType, OrderDirection, OrderStatus } from '../../entities'
+import { AskOrder, AskOrderDataList, NFTokenSaleType, OrderDirection, OrderStatus } from '../../entities'
 import { cSymbol, pageShowSize, pageSize, POLLING_INTERVAL } from '../../constant'
 import { useWeb3React } from '@web3-react/core'
 import { getNftDetailPath } from '../../functions'
@@ -226,7 +226,7 @@ const MyAuctionsList = props => {
   const { selected } = props
   const { t } = useTranslation()
   const [pageNumber, setPageNumber] = useState(1)
-  const [orderData, setOrderData] = useState([])
+  const [orderData, setOrderData] = useState<Array<AskOrder>>([])
   const [hasMore, setHasMore] = useState(true)
 
   let where = null
@@ -266,14 +266,15 @@ const MyAuctionsList = props => {
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL,
     onCompleted: data => {
-      if (data.askOrders.length > pageShowSize * pageNumber) {
+      let res = Object.assign([], data.askOrders)
+      if (res.length > pageShowSize * pageNumber) {
         // has more
-        data.askOrders.pop()
+        res.pop()
         setHasMore(true)
-        setOrderData(data.askOrders)
+        setOrderData(res)
       } else {
         setHasMore(false)
-        setOrderData(data.askOrders)
+        setOrderData(res)
       }
     }
   })

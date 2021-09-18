@@ -89,26 +89,24 @@ function Me() {
       const uniqData = uniqBy(data?.ownerPerTokens.map(info => info.token) ?? [], item => {
         return item.id
       })
-      if (uniqData.length > pageShowSize * pageNumber) {
+      const res = uniqData
+      if (res.length > pageShowSize * pageNumber) {
         // has more
-        uniqData.pop()
+        res.pop()
         setHasMore(true)
-        setTokenData(uniqData)
+        setTokenData(res)
       } else {
         setHasMore(false)
-        setTokenData(uniqData)
+        setTokenData(res)
       }
     }
   })
-  if (loading) {
-    return <></>
-  }
+
   if (!account) {
     return <>Please Connect Wallet</>
   }
 
   if (error) {
-    console.log(error)
     return <p>Error :(</p>
   }
 
@@ -135,6 +133,7 @@ function Me() {
       }
     })
   }
+
   const info = {
     data: tokenData,
     onFetchMore: hasMore ? onFetchMore : null,

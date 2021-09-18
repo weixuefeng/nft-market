@@ -23,7 +23,6 @@ export async function getInfo(url) {
 }
 
 export function getNftDetailPath(nftId: string) {
-  console.log(`nftId:${nftId}`)
   if (nftId === undefined) {
     return '/'
   }
