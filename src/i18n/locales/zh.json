@@ -231,5 +231,8 @@
   "on sale": "销售中",
   "no data": "暂无数据",
   "insufficient balance": "余额不足",
-  "claim nft(insufficient balance)": "领取 NFT (余额不足)"
+  "claim nft(insufficient balance)": "领取 NFT (余额不足)",
+  "report": "举报侵权",
+  "My Account": "我的账户",
+  "Marketplace": "市场"
 }

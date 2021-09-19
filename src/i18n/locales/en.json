@@ -1,6 +1,5 @@
 {
   ": ": ": ",
-  "about": "About",
   "action": "Action",
   "all": "All",
   "Andromeda": "Andromeda",
@@ -231,5 +230,9 @@
   "on sale": "On Sale",
   "no data": "No Data",
   "insufficient balance": "Insufficient Balance",
-  "claim nft(insufficient balance)": "Claim NFT (Insufficient Balance)"
+  "claim nft(insufficient balance)": "Claim NFT (Insufficient Balance)",
+  "report": "Report",
+  "about": "About",
+  "My Account": "My Account",
+  "Marketplace": "MarketPlace"
 }

@@ -52,7 +52,7 @@ function SiteFooter() {
           <div className="sections">
             <section>
               <div>
-                <h3>Marketplace</h3>
+                <h3>{t('Marketplace')}</h3>
                 <ul>
                   <li>
                     <Link href="/browse">{t('browse')}</Link>
@@ -60,7 +60,7 @@ function SiteFooter() {
                 </ul>
               </div>
               <div>
-                <h3>My Account</h3>
+                <h3>{t('My Account')}</h3>
                 <ul>
                   <li>
                     <Link href="/me">{t('my nfts')}</Link>
@@ -73,7 +73,7 @@ function SiteFooter() {
             </section>
             <section>
               <div>
-                <h3>About</h3>
+                <h3>{t('about')}</h3>
                 <ul>
                   <li hidden>
                     <Link href="/">About NewMall</Link>
@@ -83,7 +83,9 @@ function SiteFooter() {
                   </li>
 
                   <li>
-                    <Link href="/">Partners</Link>
+                    <a href="https://jinshuju.net/f/eWKnrz" target={'_blank'}>
+                      {t('report')}
+                    </a>
                   </li>
                 </ul>
               </div>
