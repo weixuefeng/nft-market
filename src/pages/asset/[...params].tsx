@@ -83,7 +83,31 @@ export default function View() {
     </header>
   )
 
+  function download(href, filename = '')  {
+    const a = document.createElement('a')
+    a.download = filename
+    a.href = href
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+  }
+
+  function downloadFile(url:string, filename='') {
+    fetch(url, {
+      headers: new Headers({
+        Origin: location.origin,
+      }),
+    })
+      .then(res => res.blob())
+      .then(blob => {
+        const blobUrl = window.URL.createObjectURL(blob)
+        download(blobUrl, filename)
+        window.URL.revokeObjectURL(blobUrl)
+      })
+  }
+
   const nftMoreMenu = (
+
     <MoreMenu>
       <div>
         <Menu.Item>
@@ -100,6 +124,13 @@ export default function View() {
             {t('view in blockchain explorer')}
           </a>
         </Menu.Item>
+        <Menu.Item>
+          <a
+            onClick={() => downloadFile(metaData.tokenImage, metaData.tokenName)}
+          >
+            {t('download resource')}
+          </a>
+        </Menu.Item>
       </div>
     </MoreMenu>
   )
@@ -109,6 +140,7 @@ export default function View() {
       <div>
         <dl>
           <dt>
+
             {t('creator')}
             <VerifiedAddress address={data.token.minter} />
           </dt>

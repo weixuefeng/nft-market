@@ -234,5 +234,6 @@
   "claim nft(insufficient balance)": "领取 NFT (余额不足)",
   "report": "举报侵权",
   "My Account": "我的账户",
-  "Marketplace": "市场"
+  "Marketplace": "市场",
+  "download resource": "下载资源"
 }
