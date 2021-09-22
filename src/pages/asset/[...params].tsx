@@ -12,15 +12,17 @@ import { NFTPriceHistory } from 'components/Widget/NFTPriceHistory'
 import { useContractFee } from 'hooks/useContractFee'
 import { useQuery } from '@apollo/client'
 import { NFTBidPriceHistory } from 'components/Widget/NFTBidPriceHistory'
-import { NFTokenSaleType, NFTokenType } from 'entities'
+import { NFTokenSaleType} from 'entities'
 import { POLLING_INTERVAL } from 'constant'
 import MainLoadingView from 'components/layouts/MainLoadingView'
 import { NFT_VIEWER_URL } from 'constant/settings'
 import { DateTime } from 'functions/DateTime'
 import { getNewChainExplorerUrl } from 'utils/NewChainUtils'
 import { TARGET_CHAINID } from 'constant/settings'
+import { isMobile } from 'react-device-detect'
 
 function DetailSideBar(props) {
+
   const { nftToken } = props
   return (
     <div className="sidebar">
@@ -126,6 +128,7 @@ export default function View() {
         </Menu.Item>
         <Menu.Item>
           <a
+            hidden={isMobile}
             onClick={() => downloadFile(metaData.tokenImage, metaData.tokenName)}
           >
             {t('download resource')}
