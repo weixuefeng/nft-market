@@ -10,7 +10,7 @@ import { NFTListCard } from './NFTListCard'
 import SubNavMenu from '../Menu/SubNavMenu'
 
 export default function NFTList(props) {
-  const { data, onFetchMore, showSubNav, pageNumber } = props
+  const { data, onFetchMore, showSubNav, pageNumber, loading } = props
   const isNoData = pageNumber === 1 && data.length === 0
   let { t } = useTranslation()
   return (
@@ -31,8 +31,8 @@ export default function NFTList(props) {
           <></>
         )
       ) : (
-        <button className="tertiary outline small" onClick={onFetchMore}>
-          {t('load more')}
+        <button className="tertiary outline small" onClick={onFetchMore} disabled={loading}>
+          {loading ? t('loading') : t('load more')}
         </button>
       )}
     </>

@@ -93,7 +93,8 @@ export default function Browse() {
     filterIndex: orderIndex,
     pageNumber,
     setPageNumber,
-    setTimeNow
+    setTimeNow,
+    loading
   }
   return <NFTList {...info} />
 }

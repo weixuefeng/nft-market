@@ -143,7 +143,8 @@ function Index() {
     filterIndex: FilterIndex.PRICE_LOW_TO_HIGH,
     showSubNav: false,
     pageNumber,
-    setPageNumber
+    setPageNumber,
+    loading
   }
   return (
     <>
