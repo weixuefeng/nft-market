@@ -12,15 +12,6 @@ import {
 } from '@heroicons/react/solid'
 import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
-import { useQuery } from '@apollo/client'
-import { GET_ASK_ORDER_HISTORY } from '../../services/queries/askOrders'
-import { GET_TRADING_HISTORY } from '../../services/queries/tradeHistory'
-import { pageSize, POLLING_INTERVAL } from '../../constant'
-import { TradingHistory, TradingHistoryList } from '../../entities'
-import { useTokenDescription } from '../../hooks/useTokenDescription'
-import getAssetPathFromRoute from 'next/dist/shared/lib/router/utils/get-asset-path-from-route'
-import { getNftDetailPath } from '../../functions'
-import NewAddress from '../../components/layouts/NewAddress'
 
 const filterOptions = [
   { title: 'All', current: true },
@@ -198,48 +189,8 @@ const lists = [
   }
 ]
 
-function TokenMetaInfo(props) {
-  const { tradingHistory } = props
-  const tokenMetaData = useTokenDescription(tradingHistory.token.uri)
-  const [contractAddress, tokenId] = tradingHistory.token.id.split('-')
-
-  return (
-    <div className="b">
-      <Link href={getNftDetailPath(tradingHistory.token.id)}>
-        <a>
-          <img src={tokenMetaData.tokenImage} />
-          <div className="item">
-            <p>{tokenMetaData.tokenName}</p>
-            <p>
-              {tradingHistory.token.contract.name} (#{tokenId})
-            </p>
-          </div>
-        </a>
-      </Link>
-    </div>
-  )
-}
-
 export default function Activity() {
   const [selected, setSelected] = useState(filterOptions[0])
-  const [tradingHistoryData, setTradingHistoryData] = useState([])
-  const { loading, error, data } = useQuery<TradingHistoryList>(GET_TRADING_HISTORY, {
-    variables: {
-      skip: 0,
-      first: pageSize,
-      orderBy: 'createdAt',
-      orderDirection: 'desc'
-    },
-    fetchPolicy: 'cache-and-network',
-    pollInterval: POLLING_INTERVAL,
-    onCompleted: tradingHistoryList => {
-      const listData = tradingHistoryList.tradingHistories
-      if (listData.length > 0) {
-        setTradingHistoryData(listData)
-      }
-    }
-  })
-
   return (
     <>
       <div className="page-header">
@@ -254,32 +205,43 @@ export default function Activity() {
 
       <div className="activity-list">
         <ul role="list">
-          {tradingHistoryData.map(tradingHistory => (
+          {lists.map(list => (
             <li>
               <div>
                 <div>
                   <div className="a">
-                    <div className={'event ' + tradingHistory.event}>
+                    <div className={'event ' + list.event}>
                       <p>
                         <ShoppingCartIcon />
-                        {tradingHistory.event}
+                        {list.event}
                       </p>
                     </div>
                     <div className="amount">
-                      <p>{tradingHistory.amount}</p>
+                      <p>{list.amount}</p>
                     </div>
                   </div>
 
-                  <TokenMetaInfo tradingHistory={tradingHistory} />
+                  <div className="b">
+                    <Link href="#">
+                      <a>
+                        <img src="https://source.unsplash.com/random/100x100" />
+                        <div className="item">
+                          <p>{list.tokenName}</p>
+                          <p>
+                            {list.contract} (#{list.tokenId})
+                          </p>
+                        </div>
+                      </a>
+                    </Link>
+                  </div>
+
                   <div className="c">
                     <div>
                       <p>
-                        <NewAddress size={'short'} address={tradingHistory.from} />
-                        <ArrowSmRightIcon />
-                        <NewAddress size={'short'} address={tradingHistory.to} />
+                        {list.from} <ArrowSmRightIcon /> {list.to}
                       </p>
                     </div>
-                    <p className="time">{tradingHistory.createdAt}</p>
+                    <p className="time">{list.time}</p>
                   </div>
                 </div>
               </div>

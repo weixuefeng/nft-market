@@ -12,6 +12,20 @@ import {
 } from '@heroicons/react/solid'
 import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
+import { useQuery } from '@apollo/client'
+import { GET_ASK_ORDER_HISTORY } from '../../services/queries/askOrders'
+import { GET_TRADING_HISTORY } from '../../services/queries/tradeHistory'
+import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
+import { PriceEvent, TradingHistory, TradingHistoryList } from '../../entities'
+import { useTokenDescription } from '../../hooks/useTokenDescription'
+import getAssetPathFromRoute from 'next/dist/shared/lib/router/utils/get-asset-path-from-route'
+import { getNftDetailPath, getTradingStatus } from '../../functions'
+import NewAddress from '../../components/layouts/NewAddress'
+import { RelativeTimeLocale } from '../../functions/DateTime'
+import { CANCELLED } from 'dns'
+import { Event } from 'ethers'
+import { parseEther } from 'ethers/lib/utils'
+import { formatEther } from '@ethersproject/units/lib.esm'
 
 const filterOptions = [
   { title: 'All', current: true },
@@ -189,8 +203,83 @@ const lists = [
   }
 ]
 
+function TokenMetaInfo(props) {
+  const { tradingHistory } = props
+  const tokenMetaData = useTokenDescription(tradingHistory.token.uri)
+  const [contractAddress, tokenId] = tradingHistory.token.id.split('-')
+
+  return (
+    <div className="b">
+      <Link href={getNftDetailPath(tradingHistory.token.id)}>
+        <a>
+          <img src={tokenMetaData.tokenImage} />
+          <div className="item">
+            <p>{tokenMetaData.tokenName}</p>
+            <p>
+              {tradingHistory.token.contract.name} (#{tokenId})
+            </p>
+          </div>
+        </a>
+      </Link>
+    </div>
+  )
+}
+
+function EventIcon(props) {
+  const { event } = props
+  let res = <></>
+  switch (event) {
+    case PriceEvent.Ask:
+      res = <HandIcon />
+      break
+    case PriceEvent.Bid:
+      res = <HandIcon />
+      break
+    case PriceEvent.Burn:
+      res = <XCircleIcon />
+      break
+    case PriceEvent.Cancel:
+      res = <XCircleIcon />
+      break
+    case PriceEvent.Offer:
+      res = <SwitchHorizontalIcon />
+      break
+    case PriceEvent.Minted:
+      res = <HandIcon />
+      break
+    case PriceEvent.Sale:
+      res =<TagIcon />
+      break
+    case PriceEvent.Transfer:
+      res = <SwitchHorizontalIcon />
+      break
+    default:
+      break
+  }
+  return res
+}
+
 export default function Activity() {
+  const {t} = useTranslation()
   const [selected, setSelected] = useState(filterOptions[0])
+  const [tradingHistoryData, setTradingHistoryData] = useState([])
+  const { loading, error, data } = useQuery<TradingHistoryList>(GET_TRADING_HISTORY, {
+    variables: {
+      skip: 0,
+      first: pageSize,
+      orderBy: 'createdAt',
+      orderDirection: 'desc'
+    },
+    fetchPolicy: 'cache-and-network',
+    pollInterval: POLLING_INTERVAL,
+    onCompleted: tradingHistoryList => {
+      const listData = tradingHistoryList.tradingHistories
+      if (listData.length > 0) {
+        setTradingHistoryData(listData)
+      }
+    }
+  })
+
   return (
     <>
       <div className="page-header">
@@ -205,43 +294,34 @@ export default function Activity() {
 
       <div className="activity-list">
         <ul role="list">
-          {lists.map(list => (
+          {tradingHistoryData.map(tradingHistory => (
             <li>
               <div>
                 <div>
                   <div className="a">
-                    <div className={'event ' + list.event}>
+                    <div className={'event ' + tradingHistory.event}>
                       <p>
-                        <ShoppingCartIcon />
-                        {list.event}
+                        <EventIcon
+                          event={tradingHistory.event}
+                        />
+                        {getTradingStatus(tradingHistory.event, t)}
                       </p>
                     </div>
                     <div className="amount">
-                      <p>{list.amount}</p>
+                      <p>{formatEther(tradingHistory.price + "")} {cSymbol()}</p>
                     </div>
                   </div>
 
-                  <div className="b">
-                    <Link href="#">
-                      <a>
-                        <img src="https://source.unsplash.com/random/100x100" />
-                        <div className="item">
-                          <p>{list.tokenName}</p>
-                          <p>
-                            {list.contract} (#{list.tokenId})
-                          </p>
-                        </div>
-                      </a>
-                    </Link>
-                  </div>
-
+                  <TokenMetaInfo tradingHistory={tradingHistory} />
                   <div className="c">
                     <div>
                       <p>
-                        {list.from} <ArrowSmRightIcon /> {list.to}
+                        <NewAddress size={'short'} address={tradingHistory.from} />
+                        <ArrowSmRightIcon />
+                        <NewAddress size={'short'} address={tradingHistory.to} />
                       </p>
                     </div>
-                    <p className="time">{list.time}</p>
+                    <p className="time">{RelativeTimeLocale(tradingHistory.createdAt, t('time locale'))}</p>
                   </div>
                 </div>
               </div>
@@ -249,27 +329,7 @@ export default function Activity() {
           ))}
         </ul>
       </div>
-
       <button className="tertiary outline small">load more</button>
-
-      <div className="activity-list-legends">
-        <p>Legends</p>
-        <p>
-          <ShoppingCartIcon /> Buy / Claim
-        </p>
-        <p>
-          <TagIcon /> Sale / Auction
-        </p>
-        <p>
-          <XCircleIcon /> Cancel Sale/Auction
-        </p>
-        <p>
-          <HandIcon /> Bid
-        </p>
-        <p>
-          <SwitchHorizontalIcon /> Transfer
-        </p>
-      </div>
     </>
   )
 }
