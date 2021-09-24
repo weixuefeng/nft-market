@@ -127,7 +127,7 @@ export default function View() {
           </a>
         </Menu.Item>
         <Menu.Item>
-          <a hidden={isMobile}
+          <a
             onClick={() => downloadFile(metaData.tokenImage, metaData.tokenName)}
           >
             {t('download resource')}
