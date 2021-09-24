@@ -41,7 +41,8 @@ const client = new ApolloClient({
         fields: {
           tokens: skipLimitPagination(['orderDirection', 'orderBy']),
           priceHistories: skipLimitPagination(['orderDirection', 'orderBy']),
-          ownerPerTokens: skipLimitPagination(['orderDirection', 'orderBy'])
+          ownerPerTokens: skipLimitPagination(['orderDirection', 'orderBy']),
+          tradingHistories: skipLimitPagination(['orderDirection', 'orderBy'])
         }
       }
     }

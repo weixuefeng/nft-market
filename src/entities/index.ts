@@ -19,6 +19,7 @@ export enum TokenOrderBy {
 }
 
 export enum PriceEvent {
+  All = 'All',
   Minted = 'Minted',
   Ask = 'Ask', // 挂单售卖
   Sale = 'Sale', // 成交

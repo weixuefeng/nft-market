@@ -5,15 +5,16 @@ import {
   HandIcon,
   TagIcon,
   SwitchHorizontalIcon,
+  ShoppingCartIcon,
   XCircleIcon,
   CheckIcon,
   AdjustmentsIcon
 } from '@heroicons/react/solid'
-import { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { useQuery } from '@apollo/client'
 import { GET_TRADING_HISTORY } from '../../services/queries/tradeHistory'
-import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
+import { cSymbol, pageShowSize, pageSize, POLLING_INTERVAL } from '../../constant'
 import { PriceEvent, TradingHistoryList } from '../../entities'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
 import { getNftDetailPath, getTradingStatus } from '../../functions'
@@ -23,10 +24,12 @@ import { formatEther } from 'ethers/lib/utils'
 
 const filterOptions = [
   { title: 'All', current: true },
+  { title: 'Minted', current: false },
+  { title: 'Ask', current: false },
   { title: 'Sale', current: false },
-  { title: 'Auction', current: false },
-  { title: 'Buy', current: false },
-  { title: 'Bid', current: false }
+  { title: 'Transfer', current: false },
+  { title: 'Bid', current: false },
+  { title: 'Cancel', current: false }
 ]
 
 function TokenMetaInfo(props) {
@@ -56,7 +59,7 @@ function EventIcon(props) {
   let res = <></>
   switch (event) {
     case PriceEvent.Ask:
-      res = <HandIcon />
+      res = <ShoppingCartIcon />
       break
     case PriceEvent.Bid:
       res = <HandIcon />
@@ -74,7 +77,7 @@ function EventIcon(props) {
       res = <HandIcon />
       break
     case PriceEvent.Sale:
-      res =<TagIcon />
+      res = <TagIcon />
       break
     case PriceEvent.Transfer:
       res = <SwitchHorizontalIcon />
@@ -85,26 +88,58 @@ function EventIcon(props) {
   return res
 }
 
+function getFilterByTitle(title) {
+  let where = {}
+  switch (title) {
+    case 'All':
+      where = {}
+      break
+    default:
+      where = { event: title }
+  }
+  return where
+}
+
 export default function Activity() {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const [selected, setSelected] = useState(filterOptions[0])
+  const [pageNumber, setPageNumber] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const where = getFilterByTitle(selected.title)
   const [tradingHistoryData, setTradingHistoryData] = useState([])
-  const { loading, error, data } = useQuery<TradingHistoryList>(GET_TRADING_HISTORY, {
+  const { loading, error, data, fetchMore } = useQuery<TradingHistoryList>(GET_TRADING_HISTORY, {
     variables: {
       skip: 0,
       first: pageSize,
       orderBy: 'createdAt',
-      orderDirection: 'desc'
+      orderDirection: 'desc',
+      where: where
     },
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL,
     onCompleted: tradingHistoryList => {
       const listData = tradingHistoryList.tradingHistories
-      if (listData.length > 0) {
+      if (listData.length > pageShowSize * pageNumber) {
+        // has more
+        const res = listData.slice()
+        res.pop()
+        setHasMore(true)
+        setTradingHistoryData(res)
+      } else {
+        setHasMore(false)
         setTradingHistoryData(listData)
       }
     }
   })
+
+  function onFetchMore() {
+    setPageNumber(pageNumber + 1)
+    fetchMore({
+      variables: {
+        skip: tradingHistoryData.length
+      }
+    })
+  }
 
   return (
     <>
@@ -127,14 +162,14 @@ export default function Activity() {
                   <div className="a">
                     <div className={'event ' + tradingHistory.event}>
                       <p>
-                        <EventIcon
-                          event={tradingHistory.event}
-                        />
+                        <EventIcon event={tradingHistory.event} />
                         {getTradingStatus(tradingHistory.event, t)}
                       </p>
                     </div>
                     <div className="amount">
-                      <p>{formatEther(tradingHistory.price + "")} {cSymbol()}</p>
+                      <p>
+                        {formatEther(tradingHistory.price + '')} {cSymbol()}
+                      </p>
                     </div>
                   </div>
 
@@ -155,7 +190,9 @@ export default function Activity() {
           ))}
         </ul>
       </div>
-      <button className="tertiary outline small">load more</button>
+      <button className="tertiary outline small" onClick={onFetchMore} disabled={loading} hidden={!hasMore}>
+        {loading ? t('loading') : t('load more')}
+      </button>
     </>
   )
 }
@@ -180,7 +217,7 @@ const ActivityFilterMenu = props => {
       {({ open }) => (
         <div className="filter-menu">
           <Listbox.Button className="dropdown-btn">
-            <span>{t(selected.title)}</span>
+            <span>{getTradingStatus(selected.title, t)}</span>
             <AdjustmentsIcon />
           </Listbox.Button>
 
@@ -198,7 +235,7 @@ const ActivityFilterMenu = props => {
                   className={({ active }) => (active ? 'active' : 'inactive')}
                   value={option}
                 >
-                  <p>{t(option.title)}</p>
+                  <p>{getTradingStatus(option.title, t)}</p>
                   <CheckIcon className="check-icon" />
                 </Listbox.Option>
               ))}
