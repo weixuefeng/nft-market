@@ -1501,3 +1501,13 @@ input[type='range']::-moz-range-thumb {
     @apply bg-yellow-300 dark:bg-yellow-400;
   }
 }
+
+.page-header {
+  @apply flex items-center md:justify-between mb-2;
+  > div {
+    @apply flex-1;
+    h2 {
+      @apply text-2xl font-bold leading-7 sm:text-3xl sm:truncate py-4 md:py-6 text-black dark:text-white;
+    }
+  }
+}

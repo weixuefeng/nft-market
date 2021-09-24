@@ -1,0 +1,108 @@
+.list.orders {
+  @apply space-y-4 md:space-y-6;
+
+  li {
+    @apply bg-white border-t border-b border-gray-200 shadow-sm border rounded-xl overflow-hidden;
+    @apply dark:bg-gray-900 dark:border-gray-800;
+  }
+  li .head {
+    @apply px-4 py-3 border-b border-b-gray-200 flex justify-between items-center bg-gray-100;
+    @apply dark:border-b-gray-800 dark:bg-gray-800;
+    .type {
+      @apply flex;
+      span {
+        @apply bg-gray-200 px-3 py-1 uppercase font-bold rounded;
+        @apply dark:bg-gray-600;
+      }
+    }
+    .extra {
+      @apply flex;
+      span {
+        @apply font-medium;
+        &.red {
+          @apply text-red-500;
+        }
+        &.green {
+          @apply text-green-500;
+        }
+        &.gray {
+          @apply text-gray-500;
+        }
+        &.yellow {
+          @apply text-yellow-500;
+        }
+      }
+    }
+  }
+  li:hover .head {
+    @apply bg-yellow-50;
+    @apply dark:bg-gray-700;
+  }
+  li .main {
+    @apply px-4 py-3 lg:grid lg:grid-cols-12 lg:gap-x-8;
+    > a {
+      @apply flex md:col-span-4 lg:col-span-5 bg-gray-100 hover:bg-yellow-100 p-2 rounded-lg;
+      @apply dark:bg-gray-800 dark:hover:bg-gray-700;
+      div:first-child {
+        @apply flex-shrink-0 rounded-lg overflow-hidden w-20 h-20 lg:w-24 lg:h-24;
+        > img {
+          @apply w-full h-full object-center object-cover;
+        }
+      }
+      div:last-child {
+        @apply mt-0 ml-2;
+        h3 {
+          @apply text-base font-medium text-gray-900;
+          @apply dark:text-gray-100;
+        }
+        p {
+          @apply mt-2 text-sm text-gray-900;
+          @apply dark:text-gray-100;
+        }
+      }
+    }
+  }
+  li .info {
+    @apply mt-3 lg:mt-0 md:col-span-8 lg:col-span-7;
+    dl {
+      @apply grid grid-cols-2 gap-x-3 md:gap-x-12 text-xs tracking-tight md:tracking-normal;
+    }
+  }
+  li .info dl > div > dt {
+    @apply font-medium text-gray-900;
+    @apply dark:text-gray-100;
+  }
+  li .info dl > div > dd {
+    @apply mt-1 text-gray-500 leading-tight;
+    @apply dark:text-gray-400;
+  }
+  li .info dl > div > dd > div {
+    @apply flex justify-between;
+  }
+  li .footer {
+    @apply px-4 py-3 border-t border-t-gray-200 flex justify-between items-center;
+    @apply dark:border-t-gray-800;
+    > div:first-child {
+      @apply flex-row;
+      div {
+        @apply flex;
+      }
+      .label {
+        @apply font-medium text-xs uppercase text-gray-500;
+        @apply dark:text-gray-400;
+        &.red {
+          @apply text-red-500;
+        }
+      }
+      .price {
+        @apply text-lg font-medium font-mono;
+      }
+    }
+    > div:last-child {
+      @apply flex;
+    }
+    button {
+      @apply inline-flex items-center px-4 py-2;
+    }
+  }
+}
