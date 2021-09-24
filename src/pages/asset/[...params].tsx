@@ -85,10 +85,15 @@ export default function View() {
     </header>
   )
 
-  function download(href, filename = '')  {
+  function download(href, filename = '', url)  {
     const a = document.createElement('a')
     a.download = filename
-    a.href = href
+    // a.href = href
+    if(isMobile) {
+      a.href = url
+    } else {
+      a.href = href
+    }
     document.body.appendChild(a)
     a.click()
     a.remove()
@@ -103,7 +108,7 @@ export default function View() {
       .then(res => res.blob())
       .then(blob => {
         const blobUrl = window.URL.createObjectURL(blob)
-        download(blobUrl, filename)
+        download(blobUrl, filename, url)
         window.URL.revokeObjectURL(blobUrl)
       })
   }
@@ -128,7 +133,6 @@ export default function View() {
         </Menu.Item>
         <Menu.Item>
           <a
-            hidden={isMobile}
             onClick={() => downloadFile(metaData.tokenImage, metaData.tokenName)}
           >
             {t('download resource')}
