@@ -145,7 +145,7 @@ export default function Activity() {
     <>
       <div className="page-header">
         <div>
-          <h2>Activity</h2>
+          <h2>{t("Activity")}</h2>
         </div>
 
         <div className="flex">
