@@ -6,17 +6,26 @@
  */
 import { gql } from '@apollo/client'
 
-export const GET_PRICE_HISTORY = gql(`
+export const GET_TRADING_HISTORY = gql(`
   query getTradingHistory($skip: Int, $first: Int, $orderBy: String, $orderDirection: String, $where: TradingHistory_filter) {
     tradingHistories(skip: $skip, first: $first, orderBy: $orderBy, orderDirection: $orderDirection, where: $where) {
       id
       event
       tokenId
       from
+      amount
       to
       price
       createdAt
       createdTx
+      strategyType
+      token {
+        id
+        uri
+        contract {
+          name
+        }
+      }
     }
   }
 `)

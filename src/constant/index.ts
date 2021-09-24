@@ -13,7 +13,8 @@ export const NETWORK = chainId => {
   }
 }
 
-export const pageSize = 12
+export const pageSize = 13
+export const pageShowSize = 12
 
 export const IPFS_GATEWAY_HOST = 'files.cloud.diynova.com'
 export const IPFS_GATEWAY_PORT = '443'

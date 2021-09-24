@@ -18,7 +18,7 @@ export function RelativeTime(timestamp = Date.now()) {
   return moment(timestamp).fromNow()
 }
 
-export function RelativeTimeLocale(timestamp = Date.now(), locale = 'en-us') {
+export function RelativeTimeLocale(timestamp = Date.now() / 1000, locale = 'en-us') {
   moment.locale(locale)
   return moment(timestamp * 1000).fromNow()
 }

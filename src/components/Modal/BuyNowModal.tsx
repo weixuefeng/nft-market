@@ -15,16 +15,22 @@ import { useNFTExchangeContract } from '../../hooks/useContract'
 import { AddressZero } from '@ethersproject/constants'
 import transactor from '../../functions/Transactor'
 import { OPERATION_FEE } from '../../constant/settings'
+import useBalance from '../../hooks/useBalance'
+import { useWeb3React } from '@web3-react/core'
 
 export default function BuyNowModal(props) {
   let { t } = useTranslation()
-
+  const { library, account } = useWeb3React()
+  const balance = useBalance(library, account)
   const { nftToken, nftTokenMetaData, contractFee } = props
+  const balanceEnough = parseInt(balance + '') > nftToken.price
+
   const [showModal, setShowModal] = useState(false)
   const [buttonDisabled, setButtonDisabled] = useState(false)
   if (contractFee === undefined) {
     return <></>
   }
+
   const itemPrice = BigNumber.from(nftToken.price)
   const itemPriceInNEW = formatEther(itemPrice.toString())
   const royaltyFee = itemPrice.mul(parseInt(contractFee.royaltyFee * 1000 + '')).div(1000)
@@ -66,8 +72,8 @@ export default function BuyNowModal(props) {
 
   return (
     <>
-      <button className="primary" onClick={() => setShowModal(true)}>
-        {t('buy now')}
+      <button disabled={!balanceEnough} className="primary" onClick={() => setShowModal(true)}>
+        {balanceEnough ? t('buy now') : t('insufficient balance')}
       </button>
       <Transition.Root show={showModal} as={Fragment}>
         <Dialog as="div" static className="dialog_wrapper" open={showModal} onClose={setShowModal}>

@@ -1,23 +1,23 @@
 import { useTranslation } from 'react-i18next'
-import { OrderDirection, OwnerPerDataList } from '../entities'
+import { OrderDirection, OwnerPerDataList } from '../../entities'
 import { useQuery } from '@apollo/client'
-import { NFT_MY_TOKEN } from '../services/queries/list'
+import { NFT_MY_TOKEN } from '../../services/queries/list'
 import { useWeb3React } from '@web3-react/core'
 import { useState } from 'react'
-import { pageSize, POLLING_INTERVAL } from '../constant'
-import NFTList from '../components/lists/NFTList'
-import { MyAuctions } from '../components/lists/MyAuctions'
-import { MyBids } from '../components/lists/MyBids'
+import { pageShowSize, pageSize, POLLING_INTERVAL } from '../../constant'
+import NFTList from '../../components/lists/NFTList'
+import { FilterIndex, SaleModeIndex } from '../../components/Menu/SubNavMenu'
+import { useRouter } from 'next/router'
 
-enum ActiveTab {
+export enum ActiveTab {
   ME = 'me',
   MY_AUCTION = 'my-auctions',
   MY_BID = 'my-bids'
 }
 
-function MenuOfMe(props) {
+export function MenuOfMe(props) {
   const { t } = useTranslation()
-
+  const router = useRouter()
   const { activeTab, setActiveTab } = props
   const [currentTab, setCurrentTab] = useState(activeTab)
 
@@ -28,6 +28,7 @@ function MenuOfMe(props) {
           onClick={() => {
             setCurrentTab(ActiveTab.ME)
             setActiveTab(ActiveTab.ME)
+            router.push('/me')
           }}
           className={currentTab === ActiveTab.ME ? 'active' : ''}
           aria-current="page"
@@ -38,6 +39,7 @@ function MenuOfMe(props) {
           onClick={() => {
             setCurrentTab(ActiveTab.MY_AUCTION)
             setActiveTab(ActiveTab.MY_AUCTION)
+            router.push('/me/auctions')
           }}
           className={currentTab === ActiveTab.MY_AUCTION ? 'active' : ''}
           aria-current="page"
@@ -48,6 +50,7 @@ function MenuOfMe(props) {
           onClick={() => {
             setCurrentTab(ActiveTab.MY_BID)
             setActiveTab(ActiveTab.MY_BID)
+            router.push('/me/bids')
           }}
           className={currentTab === ActiveTab.MY_BID ? 'active' : ''}
           aria-current="page"
@@ -61,12 +64,15 @@ function MenuOfMe(props) {
   )
 }
 
-function Me() {
+function Index() {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const [activeTab, setActiveTab] = useState(ActiveTab.ME)
   const [orderBy, setOrderBy] = useState('updateTime')
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC)
+  const [pageNumber, setPageNumber] = useState(1)
+  const [tokenData, setTokenData] = useState([])
+  const [hasMore, setHasMore] = useState(true)
   const nftWhere = { owner: account ? account.toLowerCase() : null }
   const where = {}
   const [filter, setFilter] = useState(where)
@@ -80,7 +86,22 @@ function Me() {
       where: nftWhere
     },
     fetchPolicy: 'cache-and-network',
-    pollInterval: POLLING_INTERVAL
+    pollInterval: POLLING_INTERVAL,
+    onCompleted: data => {
+      const uniqData = uniqBy(data?.ownerPerTokens.map(info => info.token) ?? [], item => {
+        return item.id
+      })
+      const res = uniqData
+      if (res.length > pageShowSize * pageNumber) {
+        // has more
+        res.pop()
+        setHasMore(true)
+        setTokenData(res)
+      } else {
+        setHasMore(false)
+        setTokenData(res)
+      }
+    }
   })
 
   if (!account) {
@@ -88,7 +109,6 @@ function Me() {
   }
 
   if (error) {
-    console.log(error)
     return <p>Error :(</p>
   }
 
@@ -104,9 +124,10 @@ function Me() {
   })
 
   function onFetchMore() {
+    setPageNumber(pageNumber + 1)
     fetchMore({
       variables: {
-        skip: data.ownerPerTokens.length,
+        skip: tokenData.length,
         first: pageSize,
         orderBy: orderBy,
         orderDirection: orderDirection,
@@ -114,27 +135,23 @@ function Me() {
       }
     })
   }
+
   const info = {
-    data: uniqData,
-    onFetchMore,
-    setOrderBy,
-    setOrderDirection,
-    setFilter,
-    where,
-    showSubNav: false
+    data: tokenData,
+    onFetchMore: hasMore ? onFetchMore : null,
+    saleModeIndex: SaleModeIndex.ALL,
+    filterIndex: FilterIndex.PRICE_LOW_TO_HIGH,
+    showSubNav: false,
+    pageNumber,
+    setPageNumber,
+    loading
   }
   return (
     <>
       <MenuOfMe activeTab={ActiveTab.ME} setActiveTab={setActiveTab} />
-      {activeTab === ActiveTab.ME ? (
-        <NFTList {...info} />
-      ) : activeTab === ActiveTab.MY_AUCTION ? (
-        <MyAuctions />
-      ) : (
-        <MyBids />
-      )}
+      <NFTList {...info} />
     </>
   )
 }
 
-export default Me
+export default Index

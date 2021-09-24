@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { PriceEvent } from '../entities'
+import { FilterIndex, SaleModeIndex } from '../components/Menu/SubNavMenu'
 
 export async function getInfo(url) {
   try {
@@ -16,14 +17,17 @@ export async function getInfo(url) {
       return res.data
     } catch (e) {
       console.error(e)
-      return ''
+      return null
     }
   }
 }
 
 export function getNftDetailPath(nftId: string) {
+  if (nftId === undefined) {
+    return '/'
+  }
   const [tokenAddress, tokenId] = nftId.split('-')
-  return `asset/${tokenAddress}/${tokenId}`
+  return `/asset/${tokenAddress}/${tokenId}`
 }
 
 export function getTradingStatus(event: string, t) {
@@ -67,4 +71,8 @@ export function splitTx(tx: string | null) {
     return tx
   }
   return tx.substring(0, 10) + '......' + tx.substring(tx.length - 10, tx.length)
+}
+
+export function getBrowsePath(filterIndex: FilterIndex, saleModeIndex: SaleModeIndex) {
+  return `/browse/filterIndex=${filterIndex}/saleModeIndex=${saleModeIndex}`
 }

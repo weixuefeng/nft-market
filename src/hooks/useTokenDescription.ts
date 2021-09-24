@@ -32,7 +32,7 @@ export async function parseTokenMetaData(uri): Promise<TokenMetaData> {
     }
     // Video Support, using `video` key
     if (tokenExtraInfo.video !== undefined) {
-      const _videoUri = UriResolver(tokenExtraInfo.video.substring(tokenExtraInfo.video.lastIndexOf('/')))
+      const _videoUri = UriResolver(tokenExtraInfo.video.substring(tokenExtraInfo.video.lastIndexOf('/') + 1))
       data.nftType = 'video'
       data.tokenVideo = _videoUri
     }
@@ -50,7 +50,7 @@ export async function parseTokenMetaData(uri): Promise<TokenMetaData> {
       if (protocol === 'http' || protocol === 'https' || protocol === 'base64') {
         data.tokenImage = tokenExtraInfo.image
       } else {
-        const imageUri = UriResolver(tokenExtraInfo.image.substring(tokenExtraInfo.image.lastIndexOf('/')))
+        const imageUri = UriResolver(tokenExtraInfo.image.substring(tokenExtraInfo.image.lastIndexOf('/') + 1))
         data.tokenImage = imageUri
       }
     }

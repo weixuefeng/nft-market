@@ -1,6 +1,5 @@
 {
   ": ": ": ",
-  "about": "About",
   "action": "Action",
   "all": "All",
   "Andromeda": "Andromeda",
@@ -228,5 +227,13 @@
   "claim_ends_in": "Claim Ends in",
   "price_high_to_low": "Price: High to Low",
   "price_low_to_high": "Price: Low to High",
-  "on sale": "On Sale"
+  "on sale": "On Sale",
+  "no data": "No Data",
+  "insufficient balance": "Insufficient Balance",
+  "claim nft(insufficient balance)": "Claim NFT (Insufficient Balance)",
+  "report": "Report",
+  "about": "About",
+  "My Account": "My Account",
+  "Marketplace": "MarketPlace",
+  "download resource": "Download Resource"
 }

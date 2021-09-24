@@ -139,6 +139,24 @@ export class NFToken {
   askOrder: AskOrder | undefined
 }
 
+export class TradingHistory {
+  id: string
+  event: string
+  tokenId: string
+  from: string
+  amount: number
+  to: string
+  price: number
+  createdAt: number
+  createdTx: string
+  strategyType: NFTokenSaleType | null
+  token: NFToken
+}
+
+export interface TradingHistoryList {
+  tradingHistories: Array<TradingHistory>
+}
+
 export interface NFTokenDataList {
   tokens: Array<NFToken>
 }

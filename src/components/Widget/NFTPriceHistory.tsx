@@ -6,7 +6,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@apollo/client'
-import { GET_PRICE_HISTORY } from '../../services/queries/tradeHistory'
+import { GET_TRADING_HISTORY } from '../../services/queries/tradeHistory'
 import NumberFormat from 'react-number-format'
 import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
 import { formatEther } from 'ethers/lib/utils'
@@ -18,7 +18,7 @@ export function NFTPriceHistory(props) {
   const { nftToken, nftTokenMetaData } = props
   const tokenId = nftToken.id
   const where = { token: tokenId }
-  const { loading, error, data } = useQuery(GET_PRICE_HISTORY, {
+  const { loading, error, data } = useQuery(GET_TRADING_HISTORY, {
     variables: {
       skip: 0,
       first: pageSize,

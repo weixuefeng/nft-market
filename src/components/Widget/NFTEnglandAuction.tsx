@@ -21,6 +21,7 @@ import { AuctionType } from '../../entities'
 import transactor from '../../functions/Transactor'
 import { useTheme } from 'next-themes'
 import CountDownTimer from '@inlightmedia/react-countdown-timer'
+import useBalance from '../../hooks/useBalance'
 
 /**
  * 1. 拍卖进行中
@@ -41,7 +42,9 @@ export function NFTEnglandAuction(props) {
   // is now owner: make bid, cat bid history.
   let { t } = useTranslation()
   const { nftToken } = props
-  const { account } = useWeb3React()
+  const { library, account } = useWeb3React()
+  const balance = useBalance(library, account)
+
   const { theme } = useTheme()
   const exchangeContract = useNFTExchangeContract()
 
@@ -130,6 +133,8 @@ export function NFTEnglandAuction(props) {
   // end time title
   const title = myLastBidPrice > 0 ? t('raise bid') : t('make bid')
   const isBestBidder = highestBid > 0 && myBid.bidOrders.length > 0 && highestBid === myBid.bidOrders[0].price
+  // claim balance enough?
+  const balanceEnough = parseInt(balance + '') > (myBid.bidOrders.length > 0 ? myBid.bidOrders[0].price : 0)
 
   function initData() {
     updateTime()
@@ -300,13 +305,14 @@ export function NFTEnglandAuction(props) {
 
         <div hidden={hideClaimNFT}>
           <button
+            disabled={!balanceEnough}
             onClick={() => {
               claimNft()
             }}
             type="button"
             className="primary yellow small"
           >
-            {t('claim nft')}
+            {balanceEnough ? t('claim nft') : t('claim nft(insufficient balance)')}
           </button>
         </div>
       </footer>

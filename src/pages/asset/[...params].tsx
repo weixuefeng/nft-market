@@ -12,13 +12,14 @@ import { NFTPriceHistory } from 'components/Widget/NFTPriceHistory'
 import { useContractFee } from 'hooks/useContractFee'
 import { useQuery } from '@apollo/client'
 import { NFTBidPriceHistory } from 'components/Widget/NFTBidPriceHistory'
-import { NFTokenSaleType, NFTokenType } from 'entities'
+import { NFTokenSaleType } from 'entities'
 import { POLLING_INTERVAL } from 'constant'
 import MainLoadingView from 'components/layouts/MainLoadingView'
 import { NFT_VIEWER_URL } from 'constant/settings'
 import { DateTime } from 'functions/DateTime'
 import { getNewChainExplorerUrl } from 'utils/NewChainUtils'
 import { TARGET_CHAINID } from 'constant/settings'
+import { isMobile } from 'react-device-detect'
 
 function DetailSideBar(props) {
   const { nftToken } = props
@@ -83,6 +84,29 @@ export default function View() {
     </header>
   )
 
+  function download(href, filename = '', url) {
+    const a = document.createElement('a')
+    a.download = filename
+    a.href = href
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+  }
+
+  function downloadFile(url: string, filename = '') {
+    fetch(url, {
+      headers: new Headers({
+        Origin: location.origin
+      })
+    })
+      .then(res => res.blob())
+      .then(blob => {
+        const blobUrl = window.URL.createObjectURL(blob)
+        download(blobUrl, filename, url)
+        window.URL.revokeObjectURL(blobUrl)
+      })
+  }
+
   const nftMoreMenu = (
     <MoreMenu>
       <div>
@@ -99,6 +123,9 @@ export default function View() {
           >
             {t('view in blockchain explorer')}
           </a>
+        </Menu.Item>
+        <Menu.Item>
+          <a onClick={() => downloadFile(metaData.tokenImage, metaData.tokenName)}>{t('download resource')}</a>
         </Menu.Item>
       </div>
     </MoreMenu>

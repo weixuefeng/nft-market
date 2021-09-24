@@ -228,5 +228,12 @@
   "claim_ends_in": "领取截止时间",
   "price_high_to_low": "价格: 从高到低",
   "price_low_to_high": "价格: 从低到高",
-  "on sale": "销售中"
+  "on sale": "销售中",
+  "no data": "暂无数据",
+  "insufficient balance": "余额不足",
+  "claim nft(insufficient balance)": "领取 NFT (余额不足)",
+  "report": "举报侵权",
+  "My Account": "我的账户",
+  "Marketplace": "市场",
+  "download resource": "下载资源"
 }

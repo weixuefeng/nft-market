@@ -10,7 +10,7 @@ import { Listbox, Transition } from '@headlessui/react'
 import { AdjustmentsIcon, CheckIcon } from '@heroicons/react/outline'
 import { useQuery } from '@apollo/client'
 import { GET_BID_HISTORY } from '../../services/queries/bidHistory'
-import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
+import { cSymbol, pageShowSize, pageSize, POLLING_INTERVAL } from '../../constant'
 import { useWeb3React } from '@web3-react/core'
 import { BidderDataList, NFTokenSaleType, OrderStatus } from '../../entities'
 import { getNftDetailPath, splitTx } from '../../functions'
@@ -199,6 +199,10 @@ const MyBidsList = props => {
   let { t } = useTranslation()
   const { selected } = props
   const { account } = useWeb3React()
+  const [pageNumber, setPageNumber] = useState(1)
+  const [orderData, setOrderData] = useState([])
+  const [hasMore, setHasMore] = useState(true)
+
   let where = null
   if (selected.title === 'can claim') {
     const now = parseInt(Date.now() / 1000 + '')
@@ -221,7 +225,18 @@ const MyBidsList = props => {
       where: where
     },
     fetchPolicy: 'cache-and-network',
-    pollInterval: POLLING_INTERVAL
+    pollInterval: POLLING_INTERVAL,
+    onCompleted: data => {
+      if (data.bidOrders.length > pageShowSize * pageNumber) {
+        // has more
+        data.bidOrders.pop()
+        setHasMore(true)
+        setOrderData(data.bidOrders)
+      } else {
+        setHasMore(false)
+        setOrderData(data.bidOrders)
+      }
+    }
   })
 
   if (loading) {
@@ -231,10 +246,9 @@ const MyBidsList = props => {
     return <>Error :(</>
   }
 
-  const myBidsData = data.bidOrders
-
   const onFetchMore = () => {
-    fetchMore({ variables: { skip: myBidsData.length } })
+    setPageNumber(pageNumber + 1)
+    fetchMore({ variables: { skip: orderData.length } })
   }
 
   return (
@@ -254,20 +268,24 @@ const MyBidsList = props => {
             </thead>
             <tbody>
               {/* For no records */}
-              {myBidsData.length === 0 ? (
+              {orderData.length === 0 ? (
                 <tr>
                   <td colSpan={6}>{t('no records')}</td>
                 </tr>
               ) : (
-                myBidsData.map(bid => <MyBidsRow key={bid.id} bid={bid} />)
+                orderData.map(bid => <MyBidsRow key={bid.id} bid={bid} />)
               )}
             </tbody>
           </table>
         </div>
       </div>
-      <button onClick={() => onFetchMore()} className="secondary small">
-        {t('load more')}
-      </button>
+      {hasMore ? (
+        <button onClick={onFetchMore} className="secondary small">
+          {t('load more')}
+        </button>
+      ) : (
+        <></>
+      )}
     </>
   )
 }
