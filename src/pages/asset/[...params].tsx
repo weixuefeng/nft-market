@@ -88,12 +88,7 @@ export default function View() {
   function download(href, filename = '', url)  {
     const a = document.createElement('a')
     a.download = filename
-    // a.href = href
-    if(isMobile) {
-      a.href = url
-    } else {
-      a.href = href
-    }
+    a.href = href
     document.body.appendChild(a)
     a.click()
     a.remove()
@@ -132,7 +127,7 @@ export default function View() {
           </a>
         </Menu.Item>
         <Menu.Item>
-          <a
+          <a hidden={isMobile}
             onClick={() => downloadFile(metaData.tokenImage, metaData.tokenName)}
           >
             {t('download resource')}
