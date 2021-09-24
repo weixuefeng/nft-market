@@ -8,7 +8,8 @@ import {
   ShoppingCartIcon,
   XCircleIcon,
   CheckIcon,
-  AdjustmentsIcon
+  AdjustmentsIcon,
+  SparklesIcon
 } from '@heroicons/react/solid'
 import React, { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
@@ -74,7 +75,7 @@ function EventIcon(props) {
       res = <SwitchHorizontalIcon />
       break
     case PriceEvent.Minted:
-      res = <HandIcon />
+      res = <SparklesIcon />
       break
     case PriceEvent.Sale:
       res = <TagIcon />
