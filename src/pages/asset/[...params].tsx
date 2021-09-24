@@ -19,7 +19,7 @@ import { NFT_VIEWER_URL } from 'constant/settings'
 import { DateTime } from 'functions/DateTime'
 import { getNewChainExplorerUrl } from 'utils/NewChainUtils'
 import { TARGET_CHAINID } from 'constant/settings'
-import { isMobile } from 'react-device-detect'
+import { isIOS, isMobile } from 'react-device-detect'
 
 function DetailSideBar(props) {
   const { nftToken } = props
@@ -125,7 +125,12 @@ export default function View() {
           </a>
         </Menu.Item>
         <Menu.Item>
-          <a onClick={() => downloadFile(metaData.tokenImage, metaData.tokenName)}>{t('download resource')}</a>
+          <a
+            hidden={window.android != undefined || (isIOS && window['ethereum'])}
+            onClick={() => downloadFile(metaData.tokenImage, metaData.tokenName)}
+          >
+            {t('download resource')}
+          </a>
         </Menu.Item>
       </div>
     </MoreMenu>
