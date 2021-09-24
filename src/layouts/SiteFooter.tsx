@@ -57,6 +57,9 @@ function SiteFooter() {
                   <li>
                     <Link href="/browse">{t('browse')}</Link>
                   </li>
+                  <li>
+                    <Link href="/activity">{t('Activity')}</Link>
+                  </li>
                 </ul>
               </div>
               <div>
