@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
 import {
   ArrowSmRightIcon,
-  ShoppingCartIcon,
   HandIcon,
   TagIcon,
   SwitchHorizontalIcon,
@@ -13,19 +12,14 @@ import {
 import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { useQuery } from '@apollo/client'
-import { GET_ASK_ORDER_HISTORY } from '../../services/queries/askOrders'
 import { GET_TRADING_HISTORY } from '../../services/queries/tradeHistory'
 import { cSymbol, pageSize, POLLING_INTERVAL } from '../../constant'
-import { PriceEvent, TradingHistory, TradingHistoryList } from '../../entities'
+import { PriceEvent, TradingHistoryList } from '../../entities'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
-import getAssetPathFromRoute from 'next/dist/shared/lib/router/utils/get-asset-path-from-route'
 import { getNftDetailPath, getTradingStatus } from '../../functions'
 import NewAddress from '../../components/layouts/NewAddress'
 import { RelativeTimeLocale } from '../../functions/DateTime'
-import { CANCELLED } from 'dns'
-import { Event } from 'ethers'
-import { parseEther } from 'ethers/lib/utils'
-import { formatEther } from '@ethersproject/units/lib.esm'
+import { formatEther } from 'ethers/lib/utils'
 
 const filterOptions = [
   { title: 'All', current: true },
@@ -33,174 +27,6 @@ const filterOptions = [
   { title: 'Auction', current: false },
   { title: 'Buy', current: false },
   { title: 'Bid', current: false }
-]
-
-const lists = [
-  {
-    id: 1,
-    event: 'event',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'sale',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'cancel sale',
-    amount: '',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'buy',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'auction',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'cancel auction',
-    amount: '',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'bid',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'claim auction',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'transfer',
-    amount: '',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'event',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'event',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'event',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'event',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'event',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  },
-  {
-    id: 1,
-    event: 'event',
-    amount: '123456789123456789 NEW',
-    contract: 'Contract Name',
-    tokenId: 12,
-    tokenName: 'Token Name',
-    from: 'NEW182···1234',
-    to: 'NEW182···1234',
-    time: 'xxx ago'
-  }
 ]
 
 function TokenMetaInfo(props) {
