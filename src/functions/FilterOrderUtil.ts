@@ -1,5 +1,5 @@
 import { FilterIndex, SaleModeIndex } from '../components/Menu/SubNavMenu'
-import { NFTokenSaleType, OrderDirection, TokenOrderBy } from '../entities'
+import { NFTokenSaleType, OrderDirection, OrderStatus, TokenOrderBy } from '../entities'
 import { FILTER_START_BLOCK } from '../constant/settings'
 import { AuctionFilter } from '../components/lists/MyAuctions'
 
@@ -75,6 +75,40 @@ export function getSaleModeInfo(saleModeIndex: SaleModeIndex) {
       break
     default: {
       where = defaultFilter
+    }
+  }
+  return where
+}
+
+export function getAskOrderFilterByTitle(title: string, account: string) {
+  let where
+  console.log(`title:${title}`)
+  if (title.toLowerCase() === AuctionFilter.ALL.toLowerCase()) {
+    where = {
+      owner: account ? account.toLowerCase() : null
+    }
+  } else if (title.toLowerCase() === AuctionFilter.IN_AUCTION.toLowerCase()) {
+    where = {
+      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+      owner: account ? account.toLowerCase() : null,
+      status: OrderStatus.NORMAL
+    }
+  } else if (title.toLowerCase() === AuctionFilter.CANCELED.toLowerCase()) {
+    where = {
+      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+      owner: account ? account.toLowerCase() : null,
+      status: OrderStatus.CANCELED
+    }
+  } else if (title.toLowerCase() === AuctionFilter.COMPLETED.toLowerCase()) {
+    where = {
+      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+      owner: account ? account.toLowerCase() : null,
+      status: OrderStatus.COMPLETED
+    }
+  } else {
+    where = {
+      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+      owner: account ? account.toLowerCase() : null
     }
   }
   return where

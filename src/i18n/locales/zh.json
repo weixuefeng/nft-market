@@ -231,5 +231,19 @@
   "on sale": "销售中",
   "no data": "暂无数据",
   "insufficient balance": "余额不足",
-  "claim nft(insufficient balance)": "领取 NFT (余额不足)"
+  "claim nft(insufficient balance)": "领取 NFT (余额不足)",
+  "Listing Detail": "售卖信息",
+  "Deal Detail": "交易信息",
+  "numBids": "出价次数",
+  "Duration": "持续时间",
+  "payee": "收款人",
+  "payer": "付款人",
+  "item from": "发货方",
+  "item to": "收货方",
+  "tx_time": "交易时间",
+  "expired": "领取超时",
+  "sale time": "销售时间",
+  "sale price": "销售价格",
+  "sell": "售卖",
+  "active": "售卖中"
 }

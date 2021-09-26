@@ -56,6 +56,14 @@ export enum OrderStatus {
   CANCELED = 3 // canceled order
 }
 
+export enum AuctionOrderStatus {
+  NORMAL = 1, // in auction
+  AUCTION_END = 2,
+  CLAIM_EXPIRED = 3,
+  COMPLETED = 4, // completed order
+  CANCELED = 5 // canceled order
+}
+
 export type Account = {
   id: string // owner address
   name: string
@@ -96,6 +104,8 @@ export class AskOrder {
   claimDeadline: number
   finalTx: string
   bestPrice: number
+  createdAt: number
+  finalBidder: Account
 }
 
 export class BidOrder {

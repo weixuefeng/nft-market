@@ -15,7 +15,10 @@ export const GET_ASK_ORDER_HISTORY = gql(`
         uri
         tokenId
       }
+      createdAt
       id
+      strategyType
+      strategy
       startPrice
       deadline
       claimDeadline
@@ -24,8 +27,13 @@ export const GET_ASK_ORDER_HISTORY = gql(`
       price
       endPrice
       status
+      finalBidder {
+        id
+      }
       finalBidOrder {
         price
+        createdAt
+        createdTx
       }
     }
   }

@@ -231,5 +231,19 @@
   "on sale": "On Sale",
   "no data": "No Data",
   "insufficient balance": "Insufficient Balance",
-  "claim nft(insufficient balance)": "Claim NFT (Insufficient Balance)"
+  "claim nft(insufficient balance)": "Claim NFT (Insufficient Balance)",
+  "Listing Detail": "Listing Detail",
+  "Deal Detail": "Deal Detail",
+  "numBids": "No. Bids",
+  "Duration": "Duration",
+  "payee": "Payee",
+  "payer": "Payer",
+  "item from": "Item From",
+  "item to": "Item To",
+  "tx_time": "Txn Time",
+  "expired": "Expired",
+  "sale time": "Time",
+  "sale price": "Price",
+  "sell": "Sell",
+  "active": "Active"
 }
