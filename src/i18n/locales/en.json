@@ -245,5 +245,6 @@
   "sale time": "Time",
   "sale price": "Price",
   "sell": "Sell",
-  "active": "Active"
+  "active": "Active",
+  "completed": "Completed"
 }

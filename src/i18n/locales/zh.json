@@ -245,5 +245,6 @@
   "sale time": "销售时间",
   "sale price": "销售价格",
   "sell": "售卖",
-  "active": "售卖中"
+  "active": "售卖中",
+  "completed": "已完成"
 }

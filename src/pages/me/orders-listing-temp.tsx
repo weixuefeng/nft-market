@@ -17,10 +17,8 @@ import { useWeb3React } from '@web3-react/core'
 import { getAskOrderFilterByTitle } from '../../functions/FilterOrderUtil'
 import { DateTime, RelativeTimeLocale } from '../../functions/DateTime'
 import { formatEther } from 'ethers/lib/utils'
-import { parseEther } from '@ethersproject/units'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
 import { hexAddress2NewAddress } from '../../utils/NewChainUtils'
-import NewAddress from '../../components/layouts/NewAddress'
 import { TARGET_CHAINID } from '../../constant/settings'
 import { getNftDetailPath, splitTx } from '../../functions'
 import transactor from '../../functions/Transactor'
@@ -145,9 +143,11 @@ function Orders() {
       } else if (orderInfo.status === OrderStatus.COMPLETED) {
         sellInfo.activeTitle = t('completed')
         sellInfo.sellDetail.payer = hexAddress2NewAddress(orderInfo.finalBidder.id, TARGET_CHAINID)
-        sellInfo.sellDetail.txTime = orderInfo.finalBidOrder?.createdAt
+        sellInfo.sellDetail.itemFrom = hexAddress2NewAddress(account, TARGET_CHAINID)
+        sellInfo.sellDetail.itemTo = hexAddress2NewAddress(orderInfo.finalBidder.id, TARGET_CHAINID)
+        sellInfo.sellDetail.txTime = DateTime(orderInfo.finalBidOrder?.createdAt)
       } else {
-        sellInfo.activeTitle = t('cancel')
+        sellInfo.activeTitle = t('canceled')
       }
 
       // parse english auction info
@@ -268,11 +268,11 @@ function Orders() {
                   </div>
                   <div>
                     <dt>{t('item from')}</dt>
-                    <dd>{direcSellInfo.sellDetail.itemFrom}</dd>
+                    <dd>{splitTx(direcSellInfo.sellDetail.itemFrom)}</dd>
                   </div>
                   <div>
                     <dt>{t('item to')}</dt>
-                    <dd>{direcSellInfo.sellDetail.itemTo}</dd>
+                    <dd>{splitTx(direcSellInfo.sellDetail.itemTo)}</dd>
                   </div>
                   <div>
                     <dt>{t('tx_time')}</dt>
@@ -292,6 +292,7 @@ function Orders() {
             <button
               type="button"
               className="primary small yellow"
+              hidden={orderStatus === OrderStatus.COMPLETED}
               onClick={() => cancelAuction(direcSellInfo.orderInfo.id)}
             >
               {t('cancel')}
@@ -454,7 +455,7 @@ function Orders() {
             )}
         </ul>
         <button hidden={!hasMore} className="tertiary outline small" onClick={() => onFetchMore()}>
-          load more
+          {t('load more')}
         </button>
       </section>
     </>
