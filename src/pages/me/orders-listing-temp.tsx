@@ -125,7 +125,7 @@ function Orders() {
   }
 
   function parseSellActionTitle(orderInfo: AskOrder): SellInfo {
-    const now = Date.now()
+    const now = Date.now() / 1000
     let sellInfo
     // parse direct sale info
     if (orderInfo.strategyType === NFTokenSaleType.DIRECT_SALE) {
@@ -164,18 +164,18 @@ function Orders() {
       // todo: add duration calculate
       sellInfo.duration = RelativeTimeLocale(orderInfo.deadline - orderInfo.createdAt)
 
-      if (orderInfo.numBids.valueOf() === 0) {
+      if (parseInt(orderInfo.numBids + '') === 0) {
         sellInfo.priceTitle = t('starting price')
         sellInfo.priceInfo = formatEther(orderInfo.startPrice + '') + cSymbol()
       } else {
         sellInfo.priceTitle = t('highest bid')
-        sellInfo.priceInfo = formatEther(orderInfo.price + '') + cSymbol()
+        sellInfo.priceInfo = formatEther(orderInfo.finalBidOrder.price + '') + cSymbol()
       }
 
       if (orderInfo.status.valueOf() === OrderStatus.NORMAL) {
         // activeTitle = ends in xxx
         if (orderInfo.deadline > now) {
-          sellInfo.activeTitle = 'ends in: ' + DateTime(orderInfo.deadline)
+          sellInfo.activeTitle = `${t('ends in s1')} ${DateTime(orderInfo.deadline)}`
         } else if (orderInfo.deadline <= now && orderInfo.claimDeadline > now) {
           sellInfo.activeTitle = 'claim ends in: ' + DateTime(orderInfo.claimDeadline)
         } else {
@@ -338,11 +338,23 @@ function Orders() {
     }
   }
 
+  function checkAuctionCanCancel(orderInfo: AskOrder) {
+    const now = Date.now() / 1000
+    if (orderInfo.numBids.valueOf() === 0) {
+      return true
+    }
+    if (now > orderInfo.claimDeadline) {
+      return true
+    }
+    return false
+  }
+
   function EnglishAuctionSellCard(props) {
     const { sellInfo } = props
     const [englishAuctionSellInfo, setEnglishAuctionSellInfo] = useState<EnglishAuctionSellInfo>(sellInfo)
     const orderStatus = getAuctionStatus(englishAuctionSellInfo.orderInfo)
     const activeStyle = getAuctionActiveStyle(orderStatus)
+    const canCancel = checkAuctionCanCancel(englishAuctionSellInfo.orderInfo)
     return (
       <li key={sellInfo.orderInfo.id}>
         <div className="head">
@@ -417,7 +429,7 @@ function Orders() {
           </div>
           <div>
             <button
-              hidden={orderStatus === AuctionOrderStatus.COMPLETED || orderStatus === AuctionOrderStatus.AUCTION_END}
+              hidden={!canCancel}
               type="button"
               className="primary small yellow"
               onClick={() => cancelAuction(englishAuctionSellInfo.orderInfo.id)}
