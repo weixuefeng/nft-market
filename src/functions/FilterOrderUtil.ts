@@ -2,6 +2,7 @@ import { FilterIndex, SaleModeIndex } from '../components/Menu/SubNavMenu'
 import { NFTokenSaleType, OrderDirection, OrderStatus, TokenOrderBy } from '../entities'
 import { FILTER_START_BLOCK } from '../constant/settings'
 import { AuctionFilter } from '../components/lists/MyAuctions'
+import { BidOrderFilter } from 'pages/me/orders-buy-temp'
 
 /**
  * @author weixuefeng@diynova.com
@@ -82,7 +83,6 @@ export function getSaleModeInfo(saleModeIndex: SaleModeIndex) {
 
 export function getAskOrderFilterByTitle(title: string, account: string) {
   let where
-  console.log(`title:${title}`)
   if (title.toLowerCase() === AuctionFilter.ALL.toLowerCase()) {
     where = {
       owner: account ? account.toLowerCase() : null
@@ -110,6 +110,56 @@ export function getAskOrderFilterByTitle(title: string, account: string) {
       strategyType: NFTokenSaleType.ENGLAND_AUCTION,
       owner: account ? account.toLowerCase() : null
     }
+  }
+  return where
+}
+
+
+export function getBidOrderFilterByTitle(title: string ,account: string) {
+  let where
+  switch (title) {
+    case BidOrderFilter.ALL:
+      where = {
+        bidder: account ? account.toLocaleLowerCase() : null,
+        bidderLast: true
+      }
+      break;
+    case BidOrderFilter.BUYS:
+      where = {
+        bidder: account ? account.toLocaleLowerCase() : null,
+        bidderLast: true
+      }
+      break;
+    case BidOrderFilter.AUCTION_BID:
+      where = {
+        bidder: account ? account.toLocaleLowerCase() : null,
+        bidderLast: true
+      }
+      break;
+    case BidOrderFilter.AUCTION_ENDED:
+      where = {
+        bidder: account ? account.toLocaleLowerCase() : null,
+        bidderLast: true
+      }
+      break;
+    case BidOrderFilter.AUCTION_COMPLETED:
+      where = {
+        bidder: account ? account.toLocaleLowerCase() : null,
+        bidderLast: true
+      }
+      break
+    case BidOrderFilter.AUCTION_REQUIRED:
+      where = {
+        bidder: account ? account.toLocaleLowerCase() : null,
+        bidderLast: true
+      }
+      break
+    default:
+      where = {
+        bidder: account ? account.toLocaleLowerCase() : null,
+        bidderLast: true
+      }
+      break;
   }
   return where
 }

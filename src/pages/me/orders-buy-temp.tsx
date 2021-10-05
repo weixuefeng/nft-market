@@ -3,24 +3,69 @@ import { useTranslation } from 'react-i18next'
 import { CheckIcon, AdjustmentsIcon } from '@heroicons/react/solid'
 import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
+import { useQuery } from '@apollo/client'
+import { GET_BID_HISTORY } from 'services/queries/bidHistory'
+import { pageShowSize, pageSize, POLLING_INTERVAL } from 'constant'
+import { getBidOrderFilterByTitle } from 'functions/FilterOrderUtil'
+import { useWeb3React } from '@web3-react/core'
+import { BidderDataList } from 'entities'
+
+export enum BidOrderFilter {
+  ALL = "All",
+  AUCTION_REQUIRED = "Auction Required",
+  BUYS = "Buys",
+  AUCTION_BID = "Auction Bids",
+  AUCTION_ENDED = "Auction Ended",
+  AUCTION_COMPLETED = "Auction Completed"
+}
 
 const filterOptions = [
-  { title: 'All', current: true },
+  { title: BidOrderFilter.ALL, current: true },
   // ^ all orders
-  { title: 'Action Required', current: false },
+  { title: BidOrderFilter.AUCTION_REQUIRED, current: false },
   // ^ auction && pending claim
-  { title: 'Buys', current: false },
+  { title: BidOrderFilter.BUYS, current: false },
   // ^ buy strategy
-  { title: 'Auction Bids', current: false },
+  { title: BidOrderFilter.AUCTION_BID, current: false },
   // ^ auction strategy
-  { title: 'Auction Ended', current: false },
+  { title: BidOrderFilter.AUCTION_ENDED, current: false },
   // ^ auction && timestamp > auction end time && h.bidder not me || claim expired
-  { title: 'Auction Completed', current: false }
+  { title: BidOrderFilter.AUCTION_COMPLETED, current: false }
   // ^ auction && deal is me
 ]
 
 function Orders() {
   const [selected, setSelected] = useState(filterOptions[0])
+  const {account} = useWeb3React()
+  const [pageNumber, setPageNumber] = useState(1)
+  const [orderData, setOrderData] = useState([])
+  const [hasMore, setHasMore] = useState(true)
+
+  let where = getBidOrderFilterByTitle(selected.title, account)
+
+  const { data, error, loading, fetchMore } = useQuery<BidderDataList>(GET_BID_HISTORY, {variables: {
+      skip: 0,
+      first: pageSize,
+      orderBy: 'createdAt',
+      orderDirection: 'desc',
+      where: where,
+    },
+    fetchPolicy: 'cache-and-network',
+    pollInterval: POLLING_INTERVAL,
+    onCompleted: res => {
+      if (res.bidOrders.length > pageShowSize * pageNumber) {
+        // has more
+        res.bidOrders.pop()
+        setHasMore(true)
+        setOrderData(res.bidOrders)
+      } else {
+        setHasMore(false)
+        setOrderData(res.bidOrders)
+      }
+    }
+  })
+
+
   return (
     <>
       <div className="page-header">
