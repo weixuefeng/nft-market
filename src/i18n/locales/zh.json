@@ -3,6 +3,7 @@
   "about": "关于",
   "action": "操作",
   "all": "全部",
+  "All": "全部",
   "approve": "授权",
   "approve_NewMall_for_sale": "授权给NewMall销售",
   "approving": "授权中...",
@@ -251,5 +252,15 @@
   "Buy Orders": "我的购买",
   "Auction Bids": "拍卖竞拍",
   "ME": "我",
-  "Highest Bid": "最高出价"
+  "Highest Bid": "最高出价",
+  "Action Required": "需要操作",
+  "Buys": "购买",
+  "Auction Ended": "拍卖结束",
+  "Auction Completed": "拍卖完成",
+  "Sells": "出售",
+  "Auctions": "拍卖",
+  "Sells Completed": "销售完成",
+  "Canceled": "取消",
+  "Completed": "已完成",
+  "Active": "拍卖中"
 }

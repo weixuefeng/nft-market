@@ -20,7 +20,7 @@ import { useRouter } from 'next/router'
 
 export enum BidOrderFilter {
   ALL = 'All',
-  AUCTION_REQUIRED = 'Auction Required',
+  AUCTION_REQUIRED = 'Action Required',
   BUYS = 'Buys',
   AUCTION_BID = 'Auction Bids',
   AUCTION_ENDED = 'Auction Ended',
