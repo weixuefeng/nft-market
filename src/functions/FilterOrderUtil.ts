@@ -1,16 +1,15 @@
-import { FilterIndex, SaleModeIndex } from '../components/Menu/SubNavMenu'
-import { NFTokenSaleType, OrderDirection, OrderStatus, TokenOrderBy } from '../entities'
-import { FILTER_START_BLOCK } from '../constant/settings'
-import { BidOrderFilter } from 'pages/me/BuyOrder'
-import { AuctionFilter } from '../pages/me/SellOrder'
-import { log } from 'util'
-
 /**
  * @author weixuefeng@diynova.com
  * @time  2021/9/17 2:46 下午
  * @description:
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
+import { FilterIndex, SaleModeIndex } from '../components/Menu/SubNavMenu'
+import { NFTokenSaleType, OrderDirection, OrderStatus, TokenOrderBy } from '../entities'
+import { FILTER_START_BLOCK } from '../constant/settings'
+import { BidOrderFilter } from 'pages/me/BuyOrder'
+import { AuctionFilter } from '../pages/me/SellOrder'
+
 
 export function getOrderInfo(filterIndex: FilterIndex) {
   let orderBy, orderDirection
