@@ -246,8 +246,6 @@ function Orders() {
     return sellInfo
   }
 
-
-
   function cancelAuction(askOrderHash: string) {
     transactor(exchangeContract.cancelByHash(askOrderHash), t, () => {})
   }
@@ -337,8 +335,6 @@ function Orders() {
       </li>
     )
   }
-
-
 
   function checkAuctionCanCancel(orderInfo: AskOrder) {
     const now = Date.now() / 1000

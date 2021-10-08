@@ -13,17 +13,18 @@ import { hexAddress2NewAddress } from '../../utils/NewChainUtils'
 import { TARGET_CHAINID } from '../../constant/settings'
 import { formatEther } from 'ethers/lib/utils'
 import { DateTime, RelativeTimeLocale } from '../../functions/DateTime'
-import { useTokenDescription } from '../../hooks/useTokenDescription'
 import { getNftDetailPath, splitTx } from '../../functions'
-import { parseEther } from '@ethersproject/units'
+import transactor from '../../functions/Transactor'
+import { useNFTExchangeContract } from '../../hooks/useContract'
+import { useRouter } from 'next/router'
 
 export enum BidOrderFilter {
-  ALL = "All",
-  AUCTION_REQUIRED = "Auction Required",
-  BUYS = "Buys",
-  AUCTION_BID = "Auction Bids",
-  AUCTION_ENDED = "Auction Ended",
-  AUCTION_COMPLETED = "Auction Completed"
+  ALL = 'All',
+  AUCTION_REQUIRED = 'Auction Required',
+  BUYS = 'Buys',
+  AUCTION_BID = 'Auction Bids',
+  AUCTION_ENDED = 'Auction Ended',
+  AUCTION_COMPLETED = 'Auction Completed'
 }
 
 class BidOrderInfo {
@@ -60,6 +61,7 @@ class EnglishAuctionBidInfo extends BidOrderInfo {
   endTime: number
   startPrice: string
   numBids: number
+  actionButton: JSX.Element
 }
 
 const filterOptions = [
@@ -78,28 +80,31 @@ const filterOptions = [
 ]
 
 function Orders() {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const [selected, setSelected] = useState(filterOptions[0])
-  const {account} = useWeb3React()
+  const { account } = useWeb3React()
   const [pageNumber, setPageNumber] = useState(1)
   const [orderData, setOrderData] = useState([])
   const [hasMore, setHasMore] = useState(true)
+  const exchangeContract = useNFTExchangeContract()
+  const router = useRouter()
 
   let where = getBidOrderFilterByTitle(selected.title, account)
 
-  const { data, error, loading, fetchMore } = useQuery<BidderDataList>(GET_BID_HISTORY, {variables: {
+  const { data, error, loading, fetchMore } = useQuery<BidderDataList>(GET_BID_HISTORY, {
+    variables: {
       skip: 0,
       first: pageSize,
       orderBy: 'createdAt',
       orderDirection: 'desc',
-      where: where,
+      where: where
     },
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL,
     onCompleted: res => {
       if (res.bidOrders.length > pageShowSize * pageNumber) {
         // has more
-        res.bidOrders.pop()
+        // res.bidOrders.pop()
         setHasMore(true)
         setOrderData(res.bidOrders)
       } else {
@@ -108,8 +113,6 @@ function Orders() {
       }
     }
   })
-
-
 
   function DirectBidCard(props) {
     const { bidOrderInfo } = props
@@ -126,7 +129,7 @@ function Orders() {
         </div>
 
         <div className="main">
-          <TokenInfoCard orderInfo={directBidOrderInfo.orderInfo.askOrder}/>
+          <TokenInfoCard orderInfo={directBidOrderInfo.orderInfo.askOrder} />
 
           <div className="info">
             <dl>
@@ -262,16 +265,31 @@ function Orders() {
             <div className="price">{englishAuctionBidInfo.priceInfo}</div>
             <div className="label">{englishAuctionBidInfo.subPriceInfo}</div>
           </div>
-          <div></div>
+          <div>{englishAuctionBidInfo.actionButton}</div>
         </div>
       </li>
     )
   }
 
+  function claimItem(orderInfo) {
+    const askOrderHash = orderInfo.askOrder.id
+    const override = {
+      value: orderInfo.price
+    }
+    transactor(exchangeContract.claimByHash(askOrderHash, override), t, () => {
+      console.log()
+    })
+  }
+
+  function makeBid(orderInfo) {
+    const path = getNftDetailPath(orderInfo.askOrder.token.id)
+    router.push(path)
+  }
+
   function parseBidOrderInfo(orderInfo: BidOrder): BidOrderInfo {
     const now = Date.now() / 1000
     let bidOrderInfo
-    if(orderInfo.strategyType === NFTokenSaleType.DIRECT_SALE) {
+    if (orderInfo.strategyType === NFTokenSaleType.DIRECT_SALE) {
       bidOrderInfo = new DirectBidInfo(orderInfo)
       bidOrderInfo.saleTime = orderInfo.createdAt
       bidOrderInfo.priceTitle = t('price')
@@ -287,7 +305,7 @@ function Orders() {
       bidOrderInfo.sellDetail.txTime = DateTime(orderInfo.createdAt)
 
       // parse english bid info
-    } else if(orderInfo.strategyType === NFTokenSaleType.ENGLAND_AUCTION) {
+    } else if (orderInfo.strategyType === NFTokenSaleType.ENGLAND_AUCTION) {
       bidOrderInfo = new EnglishAuctionBidInfo(orderInfo)
       bidOrderInfo.actionTitle = t('auction bid')
       bidOrderInfo.priceTitle = t('my bid')
@@ -298,13 +316,31 @@ function Orders() {
       bidOrderInfo.endTime = DateTime(orderInfo.deadline)
       bidOrderInfo.duration = RelativeTimeLocale(orderInfo.deadline - orderInfo.createdAt)
       bidOrderInfo.numBids = orderInfo.askOrder.numBids
-      bidOrderInfo.subPriceInfo = `Highest Bid: ${formatEther(orderInfo.askOrder.bestPrice + '') + cSymbol()}`
+
+      const isHigher = orderInfo.price === orderInfo.askOrder.bestPrice
+      bidOrderInfo.subPriceInfo = `Highest Bid: ${isHigher ? 'ME/' : ''} ${
+        formatEther(orderInfo.askOrder.bestPrice + '') + cSymbol()
+      }`
       if (orderInfo.askOrder.status.valueOf() === OrderStatus.NORMAL) {
         // activeTitle = ends in xxx
         if (orderInfo.deadline > now) {
           bidOrderInfo.activeTitle = `${t('ends in s1')} ${DateTime(orderInfo.deadline)}`
+          if (!isHigher) {
+            bidOrderInfo.actionButton = (
+              <button type="button" className="primary small yellow" onClick={() => makeBid(orderInfo)}>
+                {t('raise bid')}
+              </button>
+            )
+          }
         } else if (orderInfo.deadline <= now && orderInfo.claimDeadline > now) {
           bidOrderInfo.activeTitle = 'claim ends in: ' + DateTime(orderInfo.claimDeadline)
+          if (isHigher) {
+            bidOrderInfo.actionButton = (
+              <button type="button" className="primary small green" onClick={() => claimItem(orderInfo)}>
+                {t('claim item')}
+              </button>
+            )
+          }
         } else {
           bidOrderInfo.activeTitle = t('expired')
         }
@@ -315,7 +351,6 @@ function Orders() {
       } else {
         bidOrderInfo.activeTitle = t('canceled')
       }
-
     } else {
       console.log(`not match sale type: ${orderInfo.strategyType}`)
     }
@@ -336,10 +371,15 @@ function Orders() {
 
       <section>
         <ul className="list orders">
-          {orderData.map(orderInfo => parseBidOrderInfo(orderInfo))
-            .map(bidOrderInfo => bidOrderInfo.sellType === NFTokenSaleType.DIRECT_SALE ?
-              (<DirectBidCard bidOrderInfo={bidOrderInfo}/>) : <EnglishAuctionBidCard bidOrderInfo={bidOrderInfo}/>)
-          }
+          {orderData
+            .map(orderInfo => parseBidOrderInfo(orderInfo))
+            .map(bidOrderInfo =>
+              bidOrderInfo.sellType === NFTokenSaleType.DIRECT_SALE ? (
+                <DirectBidCard bidOrderInfo={bidOrderInfo} />
+              ) : (
+                <EnglishAuctionBidCard bidOrderInfo={bidOrderInfo} />
+              )
+            )}
         </ul>
         <button className="tertiary outline small">load more</button>
       </section>

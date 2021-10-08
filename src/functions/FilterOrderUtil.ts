@@ -114,8 +114,7 @@ export function getAskOrderFilterByTitle(title: string, account: string) {
   return where
 }
 
-
-export function getBidOrderFilterByTitle(title: string ,account: string) {
+export function getBidOrderFilterByTitle(title: string, account: string) {
   let where
   switch (title) {
     case BidOrderFilter.ALL:
@@ -123,25 +122,25 @@ export function getBidOrderFilterByTitle(title: string ,account: string) {
         bidder: account ? account.toLocaleLowerCase() : null,
         bidderLast: true
       }
-      break;
+      break
     case BidOrderFilter.BUYS:
       where = {
         bidder: account ? account.toLocaleLowerCase() : null,
         bidderLast: true
       }
-      break;
+      break
     case BidOrderFilter.AUCTION_BID:
       where = {
         bidder: account ? account.toLocaleLowerCase() : null,
         bidderLast: true
       }
-      break;
+      break
     case BidOrderFilter.AUCTION_ENDED:
       where = {
         bidder: account ? account.toLocaleLowerCase() : null,
         bidderLast: true
       }
-      break;
+      break
     case BidOrderFilter.AUCTION_COMPLETED:
       where = {
         bidder: account ? account.toLocaleLowerCase() : null,
@@ -159,7 +158,7 @@ export function getBidOrderFilterByTitle(title: string ,account: string) {
         bidder: account ? account.toLocaleLowerCase() : null,
         bidderLast: true
       }
-      break;
+      break
   }
   return where
 }
