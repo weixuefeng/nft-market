@@ -7,14 +7,15 @@ import { GET_BID_HISTORY } from 'services/queries/bidHistory'
 import { cSymbol, pageShowSize, pageSize, POLLING_INTERVAL } from 'constant'
 import { getBidOrderFilterByTitle } from 'functions/FilterOrderUtil'
 import { useWeb3React } from '@web3-react/core'
-import { BidderDataList, BidOrder, NFTokenSaleType } from 'entities'
+import { BidderDataList, BidOrder, NFTokenSaleType, OrderStatus } from 'entities'
 import { getAuctionActiveStyle, getAuctionStatus, SellDetail, TokenInfoCard } from './orders-listing'
 import { hexAddress2NewAddress } from '../../utils/NewChainUtils'
 import { TARGET_CHAINID } from '../../constant/settings'
 import { formatEther } from 'ethers/lib/utils'
-import { DateTime } from '../../functions/DateTime'
+import { DateTime, RelativeTimeLocale } from '../../functions/DateTime'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
 import { getNftDetailPath, splitTx } from '../../functions'
+import { parseEther } from '@ethersproject/units'
 
 export enum BidOrderFilter {
   ALL = "All",
@@ -292,13 +293,34 @@ function Orders() {
       bidOrderInfo.priceTitle = t('my bid')
       bidOrderInfo.priceInfo = formatEther(orderInfo.price + '') + cSymbol()
       // listing detail
+      bidOrderInfo.startPrice = formatEther(orderInfo.askOrder.startPrice + '') + cSymbol()
+      bidOrderInfo.startTime = DateTime(orderInfo.askOrder.createdAt)
+      bidOrderInfo.endTime = DateTime(orderInfo.deadline)
+      bidOrderInfo.duration = RelativeTimeLocale(orderInfo.deadline - orderInfo.createdAt)
+      bidOrderInfo.numBids = orderInfo.askOrder.numBids
+      bidOrderInfo.subPriceInfo = `Highest Bid: ${formatEther(orderInfo.askOrder.bestPrice + '') + cSymbol()}`
+      if (orderInfo.askOrder.status.valueOf() === OrderStatus.NORMAL) {
+        // activeTitle = ends in xxx
+        if (orderInfo.deadline > now) {
+          bidOrderInfo.activeTitle = `${t('ends in s1')} ${DateTime(orderInfo.deadline)}`
+        } else if (orderInfo.deadline <= now && orderInfo.claimDeadline > now) {
+          bidOrderInfo.activeTitle = 'claim ends in: ' + DateTime(orderInfo.claimDeadline)
+        } else {
+          bidOrderInfo.activeTitle = t('expired')
+        }
+      } else if (orderInfo.askOrder.status.valueOf() === OrderStatus.COMPLETED) {
+        bidOrderInfo.activeTitle = t('completed')
+        bidOrderInfo.sellDetail.payer = hexAddress2NewAddress(orderInfo.askOrder.finalBidder.id, TARGET_CHAINID)
+        bidOrderInfo.sellDetail.txTime = orderInfo.createdAt
+      } else {
+        bidOrderInfo.activeTitle = t('canceled')
+      }
 
     } else {
       console.log(`not match sale type: ${orderInfo.strategyType}`)
     }
     return bidOrderInfo
   }
-
 
   return (
     <>

@@ -17,6 +17,8 @@ export const GET_BID_HISTORY = gql(`
       auctionBestBid
       askOrder {
         deadline
+        createdAt
+        startPrice
         id
         numBids
         finalTx
@@ -31,7 +33,7 @@ export const GET_BID_HISTORY = gql(`
         }
         price
         finalBidder {
-          id        
+          id
         }
       }
       bidder {
