@@ -316,7 +316,7 @@ function BuyOrder() {
       // parse english bid info
     } else if (orderInfo.strategyType === NFTokenSaleType.ENGLAND_AUCTION) {
       bidOrderInfo = new EnglishAuctionBidInfo(orderInfo)
-      bidOrderInfo.actionTitle = t('auction bid')
+      bidOrderInfo.actionTitle = t('Auction Bids')
       bidOrderInfo.priceTitle = t('my bid')
       bidOrderInfo.priceInfo = formatEther(orderInfo.price + '') + cSymbol()
       // listing detail
@@ -327,7 +327,7 @@ function BuyOrder() {
       bidOrderInfo.numBids = orderInfo.askOrder.numBids
 
       const isHigher = orderInfo.price === orderInfo.askOrder.bestPrice
-      bidOrderInfo.subPriceInfo = `Highest Bid: ${isHigher ? 'ME/' : ''} ${
+      bidOrderInfo.subPriceInfo = `${t('Highest Bid')}: ${isHigher ? t('ME') + ' / ' : ''} ${
         formatEther(orderInfo.askOrder.bestPrice + '') + cSymbol()
       }`
       if (orderInfo.askOrder.status.valueOf() === OrderStatus.NORMAL) {

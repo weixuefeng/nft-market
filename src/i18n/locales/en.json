@@ -248,5 +248,7 @@
   "active": "Active",
   "completed": "Completed",
   "Sell Orders": "Sell Orders",
-  "Buy Orders": "Buy Orders"
+  "Buy Orders": "Buy Orders",
+  "Auction Bids": "Auction Bids",
+  "ME": "ME"
 }
