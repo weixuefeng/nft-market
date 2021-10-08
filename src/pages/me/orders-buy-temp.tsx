@@ -1,14 +1,20 @@
-import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import { CheckIcon, AdjustmentsIcon } from '@heroicons/react/solid'
+import { AdjustmentsIcon, CheckIcon } from '@heroicons/react/solid'
 import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { useQuery } from '@apollo/client'
 import { GET_BID_HISTORY } from 'services/queries/bidHistory'
-import { pageShowSize, pageSize, POLLING_INTERVAL } from 'constant'
+import { cSymbol, pageShowSize, pageSize, POLLING_INTERVAL } from 'constant'
 import { getBidOrderFilterByTitle } from 'functions/FilterOrderUtil'
 import { useWeb3React } from '@web3-react/core'
-import { BidderDataList } from 'entities'
+import { BidderDataList, BidOrder, NFTokenSaleType } from 'entities'
+import { getAuctionActiveStyle, getAuctionStatus, SellDetail, TokenInfoCard } from './orders-listing'
+import { hexAddress2NewAddress } from '../../utils/NewChainUtils'
+import { TARGET_CHAINID } from '../../constant/settings'
+import { formatEther } from 'ethers/lib/utils'
+import { DateTime } from '../../functions/DateTime'
+import { useTokenDescription } from '../../hooks/useTokenDescription'
+import { getNftDetailPath, splitTx } from '../../functions'
 
 export enum BidOrderFilter {
   ALL = "All",
@@ -17,6 +23,42 @@ export enum BidOrderFilter {
   AUCTION_BID = "Auction Bids",
   AUCTION_ENDED = "Auction Ended",
   AUCTION_COMPLETED = "Auction Completed"
+}
+
+class BidOrderInfo {
+  orderInfo: BidOrder
+  actionTitle: string
+  activeTitle: string
+  priceTitle: string
+  priceInfo: string
+  subPriceInfo: string
+  sellDetail: SellDetail
+  sellType: NFTokenSaleType
+}
+
+class DirectBidInfo extends BidOrderInfo {
+  constructor(orderInfo: BidOrder) {
+    super()
+    this.orderInfo = orderInfo
+    this.sellType = NFTokenSaleType.DIRECT_SALE
+    this.sellDetail = new SellDetail()
+  }
+  saleTime: number
+  salePrice: string
+}
+
+class EnglishAuctionBidInfo extends BidOrderInfo {
+  constructor(orderInfo: BidOrder) {
+    super()
+    this.orderInfo = orderInfo
+    this.sellDetail = new SellDetail()
+    this.sellType = NFTokenSaleType.ENGLAND_AUCTION
+  }
+  duration: string
+  startTime: number
+  endTime: number
+  startPrice: string
+  numBids: number
 }
 
 const filterOptions = [
@@ -35,6 +77,7 @@ const filterOptions = [
 ]
 
 function Orders() {
+  const {t} = useTranslation()
   const [selected, setSelected] = useState(filterOptions[0])
   const {account} = useWeb3React()
   const [pageNumber, setPageNumber] = useState(1)
@@ -66,6 +109,197 @@ function Orders() {
   })
 
 
+
+  function DirectBidCard(props) {
+    const { bidOrderInfo } = props
+    const [directBidOrderInfo, setDirectBidOrderInfo] = useState<DirectBidInfo>(bidOrderInfo)
+    return (
+      <li key={directBidOrderInfo.orderInfo.id}>
+        <div className="head">
+          <div className="type">
+            <span>{directBidOrderInfo.actionTitle}</span>
+          </div>
+          <div className="extra">
+            <span className="green">{directBidOrderInfo.activeTitle}</span>
+          </div>
+        </div>
+
+        <div className="main">
+          <TokenInfoCard orderInfo={directBidOrderInfo.orderInfo.askOrder}/>
+
+          <div className="info">
+            <dl>
+              <div>
+                <dt>{t('Listing Detail')}</dt>
+                <dd>
+                  <div>
+                    <dt>{t('sale time')}</dt>
+                    <dd>{DateTime(directBidOrderInfo.saleTime)}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('sale price')}</dt>
+                    <dd>{directBidOrderInfo.salePrice}</dd>
+                  </div>
+                </dd>
+              </div>
+              <div>
+                <dt>{t('Deal Detail')}</dt>
+                <dd>
+                  <div>
+                    <dt>{t('payee')}</dt>
+                    <dd>{splitTx(directBidOrderInfo.sellDetail.payee)}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('payer')}</dt>
+                    <dd>{splitTx(directBidOrderInfo.sellDetail.payer)}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('item from')}</dt>
+                    <dd>{splitTx(directBidOrderInfo.sellDetail.itemFrom)}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('item to')}</dt>
+                    <dd>{splitTx(directBidOrderInfo.sellDetail.itemTo)}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('tx_time')}</dt>
+                    <dd>{directBidOrderInfo.sellDetail.txTime}</dd>
+                  </div>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+        <div className="footer">
+          <div>
+            <div className="label">{directBidOrderInfo.priceTitle}</div>
+            <div className="price">{directBidOrderInfo.priceInfo}</div>
+          </div>
+          <div></div>
+        </div>
+      </li>
+    )
+  }
+
+  function EnglishAuctionBidCard(props) {
+    const { bidOrderInfo } = props
+    const [englishAuctionBidInfo, setEnglishAuctionBidInfo] = useState<EnglishAuctionBidInfo>(bidOrderInfo)
+    const orderStatus = getAuctionStatus(englishAuctionBidInfo.orderInfo.askOrder)
+    const activeStyle = getAuctionActiveStyle(orderStatus)
+
+    return (
+      <li>
+        <div className="head">
+          <div className="type">
+            <span>{englishAuctionBidInfo.actionTitle}</span>
+          </div>
+          <div className="extra">
+            <span className={activeStyle}>{englishAuctionBidInfo.activeTitle}</span>
+          </div>
+        </div>
+
+        <div className="main">
+          <TokenInfoCard orderInfo={englishAuctionBidInfo.orderInfo.askOrder} />
+          <div className="info">
+            <dl>
+              <div>
+                <dt>{t('Listing Detail')}</dt>
+                <dd>
+                  <div>
+                    <dt>{t('Duration')}</dt>
+                    <dd>{englishAuctionBidInfo.duration}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('start time')}</dt>
+                    <dd>{englishAuctionBidInfo.startTime}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('end time')}</dt>
+                    <dd>{englishAuctionBidInfo.endTime}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('starting price')}</dt>
+                    <dd>{englishAuctionBidInfo.startPrice}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('numBids')}</dt>
+                    <dd>{englishAuctionBidInfo.numBids}</dd>
+                  </div>
+                </dd>
+              </div>
+              <div>
+                <dt>{t('Deal Detail')}</dt>
+                <dd>
+                  <div>
+                    <dt>{t('payee')}</dt>
+                    <dd>{splitTx(englishAuctionBidInfo.sellDetail.payee)}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('payer')}</dt>
+                    <dd>{splitTx(englishAuctionBidInfo.sellDetail.payer)}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('item from')}</dt>
+                    <dd>{englishAuctionBidInfo.sellDetail.itemFrom}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('item to')}</dt>
+                    <dd>{englishAuctionBidInfo.sellDetail.itemTo}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('tx_time')}</dt>
+                    <dd>{englishAuctionBidInfo.sellDetail.txTime}</dd>
+                  </div>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+        <div className="footer">
+          <div>
+            <div className="label">{englishAuctionBidInfo.priceTitle}</div>
+            <div className="price">{englishAuctionBidInfo.priceInfo}</div>
+            <div className="label">{englishAuctionBidInfo.subPriceInfo}</div>
+          </div>
+          <div></div>
+        </div>
+      </li>
+    )
+  }
+
+  function parseBidOrderInfo(orderInfo: BidOrder): BidOrderInfo {
+    const now = Date.now() / 1000
+    let bidOrderInfo
+    if(orderInfo.strategyType === NFTokenSaleType.DIRECT_SALE) {
+      bidOrderInfo = new DirectBidInfo(orderInfo)
+      bidOrderInfo.saleTime = orderInfo.createdAt
+      bidOrderInfo.priceTitle = t('price')
+      bidOrderInfo.actionTitle = t('buy')
+      bidOrderInfo.salePrice = formatEther(orderInfo.price + '') + cSymbol()
+      bidOrderInfo.priceInfo = bidOrderInfo.salePrice
+      bidOrderInfo.activeTitle = t('completed')
+      bidOrderInfo.sellDetail.payer = hexAddress2NewAddress(account, TARGET_CHAINID)
+      // todo: check payee, item from, it's owner
+      bidOrderInfo.sellDetail.payee = hexAddress2NewAddress(account, TARGET_CHAINID)
+      bidOrderInfo.sellDetail.itemFrom = hexAddress2NewAddress(account, TARGET_CHAINID)
+      bidOrderInfo.sellDetail.itemTo = hexAddress2NewAddress(account, TARGET_CHAINID)
+      bidOrderInfo.sellDetail.txTime = DateTime(orderInfo.createdAt)
+
+      // parse english bid info
+    } else if(orderInfo.strategyType === NFTokenSaleType.ENGLAND_AUCTION) {
+      bidOrderInfo = new EnglishAuctionBidInfo(orderInfo)
+      bidOrderInfo.actionTitle = t('auction bid')
+      bidOrderInfo.priceTitle = t('my bid')
+      bidOrderInfo.priceInfo = formatEther(orderInfo.price + '') + cSymbol()
+      // listing detail
+
+    } else {
+      console.log(`not match sale type: ${orderInfo.strategyType}`)
+    }
+    return bidOrderInfo
+  }
+
+
   return (
     <>
       <div className="page-header">
@@ -80,522 +314,10 @@ function Orders() {
 
       <section>
         <ul className="list orders">
-          <li>
-            <div className="head">
-              <div className="type">
-                <span>Buy</span>
-              </div>
-              <div className="extra">
-                <span className="green">Completed</span>
-              </div>
-            </div>
-
-            <div className="main">
-              <a href="#">
-                <div>
-                  <img src="https://source.unsplash.com/random/200x200" />
-                </div>
-
-                <div>
-                  <h3>Token Name Token Name Token Name Token Name Token Name Token Name Token Name</h3>
-                  <p>Contract Name (#ID)</p>
-                </div>
-              </a>
-
-              <div className="info">
-                <dl>
-                  <div>
-                    <dt>Listing Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Time</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>Price</dt>
-                        <dd>123,123.00 NEW</dd>
-                      </div>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Deal Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Payee</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Payer</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Item From</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Item To</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Txn Time</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-            <div className="footer">
-              <div>
-                <div className="label">Price</div>
-                <div className="price">123,123 NEW</div>
-              </div>
-              <div></div>
-            </div>
-          </li>
-
-          <li>
-            <div className="head">
-              <div className="type">
-                <span>Auction Bid</span>
-              </div>
-              <div className="extra">
-                <span>Ends in #D #H #M #S</span>
-              </div>
-            </div>
-
-            <div className="main">
-              <a href="#">
-                <div>
-                  <img src="https://source.unsplash.com/random/200x200" />
-                </div>
-
-                <div>
-                  <h3>Token Name Token Name Token Name Token Name Token Name Token Name Token Name</h3>
-                  <p>Contract Name (#ID)</p>
-                </div>
-              </a>
-
-              <div className="info">
-                <dl>
-                  <div>
-                    <dt>Listing Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Duration</dt>
-                        <dd>#D #H #M #S</dd>
-                      </div>
-                      <div>
-                        <dt>Start</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>End</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>Starting</dt>
-                        <dd>123,123.00 NEW</dd>
-                      </div>
-                      <div>
-                        <dt>No. Bids</dt>
-                        <dd>12</dd>
-                      </div>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Deal Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Payee</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Payer</dt>
-                        <dd>-</dd>
-                      </div>
-                      <div>
-                        <dt>Item From</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Item To</dt>
-                        <dd>-</dd>
-                      </div>
-                      <div>
-                        <dt>Txn Time</dt>
-                        <dd>-</dd>
-                      </div>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-            <div className="footer">
-              <div>
-                <div className="label">My Bid</div>
-                <div className="price">123,123 NEW</div>
-                <div className="label">Highest Bid: Me / 123,123 NEW</div>
-              </div>
-              <div></div>
-            </div>
-          </li>
-
-          <li>
-            <div className="head">
-              <div className="type">
-                <span>Auction Bid</span>
-              </div>
-              <div className="extra">
-                <span>Ends in #D #H #M #S</span>
-              </div>
-            </div>
-
-            <div className="main">
-              <a href="#">
-                <div>
-                  <img src="https://source.unsplash.com/random/200x200" />
-                </div>
-
-                <div>
-                  <h3>Token Name Token Name Token Name Token Name Token Name Token Name Token Name</h3>
-                  <p>Contract Name (#ID)</p>
-                </div>
-              </a>
-
-              <div className="info">
-                <dl>
-                  <div>
-                    <dt>Listing Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Duration</dt>
-                        <dd>#D #H #M #S</dd>
-                      </div>
-                      <div>
-                        <dt>Start</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>End</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>Starting</dt>
-                        <dd>123,123.00 NEW</dd>
-                      </div>
-                      <div>
-                        <dt>No. Bids</dt>
-                        <dd>12</dd>
-                      </div>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Deal Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Payee</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Payer</dt>
-                        <dd>-</dd>
-                      </div>
-                      <div>
-                        <dt>Item From</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Item To</dt>
-                        <dd>-</dd>
-                      </div>
-                      <div>
-                        <dt>Txn Time</dt>
-                        <dd>-</dd>
-                      </div>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-            <div className="footer">
-              <div>
-                <div className="label">My Bid</div>
-                <div className="price">123,123 NEW</div>
-                <div className="label red">Highest Bid: 123,123 NEW</div>
-              </div>
-              <div>
-                <button type="button" className="primary small yellow">
-                  Raise Bid
-                </button>
-              </div>
-            </div>
-          </li>
-
-          <li>
-            <div className="head">
-              <div className="type">
-                <span>Auction Bid</span>
-              </div>
-              <div className="extra">
-                <span className="red">Claim expires in #D #H #M #S</span>
-              </div>
-            </div>
-
-            <div className="main">
-              <a href="#">
-                <div>
-                  <img src="https://source.unsplash.com/random/200x200" />
-                </div>
-
-                <div>
-                  <h3>Token Name Token Name Token Name Token Name Token Name Token Name Token Name</h3>
-                  <p>Contract Name (#ID)</p>
-                </div>
-              </a>
-
-              <div className="info">
-                <dl>
-                  <div>
-                    <dt>Listing Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Duration</dt>
-                        <dd>#D #H #M #S</dd>
-                      </div>
-                      <div>
-                        <dt>Start</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>End</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>Starting</dt>
-                        <dd>123,123.00 NEW</dd>
-                      </div>
-                      <div>
-                        <dt>No. Bids</dt>
-                        <dd>12</dd>
-                      </div>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Deal Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Payee</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Payer</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Item From</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Item To</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Txn Time</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-            <div className="footer">
-              <div>
-                <div className="label">My Bid</div>
-                <div className="price">123,123 NEW</div>
-                <div className="label">Highest Bid: Me / 123,123 NEW</div>
-              </div>
-              <div>
-                <button type="button" className="primary small green">
-                  Claim Item
-                </button>
-              </div>
-            </div>
-          </li>
-
-          <li>
-            <div className="head">
-              <div className="type">
-                <span>Auction Bid</span>
-              </div>
-              <div className="extra">
-                <span>Ended</span>
-              </div>
-            </div>
-
-            <div className="main">
-              <a href="#">
-                <div>
-                  <img src="https://source.unsplash.com/random/200x200" />
-                </div>
-
-                <div>
-                  <h3>Token Name Token Name Token Name Token Name Token Name Token Name Token Name</h3>
-                  <p>Contract Name (#ID)</p>
-                </div>
-              </a>
-
-              <div className="info">
-                <dl>
-                  <div>
-                    <dt>Listing Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Duration</dt>
-                        <dd>#D #H #M #S</dd>
-                      </div>
-                      <div>
-                        <dt>Start</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>End</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>Starting</dt>
-                        <dd>123,123.00 NEW</dd>
-                      </div>
-                      <div>
-                        <dt>No. Bids</dt>
-                        <dd>12</dd>
-                      </div>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Deal Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Payee</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Payer</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Item From</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Item To</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Txn Time</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-            <div className="footer">
-              <div>
-                <div className="label">My Bid</div>
-                <div className="price">123,123 NEW</div>
-                <div className="label">Highest Bid: 123,123 NEW</div>
-              </div>
-              <div></div>
-            </div>
-          </li>
-
-          <li>
-            <div className="head">
-              <div className="type">
-                <span>Auction Bid</span>
-              </div>
-              <div className="extra">
-                <span className="green">Completed</span>
-              </div>
-            </div>
-
-            <div className="main">
-              <a href="#">
-                <div>
-                  <img src="https://source.unsplash.com/random/200x200" />
-                </div>
-
-                <div>
-                  <h3>Token Name Token Name Token Name Token Name Token Name Token Name Token Name</h3>
-                  <p>Contract Name (#ID)</p>
-                </div>
-              </a>
-
-              <div className="info">
-                <dl>
-                  <div>
-                    <dt>Listing Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Duration</dt>
-                        <dd>#D #H #M #S</dd>
-                      </div>
-                      <div>
-                        <dt>Start</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>End</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                      <div>
-                        <dt>Starting</dt>
-                        <dd>123,123.00 NEW</dd>
-                      </div>
-                      <div>
-                        <dt>No. Bids</dt>
-                        <dd>12</dd>
-                      </div>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Deal Detail</dt>
-                    <dd>
-                      <div>
-                        <dt>Payee</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Payer</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Item From</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Item To</dt>
-                        <dd>NEW123...1234</dd>
-                      </div>
-                      <div>
-                        <dt>Txn Time</dt>
-                        <dd>1111-11-11 11:11:11</dd>
-                      </div>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-            <div className="footer">
-              <div>
-                <div className="label">My Bid</div>
-                <div className="price">123,123 NEW</div>
-                <div className="label">Highest Bid: Me / 123,123 NEW</div>
-              </div>
-              <div></div>
-            </div>
-          </li>
+          {orderData.map(orderInfo => parseBidOrderInfo(orderInfo))
+            .map(bidOrderInfo => bidOrderInfo.sellType === NFTokenSaleType.DIRECT_SALE ?
+              (<DirectBidCard bidOrderInfo={bidOrderInfo}/>) : <EnglishAuctionBidCard bidOrderInfo={bidOrderInfo}/>)
+          }
         </ul>
         <button className="tertiary outline small">load more</button>
       </section>

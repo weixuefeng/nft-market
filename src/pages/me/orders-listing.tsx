@@ -24,7 +24,7 @@ import { getNftDetailPath, splitTx } from '../../functions'
 import transactor from '../../functions/Transactor'
 import { useNFTExchangeContract } from '../../hooks/useContract'
 
-class SellDetail {
+export class SellDetail {
   payee: string = '-'
   payer: string = '-'
   itemFrom: string = '-'
@@ -80,6 +80,58 @@ const filterOptions = [
   // ^ canceled
 ]
 
+export function TokenInfoCard(props) {
+  const { orderInfo } = props
+  const tokenMetaData = useTokenDescription(orderInfo.token.uri)
+  return (
+    <a href={getNftDetailPath(orderInfo.token.id)}>
+      <div>
+        <img src={tokenMetaData.tokenImage} />
+      </div>
+      <div>
+        <h3>{tokenMetaData.tokenName}</h3>
+        <p>
+          {tokenMetaData.tokenName} #{orderInfo.token.tokenId}
+        </p>
+      </div>
+    </a>
+  )
+}
+
+export function getAuctionStatus(askOrder: AskOrder): AuctionOrderStatus {
+  const now = Date.now()
+  if (askOrder.status === OrderStatus.COMPLETED) {
+    return AuctionOrderStatus.COMPLETED
+  } else if (askOrder.status === OrderStatus.CANCELED) {
+    return AuctionOrderStatus.CANCELED
+  }
+  // normal.
+  if (now > askOrder.deadline) {
+    return AuctionOrderStatus.NORMAL
+  } else if (askOrder.deadline >= now && now < askOrder.claimDeadline) {
+    return AuctionOrderStatus.AUCTION_END
+  } else if (now >= askOrder.claimDeadline) {
+    return AuctionOrderStatus.CLAIM_EXPIRED
+  }
+  return AuctionOrderStatus.NORMAL
+}
+
+export function getAuctionActiveStyle(orderStatus: AuctionOrderStatus) {
+  switch (orderStatus) {
+    case AuctionOrderStatus.NORMAL:
+      return ''
+    case AuctionOrderStatus.AUCTION_END:
+      return 'red'
+    case AuctionOrderStatus.CLAIM_EXPIRED:
+      return ''
+    case AuctionOrderStatus.CANCELED:
+      return 'gray'
+    case AuctionOrderStatus.COMPLETED:
+      return 'green'
+    default:
+      return ''
+  }
+}
 function Orders() {
   const { t } = useTranslation()
   const [selected, setSelected] = useState(filterOptions[0])
@@ -149,7 +201,6 @@ function Orders() {
       } else {
         sellInfo.activeTitle = t('canceled')
       }
-
       // parse english auction info
     } else if (orderInfo.strategyType === NFTokenSaleType.ENGLAND_AUCTION) {
       sellInfo = new EnglishAuctionSellInfo()
@@ -195,23 +246,7 @@ function Orders() {
     return sellInfo
   }
 
-  function TokenInfoCard(props) {
-    const { orderInfo } = props
-    const tokenMetaData = useTokenDescription(orderInfo.token.uri)
-    return (
-      <a href={getNftDetailPath(orderInfo.token.id)}>
-        <div>
-          <img src={tokenMetaData.tokenImage} />
-        </div>
-        <div>
-          <h3>{tokenMetaData.tokenName}</h3>
-          <p>
-            {tokenMetaData.tokenName} #{orderInfo.token.tokenId}
-          </p>
-        </div>
-      </a>
-    )
-  }
+
 
   function cancelAuction(askOrderHash: string) {
     transactor(exchangeContract.cancelByHash(askOrderHash), t, () => {})
@@ -303,40 +338,7 @@ function Orders() {
     )
   }
 
-  function getAuctionStatus(askOrder: AskOrder): AuctionOrderStatus {
-    const now = Date.now()
-    if (askOrder.status === OrderStatus.COMPLETED) {
-      return AuctionOrderStatus.COMPLETED
-    } else if (askOrder.status === OrderStatus.CANCELED) {
-      return AuctionOrderStatus.CANCELED
-    }
-    // normal.
-    if (now > askOrder.deadline) {
-      return AuctionOrderStatus.NORMAL
-    } else if (askOrder.deadline >= now && now < askOrder.claimDeadline) {
-      return AuctionOrderStatus.AUCTION_END
-    } else if (now >= askOrder.claimDeadline) {
-      return AuctionOrderStatus.CLAIM_EXPIRED
-    }
-    return AuctionOrderStatus.NORMAL
-  }
 
-  function getAuctionActiveStyle(orderStatus: AuctionOrderStatus) {
-    switch (orderStatus) {
-      case AuctionOrderStatus.NORMAL:
-        return ''
-      case AuctionOrderStatus.AUCTION_END:
-        return 'red'
-      case AuctionOrderStatus.CLAIM_EXPIRED:
-        return ''
-      case AuctionOrderStatus.CANCELED:
-        return 'gray'
-      case AuctionOrderStatus.COMPLETED:
-        return 'green'
-      default:
-        return ''
-    }
-  }
 
   function checkAuctionCanCancel(orderInfo: AskOrder) {
     const now = Date.now() / 1000
