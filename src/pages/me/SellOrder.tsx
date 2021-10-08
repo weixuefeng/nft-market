@@ -63,20 +63,30 @@ class EnglishAuctionSellInfo extends SellInfo {
   numBids: number
 }
 
+export enum AuctionFilter {
+  ALL = 'All',
+  ACTIVE = 'Active',
+  ACTION_REQUIRED = 'Action Required',
+  SELL = 'Sells',
+  AUCTIONS = 'Auctions',
+  COMPLETED = 'Completed',
+  CANCELED = 'Canceled'
+}
+
 const filterOptions = [
-  { title: 'All', current: true },
+  { title: AuctionFilter.ALL, current: true },
   // ^ all orders
-  { title: 'Active', current: false },
+  { title: AuctionFilter.ACTIVE, current: false },
   // ^ not expired && not completed && not canceled
-  { title: 'Action Required', current: false },
+  { title: AuctionFilter.ACTION_REQUIRED, current: false },
   // ^ expired || pending claim
-  { title: 'Sells', current: false },
+  { title: AuctionFilter.SELL, current: false },
   // ^ sell strategy
-  { title: 'Auctions', current: false },
+  { title: AuctionFilter.AUCTIONS, current: false },
   // ^ auction strategy
-  { title: 'Completed', current: false },
+  { title: AuctionFilter.COMPLETED, current: false },
   // ^ completed
-  { title: 'Canceled', current: false }
+  { title: AuctionFilter.CANCELED, current: false }
   // ^ canceled
 ]
 
@@ -142,8 +152,8 @@ function SellOrder() {
   const exchangeContract = useNFTExchangeContract()
 
   const { account } = useWeb3React()
-
-  let where = getAskOrderFilterByTitle(selected.title, account)
+  const now = parseInt(Date.now() / 1000 + '')
+  let where = getAskOrderFilterByTitle(selected.title, account, now)
   const { data, error, loading, fetchMore } = useQuery<AskOrderDataList>(GET_ASK_ORDER_HISTORY, {
     variables: {
       skip: 0,

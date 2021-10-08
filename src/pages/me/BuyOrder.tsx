@@ -88,8 +88,8 @@ function BuyOrder() {
   const [hasMore, setHasMore] = useState(true)
   const exchangeContract = useNFTExchangeContract()
   const router = useRouter()
-
-  let where = getBidOrderFilterByTitle(selected.title, account)
+  const now = parseInt(Date.now() / 1000 + '')
+  let where = getBidOrderFilterByTitle(selected.title, account, now)
 
   const { data, error, loading, fetchMore } = useQuery<BidderDataList>(GET_BID_HISTORY, {
     variables: {
@@ -302,7 +302,7 @@ function BuyOrder() {
       bidOrderInfo = new DirectBidInfo(orderInfo)
       bidOrderInfo.saleTime = orderInfo.createdAt
       bidOrderInfo.priceTitle = t('price')
-      bidOrderInfo.actionTitle = t('buy')
+      bidOrderInfo.actionTitle = t('Buy')
       bidOrderInfo.salePrice = formatEther(orderInfo.price + '') + cSymbol()
       bidOrderInfo.priceInfo = bidOrderInfo.salePrice
       bidOrderInfo.activeTitle = t('completed')
