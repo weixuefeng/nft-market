@@ -132,7 +132,8 @@ export function getAuctionActiveStyle(orderStatus: AuctionOrderStatus) {
       return ''
   }
 }
-function Orders() {
+
+function SellOrder() {
   const { t } = useTranslation()
   const [selected, setSelected] = useState(filterOptions[0])
   const [pageNumber, setPageNumber] = useState(1)
@@ -444,7 +445,7 @@ function Orders() {
     <>
       <div className="page-header">
         <div>
-          <h2>Sell Orders</h2>
+          <h2>{t('Sell Orders')}</h2>
         </div>
 
         <div className="flex">
@@ -472,7 +473,7 @@ function Orders() {
   )
 }
 
-export default Orders
+export default SellOrder
 
 const OrdersFilter = props => {
   return (

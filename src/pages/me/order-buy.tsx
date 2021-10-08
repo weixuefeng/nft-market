@@ -1,14 +1,14 @@
 import { useState } from 'react'
-import { MyBids } from '../../components/lists/MyBids'
 import { ActiveTab, MenuOfMe } from './index'
+import BuyOrder from './BuyOrder'
 
 function Index() {
   const [activeTab, setActiveTab] = useState(ActiveTab.ME)
 
   return (
     <>
-      <MenuOfMe activeTab={ActiveTab.MY_BID} setActiveTab={setActiveTab} />
-      <MyBids />
+      <MenuOfMe activeTab={ActiveTab.ORDER_BUY} setActiveTab={setActiveTab} />
+      <BuyOrder />
     </>
   )
 }

@@ -2,7 +2,7 @@ import { FilterIndex, SaleModeIndex } from '../components/Menu/SubNavMenu'
 import { NFTokenSaleType, OrderDirection, OrderStatus, TokenOrderBy } from '../entities'
 import { FILTER_START_BLOCK } from '../constant/settings'
 import { AuctionFilter } from '../components/lists/MyAuctions'
-import { BidOrderFilter } from 'pages/me/orders-buy'
+import { BidOrderFilter } from 'pages/me/BuyOrder'
 
 /**
  * @author weixuefeng@diynova.com

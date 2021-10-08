@@ -246,5 +246,7 @@
   "sale price": "销售价格",
   "sell": "售卖",
   "active": "售卖中",
-  "completed": "已完成"
+  "completed": "已完成",
+  "Sell Orders": "我的售卖",
+  "Buy Orders": "我的购买"
 }

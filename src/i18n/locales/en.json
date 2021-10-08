@@ -246,5 +246,7 @@
   "sale price": "Price",
   "sell": "Sell",
   "active": "Active",
-  "completed": "Completed"
+  "completed": "Completed",
+  "Sell Orders": "Sell Orders",
+  "Buy Orders": "Buy Orders"
 }

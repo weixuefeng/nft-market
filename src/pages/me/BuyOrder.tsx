@@ -8,7 +8,7 @@ import { cSymbol, pageShowSize, pageSize, POLLING_INTERVAL } from 'constant'
 import { getBidOrderFilterByTitle } from 'functions/FilterOrderUtil'
 import { useWeb3React } from '@web3-react/core'
 import { BidderDataList, BidOrder, NFTokenSaleType, OrderStatus } from 'entities'
-import { getAuctionActiveStyle, getAuctionStatus, SellDetail, TokenInfoCard } from './orders-listing'
+import { getAuctionActiveStyle, getAuctionStatus, SellDetail, TokenInfoCard } from './SellOrder'
 import { hexAddress2NewAddress } from '../../utils/NewChainUtils'
 import { TARGET_CHAINID } from '../../constant/settings'
 import { formatEther } from 'ethers/lib/utils'
@@ -79,7 +79,7 @@ const filterOptions = [
   // ^ auction && deal is me
 ]
 
-function Orders() {
+function BuyOrder() {
   const { t } = useTranslation()
   const [selected, setSelected] = useState(filterOptions[0])
   const { account } = useWeb3React()
@@ -102,15 +102,15 @@ function Orders() {
     fetchPolicy: 'cache-and-network',
     pollInterval: POLLING_INTERVAL,
     onCompleted: data => {
-      let res = Object.assign([], data)
-      if (res.bidOrders.length > pageShowSize * pageNumber) {
+      let res = Object.assign([], data.bidOrders)
+      if (res.length > pageShowSize * pageNumber) {
         // has more
-        res.bidOrders.pop()
+        res.pop()
         setHasMore(true)
-        setOrderData(res.bidOrders)
+        setOrderData(res)
       } else {
         setHasMore(false)
-        setOrderData(res.bidOrders)
+        setOrderData(res)
       }
     }
   })
@@ -370,7 +370,7 @@ function Orders() {
     <>
       <div className="page-header">
         <div>
-          <h2>Buy Orders</h2>
+          <h2>{t('Buy Orders')}</h2>
         </div>
 
         <div className="flex">
@@ -398,7 +398,7 @@ function Orders() {
   )
 }
 
-export default Orders
+export default BuyOrder
 
 const OrdersFilter = props => {
   return (

@@ -11,8 +11,8 @@ import { useRouter } from 'next/router'
 
 export enum ActiveTab {
   ME = 'me',
-  MY_AUCTION = 'my-auctions',
-  MY_BID = 'my-bids'
+  ORDER_SELL = 'orders-sell',
+  ORDER_BUY = 'orders-buy'
 }
 
 export function MenuOfMe(props) {
@@ -37,25 +37,25 @@ export function MenuOfMe(props) {
         </a>
         <a
           onClick={() => {
-            setCurrentTab(ActiveTab.MY_AUCTION)
-            setActiveTab(ActiveTab.MY_AUCTION)
-            router.push('/me/auctions')
+            setCurrentTab(ActiveTab.ORDER_SELL)
+            setActiveTab(ActiveTab.ORDER_SELL)
+            router.push('/me/order-sell')
           }}
-          className={currentTab === ActiveTab.MY_AUCTION ? 'active' : ''}
+          className={currentTab === ActiveTab.ORDER_SELL ? 'active' : ''}
           aria-current="page"
         >
-          {t('my auctions')}
+          {t('Sell Orders')}
         </a>
         <a
           onClick={() => {
-            setCurrentTab(ActiveTab.MY_BID)
-            setActiveTab(ActiveTab.MY_BID)
-            router.push('/me/bids')
+            setCurrentTab(ActiveTab.ORDER_BUY)
+            setActiveTab(ActiveTab.ORDER_BUY)
+            router.push('/me/order-buy')
           }}
-          className={currentTab === ActiveTab.MY_BID ? 'active' : ''}
+          className={currentTab === ActiveTab.ORDER_BUY ? 'active' : ''}
           aria-current="page"
         >
-          {t('my bids')}
+          {t('Buy Orders')}
         </a>
       </div>
 
