@@ -144,6 +144,20 @@ export function getAskOrderFilterByTitle(title: string, account: string, now: nu
 }
 
 export function getBidOrderFilterByTitle(title: string, account: string, now: number) {
+  /**
+   *   { title: BidOrderFilter.ALL, current: true },
+   // ^ all orders
+   { title: BidOrderFilter.AUCTION_REQUIRED, current: false },
+   // ^ auction && pending claim
+   { title: BidOrderFilter.BUYS, current: false },
+   // ^ buy strategy
+   { title: BidOrderFilter.AUCTION_BID, current: false },
+   // ^ auction strategy
+   { title: BidOrderFilter.AUCTION_ENDED, current: false },
+   // ^ auction && timestamp > auction end time && h.bidder not me || claim expired
+   { title: BidOrderFilter.AUCTION_COMPLETED, current: false }
+   // ^ auction && deal is me
+   */
   let where
   switch (title) {
     case BidOrderFilter.ALL:
@@ -171,7 +185,7 @@ export function getBidOrderFilterByTitle(title: string, account: string, now: nu
         bidder: account ? account.toLocaleLowerCase() : null,
         bidderLast: true,
         strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-        deadline_gte: now
+        deadline_lte: now
       }
       break
     case BidOrderFilter.AUCTION_COMPLETED:
@@ -183,7 +197,9 @@ export function getBidOrderFilterByTitle(title: string, account: string, now: nu
     case BidOrderFilter.AUCTION_REQUIRED:
       where = {
         bidder: account ? account.toLocaleLowerCase() : null,
-        bidderLast: true
+        bidderLast: true,
+        auctionBestBid: true,
+        claimDeadline_gte: now
       }
       break
     default:
