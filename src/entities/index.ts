@@ -19,6 +19,7 @@ export enum TokenOrderBy {
 }
 
 export enum PriceEvent {
+  All = 'All',
   Minted = 'Minted',
   Ask = 'Ask', // 挂单售卖
   Sale = 'Sale', // 成交
@@ -148,6 +149,24 @@ export class NFToken {
   black: boolean //是否黑名单
   orders: [AskOrder]
   askOrder: AskOrder | undefined
+}
+
+export class TradingHistory {
+  id: string
+  event: string
+  tokenId: string
+  from: string
+  amount: number
+  to: string
+  price: number
+  createdAt: number
+  createdTx: string
+  strategyType: NFTokenSaleType | null
+  token: NFToken
+}
+
+export interface TradingHistoryList {
+  tradingHistories: Array<TradingHistory>
 }
 
 export interface NFTokenDataList {

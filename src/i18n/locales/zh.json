@@ -277,5 +277,11 @@
   "time_d": "天",
   "time_h": "时",
   "time_m": "分",
-  "time_s": "秒"
+  "time_s": "秒",
+  "report": "举报侵权",
+  "My Account": "我的账户",
+  "Marketplace": "市场",
+  "download resource": "下载资源",
+  "Activity": "动态"
+
 }

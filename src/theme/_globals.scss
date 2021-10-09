@@ -1502,6 +1502,112 @@ input[type='range']::-moz-range-thumb {
   }
 }
 
+
+.activity-list {
+  @apply bg-white  dark:bg-black border border-gray-100 dark:border-gray-800 shadow overflow-hidden rounded-md leading-5;
+  @apply text-gray-800;
+  a {
+    @apply text-gray-800;
+    @apply dark:text-gray-100;
+  }
+
+  ul {
+    @apply divide-y divide-gray-200 dark:divide-gray-800;
+    @apply text-gray-800;
+    @apply dark:text-gray-100;
+  }
+
+  li {
+    > div {
+      @apply flex items-center hover:bg-gray-100 dark:hover:bg-gray-900;
+    }
+    > div > div {
+      @apply min-w-0 flex-1 md:flex md:items-center md:justify-between;
+    }
+  }
+
+  .a {
+    @apply flex flex-row flex-shrink-0 justify-between md:flex-col md:w-48 overflow-hidden p-3;
+  }
+  .b {
+    @apply flex flex-grow overflow-hidden px-3 md:p-3;
+  }
+  .c {
+    @apply flex flex-row justify-between md:flex-col flex-shrink-0 p-3;
+  }
+
+  .a {
+    .event {
+      @apply flex text-sm uppercase;
+      p {
+        @apply font-medium truncate;
+      }
+      svg {
+        @apply inline w-4 h-4 mr-1;
+      }
+    }
+    .amount {
+      @apply flex;
+      > p {
+        @apply flex items-center text-xs font-mono truncate;
+      }
+    }
+  }
+
+  .b {
+    a {
+      @apply flex items-center;
+    }
+    img {
+      @apply inline-block h-10 w-10 rounded-lg ring-2 ring-gray-100 dark:ring-gray-800 mr-2;
+    }
+    .item {
+      p:first-child {
+        @apply font-medium truncate;
+      }
+      p:last-child {
+        @apply truncate text-xs;
+      }
+    }
+    a:hover {
+      img {
+        @apply ring-gray-500 dark:ring-gray-500;
+      }
+    }
+  }
+
+  .c {
+    > div {
+      @apply flex;
+      p {
+        @apply truncate;
+        svg {
+          @apply h-4 w-4 inline text-gray-500;
+        }
+      }
+    }
+    .time {
+      @apply text-right text-xs;
+    }
+  }
+
+  .event {
+    &.sale-x {
+      @apply text-gray-800;
+    }
+    &.cancel.sale,
+    &.cancel.auction {
+      @apply text-gray-400;
+    }
+  }
+}
+
+.activity-list-legends {
+  svg {
+    @apply inline w-6 h-6 mr-1;
+  }
+}
+
 .page-header {
   @apply flex items-center md:justify-between mb-2;
   > div {

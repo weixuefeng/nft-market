@@ -37,9 +37,8 @@ export function getOrderInfo(filterIndex: FilterIndex) {
   return { orderBy, orderDirection }
 }
 
-export function getSaleModeInfo(saleModeIndex: SaleModeIndex) {
+export function getSaleModeInfo(saleModeIndex: SaleModeIndex, now: number) {
   const idNotIn = ['0xe1d4de8c157094eb39589625a16a1b8eccaf0467-84', '0xe1d4de8c157094eb39589625a16a1b8eccaf0467-82']
-  const now = parseInt(Date.now() / 1000 + '')
   let where
   const defaultFilter = {
     mintBlock_gt: FILTER_START_BLOCK,

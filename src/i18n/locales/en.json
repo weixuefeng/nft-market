@@ -1,6 +1,5 @@
 {
   ": ": ": ",
-  "about": "About",
   "action": "Action",
   "all": "All",
   "Andromeda": "Andromeda",
@@ -254,5 +253,11 @@
   "time_d": "d",
   "time_h": "h",
   "time_m": "m",
-  "time_s": "s"
+  "time_s": "s",
+  "report": "Report",
+  "about": "About",
+  "My Account": "My Account",
+  "Marketplace": "MarketPlace",
+  "download resource": "Download Resource",
+  "Activity": "Activity"
 }

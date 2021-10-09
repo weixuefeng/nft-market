@@ -33,6 +33,9 @@ export function getNftDetailPath(nftId: string) {
 export function getTradingStatus(event: string, t) {
   let res = ''
   switch (event) {
+    case PriceEvent.All:
+      res = t('all')
+      break
     case PriceEvent.Ask:
       res = t('event_ask')
       break

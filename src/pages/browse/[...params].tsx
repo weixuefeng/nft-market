@@ -27,7 +27,10 @@ export default function Browse() {
     saleModeIndex = parseInt(param[1].toString().split('=')[1])
   }
   const { orderBy, orderDirection } = getOrderInfo(orderIndex)
-  const where = getSaleModeInfo(saleModeIndex)
+  const currentTimeStamp = parseInt(Date.now() / 1000 + '')
+  const [timeNow, setTimeNow] = useState(currentTimeStamp)
+  const where = getSaleModeInfo(saleModeIndex, timeNow)
+
   const [pageNumber, setPageNumber] = useState(1)
   const [tokenData, setTokenData] = useState([])
   const [hasMore, setHasMore] = useState(true)
@@ -76,7 +79,8 @@ export default function Browse() {
         skip: tokenData.length,
         first: pageSize,
         orderBy: orderBy,
-        orderDirection: orderDirection
+        orderDirection: orderDirection,
+        where: where
       }
     })
   }
@@ -87,7 +91,10 @@ export default function Browse() {
     showSubNav: true,
     saleModeIndex: saleModeIndex,
     filterIndex: orderIndex,
-    pageNumber
+    pageNumber,
+    setPageNumber,
+    setTimeNow,
+    loading
   }
   return <NFTList {...info} />
 }
