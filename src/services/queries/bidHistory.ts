@@ -15,6 +15,7 @@ export const GET_BID_HISTORY = gql(`
       deadline
       claimDeadline
       auctionBestBid
+      status
       askOrder {
         deadline
         createdAt

@@ -123,6 +123,7 @@ export class BidOrder {
   deadline: number
   claimDeadline: number
   auctionBestBid: boolean
+  status: OrderStatus
 }
 
 export class NFToken {

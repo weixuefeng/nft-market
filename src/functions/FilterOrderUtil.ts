@@ -81,22 +81,6 @@ export function getSaleModeInfo(saleModeIndex: SaleModeIndex) {
 }
 
 export function getAskOrderFilterByTitle(title: string, account: string, now: number) {
-  /**
-   *   { title: 'All', current: true },
-   // ^ all orders
-   { title: 'Active', current: false },
-   // ^ direct sale, normal
-   { title: 'Action Required', current: false },
-   // ^ expired || pending claim
-   { title: 'Sells', current: false },
-   // ^ sell strategy
-   { title: 'Auctions', current: false },
-   // ^ auction strategy
-   { title: 'Completed', current: false },
-   // ^ completed
-   { title: 'Canceled', current: false }
-   // ^ canceled
-   */
   let where
   switch (title.toLowerCase()) {
     case AuctionFilter.ALL.toLowerCase():
@@ -176,65 +160,10 @@ export function getAskOrderFilterByTitle(title: string, account: string, now: nu
       }
       break
   }
-  //
-  // if (title.toLowerCase() === AuctionFilter.ALL.toLowerCase()) {
-  //   where = {
-  //     owner: account ? account.toLowerCase() : null
-  //   }
-  // } else if (title.toLowerCase() === AuctionFilter.ACTIVE.toLowerCase()) {
-  //   where = {
-  //     strategyType: NFTokenSaleType.DIRECT_SALE,
-  //     owner: account ? account.toLowerCase() : null,
-  //     status: OrderStatus.NORMAL
-  //   }
-  // } else if (title.toLowerCase() === AuctionFilter.CANCELED.toLowerCase()) {
-  //   where = {
-  //     strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-  //     owner: account ? account.toLowerCase() : null,
-  //     status: OrderStatus.CANCELED
-  //   }
-  // } else if (title.toLowerCase() === AuctionFilter.COMPLETED.toLowerCase()) {
-  //   where = {
-  //     strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-  //     owner: account ? account.toLowerCase() : null,
-  //     status: OrderStatus.COMPLETED
-  //   }
-  // } else if (title.toLowerCase() === AuctionFilter.ACTION_REQUIRED.toLowerCase()) {
-  //   where = {
-  //     strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-  //     owner: account ? account.toLowerCase() : null,
-  //     status: OrderStatus.NORMAL,
-  //     claimDeadline_lte: now
-  //   }
-  // } else if (title.toLowerCase() === AuctionFilter.AUCTIONS.toLowerCase()) {
-  //   where = {
-  //     strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-  //     owner: account ? account.toLowerCase() : null
-  //   }
-  // } else if (title.toLowerCase() === AuctionFilter.SELL.toLowerCase()) {
-  //   where = {
-  //     strategyType: NFTokenSaleType.DIRECT_SALE,
-  //     owner: account ? account.toLowerCase() : null
-  //   }
-  // }
   return where
 }
 
 export function getBidOrderFilterByTitle(title: string, account: string, now: number) {
-  /**
-   *   { title: BidOrderFilter.ALL, current: true },
-   // ^ all orders
-   { title: BidOrderFilter.AUCTION_REQUIRED, current: false },
-   // ^ auction && pending claim
-   { title: BidOrderFilter.BUYS, current: false },
-   // ^ buy strategy
-   { title: BidOrderFilter.AUCTION_BID, current: false },
-   // ^ auction strategy
-   { title: BidOrderFilter.AUCTION_ENDED, current: false },
-   // ^ auction && timestamp > auction end time && h.bidder not me || claim expired
-   { title: BidOrderFilter.AUCTION_COMPLETED, current: false }
-   // ^ auction && deal is me
-   */
   let where
   switch (title) {
     case BidOrderFilter.ALL:
@@ -243,7 +172,7 @@ export function getBidOrderFilterByTitle(title: string, account: string, now: nu
         bidderLast: true
       }
       break
-    case BidOrderFilter.BUYS:
+    case BidOrderFilter.BUY_NOW:
       where = {
         bidder: account ? account.toLocaleLowerCase() : null,
         bidderLast: true,
@@ -257,32 +186,30 @@ export function getBidOrderFilterByTitle(title: string, account: string, now: nu
         strategyType: NFTokenSaleType.ENGLAND_AUCTION
       }
       break
-    case BidOrderFilter.AUCTION_ENDED:
+    case BidOrderFilter.BOUGHT:
       where = {
         bidder: account ? account.toLocaleLowerCase() : null,
         bidderLast: true,
-        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-        deadline_lte: now
+        status: OrderStatus.COMPLETED
       }
       break
-    case BidOrderFilter.AUCTION_COMPLETED:
-      where = {
-        bidder: account ? account.toLocaleLowerCase() : null,
-        bidderLast: true
-      }
-      break
-    case BidOrderFilter.AUCTION_REQUIRED:
+    case BidOrderFilter.AUCTION_PENDING_CLAIM:
       where = {
         bidder: account ? account.toLocaleLowerCase() : null,
         bidderLast: true,
         auctionBestBid: true,
-        claimDeadline_gte: now
+        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+        claimDeadline_gte: now,
+        deadline_lte: now,
+        status: OrderStatus.NORMAL
       }
       break
-    default:
+    case BidOrderFilter.IN_AUCTION:
       where = {
         bidder: account ? account.toLocaleLowerCase() : null,
-        bidderLast: true
+        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+        bidderLast: true,
+        deadline_gt: now
       }
       break
   }

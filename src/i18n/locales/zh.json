@@ -250,7 +250,7 @@
   "completed": "已完成",
   "Sell Orders": "我的售卖",
   "Buy Orders": "我的购买",
-  "Auction Bids": "拍卖竞拍",
+  "Auction Bids": "竞拍",
   "ME": "我",
   "Highest Bid": "最高出价",
   "Action Required": "需要操作",
@@ -271,5 +271,7 @@
   "Auction Canceled": "拍卖：已取消",
   "Auction Ended(No Bids)": "拍卖：已结束(无人出价)",
   "Auction Ended(Pending Claim)": "拍卖：已结束(待领取)",
-  "Auction Ended(Claim Expired)": "拍卖：已结束(领取超时)"
+  "Auction Ended(Claim Expired)": "拍卖：已结束(领取超时)",
+  "Bought": "已购买",
+  "Auction Pending Claim": "竞拍：待领取"
 }

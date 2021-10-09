@@ -20,9 +20,11 @@ import { useRouter } from 'next/router'
 
 export enum BidOrderFilter {
   ALL = 'All',
-  AUCTION_REQUIRED = 'Action Required',
-  BUYS = 'Buys',
+  AUCTION_PENDING_CLAIM = 'Auction Pending Claim',
+  BUY_NOW = 'Buys',
   AUCTION_BID = 'Auction Bids',
+  BOUGHT = 'Bought',
+  IN_AUCTION = 'In Auction',
   AUCTION_ENDED = 'Auction Ended',
   AUCTION_COMPLETED = 'Auction Completed'
 }
@@ -67,16 +69,15 @@ class EnglishAuctionBidInfo extends BidOrderInfo {
 const filterOptions = [
   { title: BidOrderFilter.ALL, current: true },
   // ^ all orders
-  { title: BidOrderFilter.AUCTION_REQUIRED, current: false },
+  { title: BidOrderFilter.AUCTION_PENDING_CLAIM, current: false },
   // ^ auction && pending claim
-  { title: BidOrderFilter.BUYS, current: false },
+  { title: BidOrderFilter.BUY_NOW, current: false },
   // ^ buy strategy
   { title: BidOrderFilter.AUCTION_BID, current: false },
   // ^ auction strategy
-  { title: BidOrderFilter.AUCTION_ENDED, current: false },
-  // ^ auction && timestamp > auction end time && h.bidder not me || claim expired
-  { title: BidOrderFilter.AUCTION_COMPLETED, current: false }
-  // ^ auction && deal is me
+  { title: BidOrderFilter.BOUGHT, current: false },
+  // ^ Bought, status = completed
+  { title: BidOrderFilter.IN_AUCTION, current: false }
 ]
 
 function BuyOrder() {
