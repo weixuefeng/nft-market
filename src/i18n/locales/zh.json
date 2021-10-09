@@ -256,12 +256,20 @@
   "Action Required": "需要操作",
   "Buys": "购买",
   "Auction Ended": "拍卖结束",
-  "Auction Completed": "拍卖完成",
   "Sells": "出售",
   "Auctions": "拍卖",
   "Sells Completed": "销售完成",
   "Canceled": "取消",
   "Completed": "已完成",
-  "Active": "拍卖中",
-  "Buy": "购买"
+  "Active": "售卖中",
+  "Buy": "购买",
+  "On Sale": "售卖中",
+  "Sale Completed": "售卖：已完成",
+  "Sale Canceled": "售卖：已取消",
+  "In Auction": "拍卖中",
+  "Auction Completed": "拍卖：已完成",
+  "Auction Canceled": "拍卖：已取消",
+  "Auction Ended(No Bids)": "拍卖：已结束(无人出价)",
+  "Auction Ended(Pending Claim)": "拍卖：已结束(待领取)",
+  "Auction Ended(Claim Expired)": "拍卖：已结束(领取超时)"
 }

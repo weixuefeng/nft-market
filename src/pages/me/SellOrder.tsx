@@ -70,24 +70,45 @@ export enum AuctionFilter {
   SELL = 'Sells',
   AUCTIONS = 'Auctions',
   COMPLETED = 'Completed',
-  CANCELED = 'Canceled'
+  CANCELED = 'Canceled',
+
+  ON_SALE = 'On Sale',
+  SALE_COMPLETED = 'Sale Completed',
+  SALE_CANCELED = 'Sale Canceled',
+
+  IN_AUCTION = 'In Auction',
+  AUCTION_COMPLETED = 'Auction Completed',
+  AUCTION_CANCELED = 'Auction Canceled',
+  AUCTION_END_NO_BID = 'Auction Ended(No Bids)',
+  AUCTION_END_PENDING_CLAIM = 'Auction Ended(Pending Claim)',
+  AUCTION_END_CLAIM_EXPIRED = 'Auction Ended(Claim Expired)'
 }
 
 const filterOptions = [
   { title: AuctionFilter.ALL, current: true },
-  // ^ all orders
-  { title: AuctionFilter.ACTIVE, current: false },
-  // ^ not expired && not completed && not canceled
-  { title: AuctionFilter.ACTION_REQUIRED, current: false },
-  // ^ expired || pending claim
-  { title: AuctionFilter.SELL, current: false },
-  // ^ sell strategy
-  { title: AuctionFilter.AUCTIONS, current: false },
-  // ^ auction strategy
-  { title: AuctionFilter.COMPLETED, current: false },
-  // ^ completed
-  { title: AuctionFilter.CANCELED, current: false }
-  // ^ canceled
+  // // ^ all orders
+  // { title: AuctionFilter.ACTIVE, current: false },
+  // // ^ not expired && not completed && not canceled
+  // { title: AuctionFilter.ACTION_REQUIRED, current: false },
+  // // ^ expired || pending claim
+  // { title: AuctionFilter.SELL, current: false },
+  // // ^ sell strategy
+  // { title: AuctionFilter.AUCTIONS, current: false },
+  // // ^ auction strategy
+  // { title: AuctionFilter.COMPLETED, current: false },
+  // // ^ completed
+  // { title: AuctionFilter.CANCELED, current: false },
+  // // ^ canceled
+
+  { title: AuctionFilter.ON_SALE, current: false },
+  { title: AuctionFilter.SALE_COMPLETED, current: false },
+  { title: AuctionFilter.SALE_CANCELED, current: false },
+  { title: AuctionFilter.IN_AUCTION, current: false },
+  { title: AuctionFilter.AUCTION_COMPLETED, current: false },
+  { title: AuctionFilter.AUCTION_CANCELED, current: false },
+  { title: AuctionFilter.AUCTION_END_NO_BID, current: false },
+  { title: AuctionFilter.AUCTION_END_PENDING_CLAIM, current: false },
+  { title: AuctionFilter.AUCTION_END_CLAIM_EXPIRED, current: false }
 ]
 
 export function TokenInfoCard(props) {
@@ -239,7 +260,7 @@ function SellOrder() {
         if (orderInfo.deadline > now) {
           sellInfo.activeTitle = `${t('ends in s1')} ${DateTime(orderInfo.deadline)}`
         } else if (orderInfo.deadline <= now && orderInfo.claimDeadline > now) {
-          sellInfo.activeTitle = 'claim ends in: ' + DateTime(orderInfo.claimDeadline)
+          sellInfo.activeTitle = `${t('claim_ends_in')} ${DateTime(orderInfo.claimDeadline)}`
         } else {
           sellInfo.activeTitle = t('expired')
         }
@@ -349,13 +370,11 @@ function SellOrder() {
 
   function checkAuctionCanCancel(orderInfo: AskOrder) {
     const now = Date.now() / 1000
-    if (orderInfo.numBids.valueOf() === 0) {
+    if (parseInt(orderInfo.numBids + '') === 0) {
       return true
+    } else {
+      return now > orderInfo.claimDeadline
     }
-    if (now > orderInfo.claimDeadline) {
-      return true
-    }
-    return false
   }
 
   function EnglishAuctionSellCard(props) {

@@ -10,7 +10,6 @@ import { FILTER_START_BLOCK } from '../constant/settings'
 import { BidOrderFilter } from 'pages/me/BuyOrder'
 import { AuctionFilter } from '../pages/me/SellOrder'
 
-
 export function getOrderInfo(filterIndex: FilterIndex) {
   let orderBy, orderDirection
   switch (filterIndex) {
@@ -99,46 +98,125 @@ export function getAskOrderFilterByTitle(title: string, account: string, now: nu
    // ^ canceled
    */
   let where
-  if (title.toLowerCase() === AuctionFilter.ALL.toLowerCase()) {
-    where = {
-      owner: account ? account.toLowerCase() : null
-    }
-  } else if (title.toLowerCase() === AuctionFilter.ACTIVE.toLowerCase()) {
-    where = {
-      strategyType: NFTokenSaleType.DIRECT_SALE,
-      owner: account ? account.toLowerCase() : null,
-      status: OrderStatus.NORMAL
-    }
-  } else if (title.toLowerCase() === AuctionFilter.CANCELED.toLowerCase()) {
-    where = {
-      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-      owner: account ? account.toLowerCase() : null,
-      status: OrderStatus.CANCELED
-    }
-  } else if (title.toLowerCase() === AuctionFilter.COMPLETED.toLowerCase()) {
-    where = {
-      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-      owner: account ? account.toLowerCase() : null,
-      status: OrderStatus.COMPLETED
-    }
-  } else if (title.toLowerCase() === AuctionFilter.ACTION_REQUIRED.toLowerCase()) {
-    where = {
-      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-      owner: account ? account.toLowerCase() : null,
-      status: OrderStatus.NORMAL,
-      claimDeadline_lte: now
-    }
-  } else if (title.toLowerCase() === AuctionFilter.AUCTIONS.toLowerCase()) {
-    where = {
-      strategyType: NFTokenSaleType.ENGLAND_AUCTION,
-      owner: account ? account.toLowerCase() : null
-    }
-  } else if (title.toLowerCase() === AuctionFilter.SELL.toLowerCase()) {
-    where = {
-      strategyType: NFTokenSaleType.DIRECT_SALE,
-      owner: account ? account.toLowerCase() : null
-    }
+  switch (title.toLowerCase()) {
+    case AuctionFilter.ALL.toLowerCase():
+      where = {
+        owner: account ? account.toLowerCase() : null
+      }
+      break
+    case AuctionFilter.ON_SALE.toLowerCase():
+      where = {
+        strategyType: NFTokenSaleType.DIRECT_SALE,
+        owner: account ? account.toLowerCase() : null,
+        status: OrderStatus.NORMAL
+      }
+      break
+    case AuctionFilter.SALE_COMPLETED.toLowerCase():
+      where = {
+        strategyType: NFTokenSaleType.DIRECT_SALE,
+        owner: account ? account.toLowerCase() : null,
+        status: OrderStatus.COMPLETED
+      }
+      break
+    case AuctionFilter.SALE_CANCELED.toLowerCase():
+      where = {
+        strategyType: NFTokenSaleType.DIRECT_SALE,
+        owner: account ? account.toLowerCase() : null,
+        status: OrderStatus.CANCELED
+      }
+      break
+    case AuctionFilter.AUCTION_COMPLETED.toLowerCase():
+      where = {
+        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+        owner: account ? account.toLowerCase() : null,
+        status: OrderStatus.COMPLETED
+      }
+      break
+    case AuctionFilter.AUCTION_CANCELED.toLowerCase():
+      where = {
+        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+        owner: account ? account.toLowerCase() : null,
+        status: OrderStatus.CANCELED
+      }
+      break
+    case AuctionFilter.IN_AUCTION.toLowerCase():
+      where = {
+        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+        owner: account ? account.toLowerCase() : null,
+        status: OrderStatus.NORMAL,
+        deadline_gte: now
+      }
+      break
+    case AuctionFilter.AUCTION_END_NO_BID.toLowerCase():
+      where = {
+        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+        owner: account ? account.toLowerCase() : null,
+        status: OrderStatus.NORMAL,
+        deadline_lte: now,
+        numBids: 0
+      }
+      break
+    case AuctionFilter.AUCTION_END_PENDING_CLAIM.toLowerCase():
+      where = {
+        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+        owner: account ? account.toLowerCase() : null,
+        status: OrderStatus.NORMAL,
+        deadline_lte: now,
+        claimDeadline_gte: now,
+        numBids_gt: 0
+      }
+      break
+    case AuctionFilter.AUCTION_END_CLAIM_EXPIRED.toLowerCase():
+      where = {
+        strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+        owner: account ? account.toLowerCase() : null,
+        status: OrderStatus.NORMAL,
+        claimDeadline_lte: now,
+        numBids_gt: 0
+      }
+      break
   }
+  //
+  // if (title.toLowerCase() === AuctionFilter.ALL.toLowerCase()) {
+  //   where = {
+  //     owner: account ? account.toLowerCase() : null
+  //   }
+  // } else if (title.toLowerCase() === AuctionFilter.ACTIVE.toLowerCase()) {
+  //   where = {
+  //     strategyType: NFTokenSaleType.DIRECT_SALE,
+  //     owner: account ? account.toLowerCase() : null,
+  //     status: OrderStatus.NORMAL
+  //   }
+  // } else if (title.toLowerCase() === AuctionFilter.CANCELED.toLowerCase()) {
+  //   where = {
+  //     strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+  //     owner: account ? account.toLowerCase() : null,
+  //     status: OrderStatus.CANCELED
+  //   }
+  // } else if (title.toLowerCase() === AuctionFilter.COMPLETED.toLowerCase()) {
+  //   where = {
+  //     strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+  //     owner: account ? account.toLowerCase() : null,
+  //     status: OrderStatus.COMPLETED
+  //   }
+  // } else if (title.toLowerCase() === AuctionFilter.ACTION_REQUIRED.toLowerCase()) {
+  //   where = {
+  //     strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+  //     owner: account ? account.toLowerCase() : null,
+  //     status: OrderStatus.NORMAL,
+  //     claimDeadline_lte: now
+  //   }
+  // } else if (title.toLowerCase() === AuctionFilter.AUCTIONS.toLowerCase()) {
+  //   where = {
+  //     strategyType: NFTokenSaleType.ENGLAND_AUCTION,
+  //     owner: account ? account.toLowerCase() : null
+  //   }
+  // } else if (title.toLowerCase() === AuctionFilter.SELL.toLowerCase()) {
+  //   where = {
+  //     strategyType: NFTokenSaleType.DIRECT_SALE,
+  //     owner: account ? account.toLowerCase() : null
+  //   }
+  // }
   return where
 }
 
