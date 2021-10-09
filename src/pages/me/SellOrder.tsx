@@ -15,7 +15,7 @@ import { GET_ASK_ORDER_HISTORY } from '../../services/queries/askOrders'
 import { cSymbol, pageShowSize, pageSize, POLLING_INTERVAL } from '../../constant'
 import { useWeb3React } from '@web3-react/core'
 import { getAskOrderFilterByTitle } from '../../functions/FilterOrderUtil'
-import { DateTime, RelativeTimeLocale } from '../../functions/DateTime'
+import { DateTime, TimeDiff } from '../../functions/DateTime'
 import { formatEther } from 'ethers/lib/utils'
 import { useTokenDescription } from '../../hooks/useTokenDescription'
 import { hexAddress2NewAddress } from '../../utils/NewChainUtils'
@@ -244,8 +244,10 @@ function SellOrder() {
       sellInfo.startPrice = formatEther(orderInfo.startPrice + '') + cSymbol()
       sellInfo.startTime = DateTime(orderInfo.createdAt)
       sellInfo.endTime = DateTime(orderInfo.deadline)
-      // todo: add duration calculate
-      sellInfo.duration = RelativeTimeLocale(orderInfo.deadline - orderInfo.createdAt)
+      const diffTime = TimeDiff(orderInfo.createdAt, orderInfo.deadline, t)
+      if (diffTime) {
+        sellInfo.duration = diffTime
+      }
 
       if (parseInt(orderInfo.numBids + '') === 0) {
         sellInfo.priceTitle = t('starting price')
@@ -267,7 +269,7 @@ function SellOrder() {
       } else if (orderInfo.status.valueOf() === OrderStatus.COMPLETED) {
         sellInfo.activeTitle = t('completed')
         sellInfo.sellDetail.payer = hexAddress2NewAddress(orderInfo.finalBidder.id, TARGET_CHAINID)
-        sellInfo.sellDetail.txTime = orderInfo.finalBidOrder?.createdAt
+        sellInfo.sellDetail.txTime = DateTime(orderInfo.finalBidOrder?.createdAt)
       } else {
         sellInfo.activeTitle = t('canceled')
       }
@@ -373,7 +375,11 @@ function SellOrder() {
     if (parseInt(orderInfo.numBids + '') === 0) {
       return true
     } else {
-      return now > orderInfo.claimDeadline
+      if (now > orderInfo.claimDeadline && orderInfo.status === OrderStatus.NORMAL) {
+        return true
+      } else {
+        return false
+      }
     }
   }
 
