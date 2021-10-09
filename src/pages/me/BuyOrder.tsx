@@ -259,11 +259,11 @@ function BuyOrder() {
                   </div>
                   <div>
                     <dt>{t('item from')}</dt>
-                    <dd>{englishAuctionBidInfo.sellDetail.itemFrom}</dd>
+                    <dd>{splitTx(englishAuctionBidInfo.sellDetail.itemFrom)}</dd>
                   </div>
                   <div>
                     <dt>{t('item to')}</dt>
-                    <dd>{englishAuctionBidInfo.sellDetail.itemTo}</dd>
+                    <dd>{splitTx(englishAuctionBidInfo.sellDetail.itemTo)}</dd>
                   </div>
                   <div>
                     <dt>{t('tx_time')}</dt>
@@ -363,8 +363,11 @@ function BuyOrder() {
         }
       } else if (orderInfo.askOrder.status.valueOf() === OrderStatus.COMPLETED) {
         bidOrderInfo.activeTitle = t('completed')
-        bidOrderInfo.sellDetail.payer = hexAddress2NewAddress(orderInfo.askOrder.finalBidder.id, TARGET_CHAINID)
-        bidOrderInfo.sellDetail.txTime = orderInfo.createdAt
+        bidOrderInfo.sellDetail.payer = hexAddress2NewAddress(account, TARGET_CHAINID)
+        bidOrderInfo.sellDetail.payee = hexAddress2NewAddress(orderInfo.askOrder.owner.id, TARGET_CHAINID)
+        bidOrderInfo.sellDetail.itemFrom = hexAddress2NewAddress(orderInfo.askOrder.owner.id, TARGET_CHAINID)
+        bidOrderInfo.sellDetail.itemTo = hexAddress2NewAddress(account, TARGET_CHAINID)
+        bidOrderInfo.sellDetail.txTime = DateTime(orderInfo.createdAt)
       } else {
         bidOrderInfo.activeTitle = t('canceled')
       }
