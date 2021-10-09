@@ -20,6 +20,9 @@ export const GET_BID_HISTORY = gql(`
         deadline
         createdAt
         startPrice
+        owner {
+          id
+        }
         id
         numBids
         finalTx

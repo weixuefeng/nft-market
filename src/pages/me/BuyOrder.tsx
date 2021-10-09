@@ -313,9 +313,8 @@ function BuyOrder() {
       bidOrderInfo.priceInfo = bidOrderInfo.salePrice
       bidOrderInfo.activeTitle = t('completed')
       bidOrderInfo.sellDetail.payer = hexAddress2NewAddress(account, TARGET_CHAINID)
-      // todo: check payee, item from, it's owner
-      bidOrderInfo.sellDetail.payee = hexAddress2NewAddress(account, TARGET_CHAINID)
-      bidOrderInfo.sellDetail.itemFrom = hexAddress2NewAddress(account, TARGET_CHAINID)
+      bidOrderInfo.sellDetail.payee = hexAddress2NewAddress(orderInfo.askOrder.owner.id, TARGET_CHAINID)
+      bidOrderInfo.sellDetail.itemFrom = hexAddress2NewAddress(orderInfo.askOrder.owner.id, TARGET_CHAINID)
       bidOrderInfo.sellDetail.itemTo = hexAddress2NewAddress(account, TARGET_CHAINID)
       bidOrderInfo.sellDetail.txTime = DateTime(orderInfo.createdAt)
 

@@ -86,20 +86,6 @@ export enum AuctionFilter {
 
 const filterOptions = [
   { title: AuctionFilter.ALL, current: true },
-  // // ^ all orders
-  // { title: AuctionFilter.ACTIVE, current: false },
-  // // ^ not expired && not completed && not canceled
-  // { title: AuctionFilter.ACTION_REQUIRED, current: false },
-  // // ^ expired || pending claim
-  // { title: AuctionFilter.SELL, current: false },
-  // // ^ sell strategy
-  // { title: AuctionFilter.AUCTIONS, current: false },
-  // // ^ auction strategy
-  // { title: AuctionFilter.COMPLETED, current: false },
-  // // ^ completed
-  // { title: AuctionFilter.CANCELED, current: false },
-  // // ^ canceled
-
   { title: AuctionFilter.ON_SALE, current: false },
   { title: AuctionFilter.SALE_COMPLETED, current: false },
   { title: AuctionFilter.SALE_CANCELED, current: false },
