@@ -339,9 +339,9 @@ function BuyOrder() {
         formatEther(orderInfo.askOrder.bestPrice + '') + cSymbol()
       }`
       if (orderInfo.askOrder.status.valueOf() === OrderStatus.NORMAL) {
-        // activeTitle = ends in xxx
+        // activeTitle = ends in xxxs
         if (orderInfo.deadline > now) {
-          bidOrderInfo.activeTitle = `${t('ends in s1')} ${DateTime(orderInfo.deadline)}`
+          bidOrderInfo.activeTitle = `${t('auction_ends_in')} ${DateTime(orderInfo.deadline)}`
           if (!isHigher) {
             bidOrderInfo.actionButton = (
               <button type="button" className="primary small yellow" onClick={() => makeBid(orderInfo)}>
