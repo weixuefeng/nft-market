@@ -202,7 +202,6 @@ function SellOrder() {
       sellInfo = new DirectionSellInfo()
       sellInfo.orderInfo = orderInfo
       sellInfo.sellDetail = new SellDetail()
-      sellInfo.sellDetail.payee = hexAddress2NewAddress(account, TARGET_CHAINID)
       sellInfo.saleTime = orderInfo.createdAt
       sellInfo.priceTitle = t('price')
       sellInfo.actionTitle = t('sell')
@@ -212,6 +211,7 @@ function SellOrder() {
         sellInfo.activeTitle = t('active')
       } else if (orderInfo.status === OrderStatus.COMPLETED) {
         sellInfo.activeTitle = t('completed')
+        sellInfo.sellDetail.payee = hexAddress2NewAddress(account, TARGET_CHAINID)
         sellInfo.sellDetail.payer = hexAddress2NewAddress(orderInfo.finalBidder.id, TARGET_CHAINID)
         sellInfo.sellDetail.itemFrom = hexAddress2NewAddress(account, TARGET_CHAINID)
         sellInfo.sellDetail.itemTo = hexAddress2NewAddress(orderInfo.finalBidder.id, TARGET_CHAINID)
@@ -225,7 +225,6 @@ function SellOrder() {
       sellInfo.actionTitle = t('auction')
       sellInfo.orderInfo = orderInfo
       sellInfo.sellDetail = new SellDetail()
-      sellInfo.sellDetail.payee = hexAddress2NewAddress(account, TARGET_CHAINID)
       sellInfo.numBids = orderInfo.numBids
       sellInfo.startPrice = formatEther(orderInfo.startPrice + '') + cSymbol()
       sellInfo.startTime = DateTime(orderInfo.createdAt)
@@ -254,7 +253,10 @@ function SellOrder() {
         }
       } else if (orderInfo.status.valueOf() === OrderStatus.COMPLETED) {
         sellInfo.activeTitle = t('completed')
+        sellInfo.sellDetail.payee = hexAddress2NewAddress(account, TARGET_CHAINID)
         sellInfo.sellDetail.payer = hexAddress2NewAddress(orderInfo.finalBidder.id, TARGET_CHAINID)
+        sellInfo.sellDetail.itemFrom = hexAddress2NewAddress(account, TARGET_CHAINID)
+        sellInfo.sellDetail.itemTo = hexAddress2NewAddress(orderInfo.finalBidder?.id, TARGET_CHAINID)
         sellInfo.sellDetail.txTime = DateTime(orderInfo.finalBidOrder?.createdAt)
       } else {
         sellInfo.activeTitle = t('canceled')
@@ -427,11 +429,11 @@ function SellOrder() {
                   </div>
                   <div>
                     <dt>{t('item from')}</dt>
-                    <dd>{englishAuctionSellInfo.sellDetail.itemFrom}</dd>
+                    <dd>{splitTx(englishAuctionSellInfo.sellDetail.itemFrom)}</dd>
                   </div>
                   <div>
                     <dt>{t('item to')}</dt>
-                    <dd>{englishAuctionSellInfo.sellDetail.itemTo}</dd>
+                    <dd>{splitTx(englishAuctionSellInfo.sellDetail.itemTo)}</dd>
                   </div>
                   <div>
                     <dt>{t('tx_time')}</dt>
