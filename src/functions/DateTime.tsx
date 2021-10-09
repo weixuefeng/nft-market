@@ -23,6 +23,30 @@ export function RelativeTimeLocale(timestamp = Date.now() / 1000, locale = 'en-u
   return moment(timestamp * 1000).fromNow()
 }
 
+export function TimeDiff(startTime, endTime, t) {
+  const diff = endTime - startTime
+  let time = ''
+  if (diff > 0) {
+    let d = Math.floor(diff / (60 * 60 * 24))
+    let h = Math.floor((diff / (60 * 60)) % 24)
+    let m = Math.floor((diff / 60) % 60)
+    let s = Math.floor(diff % 60)
+    if (d > 0) {
+      time += `${d}${t('time_d')}`
+    }
+    if (h > 0) {
+      time += ` ${h}${t('time_h')}`
+    }
+    if (m > 0) {
+      time += ` ${m}${t('time_m')}`
+    }
+    if (s > 0) {
+      time += ` ${s}${t('time_s')}`
+    }
+  }
+  return time
+}
+
 // Countdown
 export function Countdown(timstamp) {
   const calculateTimeLeft = () => {

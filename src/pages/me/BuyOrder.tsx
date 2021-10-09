@@ -12,7 +12,7 @@ import { getAuctionActiveStyle, getAuctionStatus, SellDetail, TokenInfoCard } fr
 import { hexAddress2NewAddress } from '../../utils/NewChainUtils'
 import { TARGET_CHAINID } from '../../constant/settings'
 import { formatEther } from 'ethers/lib/utils'
-import { DateTime, RelativeTimeLocale } from '../../functions/DateTime'
+import { DateTime, RelativeTimeLocale, TimeDiff } from '../../functions/DateTime'
 import { getNftDetailPath, splitTx } from '../../functions'
 import transactor from '../../functions/Transactor'
 import { useNFTExchangeContract } from '../../hooks/useContract'
@@ -324,7 +324,10 @@ function BuyOrder() {
       bidOrderInfo.startPrice = formatEther(orderInfo.askOrder.startPrice + '') + cSymbol()
       bidOrderInfo.startTime = DateTime(orderInfo.askOrder.createdAt)
       bidOrderInfo.endTime = DateTime(orderInfo.deadline)
-      bidOrderInfo.duration = RelativeTimeLocale(orderInfo.deadline - orderInfo.createdAt)
+      const diffTime = TimeDiff(orderInfo.createdAt, orderInfo.deadline, t)
+      if (diffTime) {
+        bidOrderInfo.duration = diffTime
+      }
       bidOrderInfo.numBids = orderInfo.askOrder.numBids
 
       const isHigher = orderInfo.price === orderInfo.askOrder.bestPrice

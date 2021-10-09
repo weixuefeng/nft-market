@@ -250,5 +250,9 @@
   "Sell Orders": "Sell Orders",
   "Buy Orders": "Buy Orders",
   "Auction Bids": "Auction Bids",
-  "ME": "ME"
+  "ME": "ME",
+  "time_d": "d",
+  "time_h": "h",
+  "time_m": "m",
+  "time_s": "s"
 }

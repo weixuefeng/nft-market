@@ -273,5 +273,9 @@
   "Auction Ended(Pending Claim)": "拍卖：已结束(待领取)",
   "Auction Ended(Claim Expired)": "拍卖：已结束(领取超时)",
   "Bought": "已购买",
-  "Auction Pending Claim": "竞拍：待领取"
+  "Auction Pending Claim": "竞拍：待领取",
+  "time_d": "天",
+  "time_h": "时",
+  "time_m": "分",
+  "time_s": "秒"
 }
