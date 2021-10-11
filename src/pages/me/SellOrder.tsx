@@ -487,9 +487,9 @@ function SellOrder() {
             .map(orderInfo => parseSellActionTitle(orderInfo))
             .map(sellInfo =>
               sellInfo.sellType === NFTokenSaleType.DIRECT_SALE ? (
-                <DirectSellCard sellInfo={sellInfo} />
+                <DirectSellCard key={sellInfo.orderInfo.id} sellInfo={sellInfo} />
               ) : (
-                <EnglishAuctionSellCard sellInfo={sellInfo} />
+                <EnglishAuctionSellCard key={sellInfo.orderInfo.id} sellInfo={sellInfo} />
               )
             )}
         </ul>

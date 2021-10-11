@@ -207,7 +207,7 @@ function BuyOrder() {
     const activeStyle = getAuctionActiveStyle(orderStatus)
 
     return (
-      <li>
+      <li key={englishAuctionBidInfo.orderInfo.id}>
         <div className="head">
           <div className="type">
             <span>{englishAuctionBidInfo.actionTitle}</span>
@@ -395,9 +395,9 @@ function BuyOrder() {
             .map(orderInfo => parseBidOrderInfo(orderInfo))
             .map(bidOrderInfo =>
               bidOrderInfo.sellType === NFTokenSaleType.DIRECT_SALE ? (
-                <DirectBidCard bidOrderInfo={bidOrderInfo} />
+                <DirectBidCard key={bidOrderInfo.orderInfo.id} bidOrderInfo={bidOrderInfo} />
               ) : (
-                <EnglishAuctionBidCard bidOrderInfo={bidOrderInfo} />
+                <EnglishAuctionBidCard key={bidOrderInfo.orderInfo.id} bidOrderInfo={bidOrderInfo} />
               )
             )}
         </ul>
