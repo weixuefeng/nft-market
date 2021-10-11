@@ -385,7 +385,7 @@ function BuyOrder() {
         </div>
 
         <div className="flex">
-          <OrdersFilter selected={selected} setSelected={setSelected} />
+          <OrdersFilter selected={selected} setSelected={setSelected} callBack={() => setPageNumber(1)} />
         </div>
       </div>
 
@@ -424,10 +424,16 @@ const OrdersFilter = props => {
 
 const FilterMenu = props => {
   let { t } = useTranslation()
-  const { selected, setSelected } = props
+  const { selected, setSelected, callBack } = props
 
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox
+      value={selected}
+      onChange={value => {
+        setSelected(value)
+        callBack()
+      }}
+    >
       {({ open }) => (
         <div className="filter-menu">
           <Listbox.Button className="dropdown-btn">
