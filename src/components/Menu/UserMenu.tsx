@@ -1,6 +1,6 @@
 import { formatEther } from '@ethersproject/units'
 import { Menu, Transition } from '@headlessui/react'
-import { ClipboardIcon, SparklesIcon, ArchiveIcon } from '@heroicons/react/outline'
+import { ClipboardIcon, SparklesIcon, ArchiveIcon, ShoppingCartIcon, ClipboardListIcon } from '@heroicons/react/outline'
 import { CheckIcon } from '@heroicons/react/solid'
 import { Typography } from 'antd'
 import {
@@ -122,6 +122,24 @@ export default function UserMenu(props) {
                         <a className="item" role="menuitem">
                           <SparklesIcon className="icon" />
                           {t('create')}
+                        </a>
+                      </Link>
+                    </Menu.Item>
+
+                    <Menu.Item>
+                      <Link href="/me/orders-sell">
+                        <a className="item" role="menuitem">
+                          <ClipboardListIcon className="icon" />
+                          {t('sells')}
+                        </a>
+                      </Link>
+                    </Menu.Item>
+
+                    <Menu.Item>
+                      <Link href="/me/orders-buy">
+                        <a className="item" role="menuitem">
+                          <ShoppingCartIcon className="icon" />
+                          {t('buys')}
                         </a>
                       </Link>
                     </Menu.Item>

@@ -71,6 +71,12 @@ function SiteFooter() {
                   <li>
                     <Link href="/create">{t('create')}</Link>
                   </li>
+                  <li>
+                    <Link href="/me/orders-sell">{t('sells')}</Link>
+                  </li>
+                  <li>
+                    <Link href="/me/orders-buy">{t('buys')}</Link>
+                  </li>
                 </ul>
               </div>
             </section>
