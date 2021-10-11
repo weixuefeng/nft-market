@@ -979,11 +979,11 @@ button.tertiary {
         @apply bg-white sm:bg-gray-200 sm:bg-opacity-30;
         @apply dark:bg-black;
         img {
-          @apply mx-auto w-full h-full sm:max-h-1/2v sm:h-auto sm:w-auto rounded-xl;
+          @apply mx-auto w-full h-full sm:max-h-2/3v sm:h-auto sm:w-auto rounded-xl;
           @apply object-contain;
         }
         video {
-          @apply mx-auto w-full h-full sm:max-h-1/2v sm:h-auto sm:w-auto rounded-xl;
+          @apply mx-auto w-full h-full sm:max-h-2/3v sm:h-auto sm:w-auto rounded-xl;
           @apply object-contain;
         }
       }
