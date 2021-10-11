@@ -109,39 +109,47 @@ export default function UserMenu(props) {
                   </div>
                   <section className="menu" role="none">
                     <Menu.Item>
-                      <Link href="/me">
-                        <a className="item" role="menuitem">
-                          <ArchiveIcon className="icon" />
-                          {t('my nfts')}
-                        </a>
-                      </Link>
+                      <Menu.Button>
+                        <Link href="/me">
+                          <a className="item" role="menuitem">
+                            <ArchiveIcon className="icon" />
+                            {t('my nfts')}
+                          </a>
+                        </Link>
+                      </Menu.Button>
                     </Menu.Item>
 
                     <Menu.Item>
-                      <Link href="/create">
-                        <a className="item" role="menuitem">
-                          <SparklesIcon className="icon" />
-                          {t('create')}
-                        </a>
-                      </Link>
+                      <Menu.Button>
+                        <Link href="/create">
+                          <a className="item" role="menuitem">
+                            <SparklesIcon className="icon" />
+                            {t('create')}
+                          </a>
+                        </Link>
+                      </Menu.Button>
                     </Menu.Item>
 
                     <Menu.Item>
-                      <Link href="/me/orders-sell">
-                        <a className="item" role="menuitem">
-                          <ClipboardListIcon className="icon" />
-                          {t('sells')}
-                        </a>
-                      </Link>
+                      <Menu.Button>
+                        <Link href="/me/orders-sell">
+                          <a className="item" role="menuitem">
+                            <ClipboardListIcon className="icon" />
+                            {t('sells')}
+                          </a>
+                        </Link>
+                      </Menu.Button>
                     </Menu.Item>
 
                     <Menu.Item>
-                      <Link href="/me/orders-buy">
-                        <a className="item" role="menuitem">
-                          <ShoppingCartIcon className="icon" />
-                          {t('buys')}
-                        </a>
-                      </Link>
+                      <Menu.Button>
+                        <Link href="/me/orders-buy">
+                          <a className="item" role="menuitem">
+                            <ShoppingCartIcon className="icon" />
+                            {t('buys')}
+                          </a>
+                        </Link>
+                      </Menu.Button>
                     </Menu.Item>
                   </section>
                 </Menu.Items>
