@@ -75,6 +75,7 @@
   li .info dl > div > dd {
     @apply mt-1 text-gray-500 leading-tight;
     @apply dark:text-gray-400;
+    @apply text-xxs sm:text-xs;
   }
   li .info dl > div > dd > div {
     @apply flex justify-between;

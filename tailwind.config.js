@@ -21,6 +21,7 @@ module.exports = {
       '3xl': '1860px',
     },
     fontSize: {
+      xxs: ".65rem",
       xs: ".75rem",
       sm: ".875rem",
       tiny: ".65rem",
