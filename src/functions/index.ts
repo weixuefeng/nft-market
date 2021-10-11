@@ -73,7 +73,7 @@ export function splitTx(tx: string | null) {
   if (tx.length < 30) {
     return tx
   }
-  return tx.substring(0, 10) + '......' + tx.substring(tx.length - 10, tx.length)
+  return tx.substring(0, 7) + '...' + tx.substring(tx.length - 7, tx.length)
 }
 
 export function getBrowsePath(filterIndex: FilterIndex, saleModeIndex: SaleModeIndex) {
