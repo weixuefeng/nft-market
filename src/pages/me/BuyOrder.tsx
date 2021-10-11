@@ -20,7 +20,7 @@ import { useRouter } from 'next/router'
 
 export enum BidOrderFilter {
   ALL = 'All',
-  AUCTION_PENDING_CLAIM = 'Auction Pending Claim',
+  AUCTION_PENDING_CLAIM = 'Auction Pending',
   BUY_NOW = 'Buys',
   AUCTION_BID = 'Auction Bids',
   BOUGHT = 'Bought',
@@ -70,17 +70,17 @@ const filterOptions = [
   { title: BidOrderFilter.ALL, current: true },
   // ^ all orders
 
-  { title: BidOrderFilter.BOUGHT, current: false },
-  // ^ Bought, status = completed
-
-  { title: BidOrderFilter.AUCTION_PENDING_CLAIM, current: false },
-  // ^ auction && pending claim
-
   { title: BidOrderFilter.BUY_NOW, current: false },
   // ^ buy strategy
 
   { title: BidOrderFilter.AUCTION_BID, current: false },
   // ^ auction strategy
+
+  { title: BidOrderFilter.BOUGHT, current: false },
+  // ^ Bought, status = completed
+
+  { title: BidOrderFilter.AUCTION_PENDING_CLAIM, current: false },
+  // ^ auction && pending claim
 
   { title: BidOrderFilter.IN_AUCTION, current: false }
 ]
