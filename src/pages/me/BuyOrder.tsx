@@ -91,7 +91,7 @@ function BuyOrder() {
   const { account } = useWeb3React()
   const [pageNumber, setPageNumber] = useState(1)
   const [orderData, setOrderData] = useState([])
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(false)
   const exchangeContract = useNFTExchangeContract()
   const router = useRouter()
   const now = parseInt(Date.now() / 1000 + '')
@@ -401,6 +401,7 @@ function BuyOrder() {
               )
             )}
         </ul>
+        {orderData.length === 0 ? <>{t('no data')}</> : <></>}
         <button hidden={!hasMore} className="tertiary outline small" onClick={() => onFetchMore()}>
           {t('load more')}
         </button>

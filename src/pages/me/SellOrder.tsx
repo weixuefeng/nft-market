@@ -155,7 +155,7 @@ function SellOrder() {
   const [selected, setSelected] = useState(filterOptions[0])
   const [pageNumber, setPageNumber] = useState(1)
   const [orderData, setOrderData] = useState<Array<AskOrder>>([])
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(false)
   const exchangeContract = useNFTExchangeContract()
 
   const { account } = useWeb3React()
@@ -493,6 +493,7 @@ function SellOrder() {
               )
             )}
         </ul>
+        {orderData.length === 0 ? <>{t('no data')}</> : <></>}
         <button hidden={!hasMore} className="tertiary outline small" onClick={() => onFetchMore()}>
           {t('load more')}
         </button>
