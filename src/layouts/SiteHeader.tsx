@@ -3,6 +3,7 @@ import {
   ArchiveIcon,
   ArrowSmLeftIcon,
   FireIcon,
+  StatusOnlineIcon,
   HomeIcon,
   MenuAlt1Icon,
   ShoppingBagIcon,
@@ -22,7 +23,8 @@ const navigationMenu = [
   { name: 'browse', href: '/browse', icon: ShoppingBagIcon, exact: false },
   // { name: 'hot', href: '/hot', icon: FireIcon, exact: false },
   { name: 'mine', href: '/me', icon: ArchiveIcon, exact: false },
-  { name: 'create', href: '/create', icon: SparklesIcon, exact: false }
+  { name: 'create', href: '/create', icon: SparklesIcon, exact: false },
+  { name: 'Activity', href: '/activity', icon: StatusOnlineIcon, exact: false }
 ]
 
 function SiteNavMenu(props) {
