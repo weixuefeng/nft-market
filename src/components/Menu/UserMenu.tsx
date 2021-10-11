@@ -13,7 +13,7 @@ import {
 } from 'components/icons'
 import NewAddress from '../layouts/NewAddress'
 import { hexAddress2NewAddress } from 'utils/NewChainUtils'
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import NumberFormat from 'react-number-format'
 import Link from 'next/link'
@@ -22,11 +22,13 @@ import { useWeb3React } from '@web3-react/core'
 import { SupportedChainId } from 'constant/chains'
 import { injected } from 'connectors'
 import useBalance from 'hooks/useBalance'
+import { show } from 'dom7'
 
 export default function UserMenu(props) {
   const { t } = useTranslation()
   const { account, chainId, library } = useWeb3React()
   const balance = useBalance(library, account)
+  const [showDialog, setShowDialog] = useState(false)
   const { Paragraph } = Typography
   // for wallet card brand
   let NetworkBrand = <NewtonLogoFull className="chain" />
@@ -52,10 +54,14 @@ export default function UserMenu(props) {
           {({ open }) => (
             <>
               <Menu.Button className="account-small">
-                <AccountSmall />
+                <AccountSmall
+                  onClick={() => {
+                    setShowDialog(!showDialog)
+                  }}
+                />
               </Menu.Button>
               <Transition
-                show={open}
+                show={showDialog}
                 as={Fragment}
                 enter="transition ease-out duration-100"
                 enterFrom="transform opacity-0 scale-95"
@@ -110,7 +116,7 @@ export default function UserMenu(props) {
                   <section className="menu" role="none">
                     <Menu.Item>
                       <Link href="/me">
-                        <a className="item" role="menuitem">
+                        <a className="item" role="menuitem" onClick={() => setShowDialog(!showDialog)}>
                           <ArchiveIcon className="icon" />
                           {t('my nfts')}
                         </a>
@@ -119,7 +125,7 @@ export default function UserMenu(props) {
 
                     <Menu.Item>
                       <Link href="/create">
-                        <a className="item" role="menuitem">
+                        <a className="item" role="menuitem" onClick={() => setShowDialog(!showDialog)}>
                           <SparklesIcon className="icon" />
                           {t('create')}
                         </a>
@@ -141,7 +147,7 @@ export default function UserMenu(props) {
             <>
               <div>
                 <Menu.Button className="account-small">
-                  <AccountSmall />
+                  <AccountSmall onClick={() => setShowDialog(!showDialog)} />
                 </Menu.Button>
               </div>
 
@@ -232,7 +238,8 @@ function NetworkConnectButton() {
   }
 }
 
-function AccountSmall() {
+function AccountSmall(props) {
+  const { onClick } = props
   let { t } = useTranslation()
   const { account, chainId } = useWeb3React()
 
@@ -252,7 +259,7 @@ function AccountSmall() {
 
   return (
     <>
-      <div className="container">
+      <div className="container" onClick={onClick}>
         <div className={'network ' + targetNetwork.networkBrand}>
           <Network />
         </div>
