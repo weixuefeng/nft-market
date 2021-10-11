@@ -39,7 +39,7 @@ export function MenuOfMe(props) {
           onClick={() => {
             setCurrentTab(ActiveTab.ORDER_SELL)
             setActiveTab(ActiveTab.ORDER_SELL)
-            router.push('/me/order-sell')
+            router.push('/me/orders-sell')
           }}
           className={currentTab === ActiveTab.ORDER_SELL ? 'active' : ''}
           aria-current="page"
@@ -50,7 +50,7 @@ export function MenuOfMe(props) {
           onClick={() => {
             setCurrentTab(ActiveTab.ORDER_BUY)
             setActiveTab(ActiveTab.ORDER_BUY)
-            router.push('/me/order-buy')
+            router.push('/me/orders-buy')
           }}
           className={currentTab === ActiveTab.ORDER_BUY ? 'active' : ''}
           aria-current="page"
