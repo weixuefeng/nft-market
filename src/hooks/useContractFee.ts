@@ -20,10 +20,14 @@ export function useContractFee(tokenAddress) {
   useEffect(() => {
     const contractFee = new ContractFee()
     async function getProtocolInfo() {
-      const protocolFee = await contract.protocolFeeInfo()
-      const royaltyFee = await contract.royaltyFeeInfo(tokenAddress)
-      contractFee.protocolFee = protocolFee[1] / base
-      contractFee.royaltyFee = royaltyFee[1] / base
+      try {
+        const protocolFee = await contract.protocolFeeInfo()
+        const royaltyFee = await contract.royaltyFeeInfo(tokenAddress)
+        contractFee.protocolFee = protocolFee[1] / base
+        contractFee.royaltyFee = royaltyFee[1] / base
+      } catch(e) {
+        console.log("error:" + e);
+      }
       setContractFee(contractFee)
     }
     getProtocolInfo()
