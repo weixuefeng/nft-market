@@ -22,6 +22,7 @@ export const GET_TRADING_HISTORY = gql(`
       token {
         id
         uri
+        black
         contract {
           name
         }
