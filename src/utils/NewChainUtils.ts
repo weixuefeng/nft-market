@@ -1,5 +1,6 @@
 import base58check from 'base58check'
 import { TARGET_CHAINID } from '../constant/settings'
+import { AddressZero } from '@ethersproject/constants/src.ts/addresses'
 
 // config chain ID
 const NewChainDevNetId = 1002
@@ -52,6 +53,9 @@ function hexAddress2NewAddress(hexAddress, chainId) {
   }
   if (hexAddress.length !== 40) {
     return ''
+  }
+  if (hexAddress.toLowerCase() === AddressZero.slice(2).toLowerCase()) {
+    return ""
   }
   chainId = Number(chainId)
   let data = chainId.toString(16).slice(-8) + hexAddress
