@@ -35,7 +35,7 @@ const filterOptions = [
 
 function TokenMetaInfo(props) {
   const { tradingHistory } = props
-  if(tradingHistory.token) {
+  if(tradingHistory.event !== PriceEvent.Burn) {
     const tokenMetaData = useTokenDescription(tradingHistory.token.uri)
     const [contractAddress, tokenId] = tradingHistory.token.id.split('-')
     return (
@@ -55,15 +55,13 @@ function TokenMetaInfo(props) {
     )
   } else {
     return <div className="b">
-      <div>
-        <div>
+        <a>
           <img src="/image/error.png"/>
           <div className="item">
             <p>-</p>
             <p>-</p>
           </div>
-        </div>
-      </div>
+        </a>
     </div>
   }
 }
