@@ -35,24 +35,37 @@ const filterOptions = [
 
 function TokenMetaInfo(props) {
   const { tradingHistory } = props
-  const tokenMetaData = useTokenDescription(tradingHistory.token.uri)
-  const [contractAddress, tokenId] = tradingHistory.token.id.split('-')
-
-  return (
-    <div className="b">
-      <Link href={getNftDetailPath(tradingHistory.token.id)}>
-        <a>
-          <img src={tokenMetaData.tokenImage} />
+  if(tradingHistory.token) {
+    const tokenMetaData = useTokenDescription(tradingHistory.token.uri)
+    const [contractAddress, tokenId] = tradingHistory.token.id.split('-')
+    return (
+      <div className="b">
+        <Link href={getNftDetailPath(tradingHistory.token.id)}>
+          <a>
+            <img src={tokenMetaData.tokenImage} />
+            <div className="item">
+              <p>{tokenMetaData.tokenName}</p>
+              <p>
+                {tradingHistory.token.contract.name} (#{tokenId})
+              </p>
+            </div>
+          </a>
+        </Link>
+      </div>
+    )
+  } else {
+    return <div className="b">
+      <div>
+        <div>
+          <img src="/image/error.png"/>
           <div className="item">
-            <p>{tokenMetaData.tokenName}</p>
-            <p>
-              {tradingHistory.token.contract.name} (#{tokenId})
-            </p>
+            <p>-</p>
+            <p>-</p>
           </div>
-        </a>
-      </Link>
+        </div>
+      </div>
     </div>
-  )
+  }
 }
 
 function EventIcon(props) {
