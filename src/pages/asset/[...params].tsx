@@ -20,6 +20,7 @@ import { DateTime } from 'functions/DateTime'
 import { getNewChainExplorerUrl } from 'utils/NewChainUtils'
 import { TARGET_CHAINID } from 'constant/settings'
 import { isIOS, isMobile } from 'react-device-detect'
+import { logPageView } from '../../functions/analysis'
 
 function DetailSideBar(props) {
   const { nftToken } = props
@@ -42,6 +43,11 @@ export default function View() {
   const [metaData, setMetaData] = useState<TokenMetaData>()
   const lookTokenID = param[0] + '-' + param[1]
   const contractFee = useContractFee(param[0])
+
+  useEffect(() => {
+    logPageView()
+  },[])
+
   useEffect(() => {
     getTokenInfoById(lookTokenID).then(data => {
       if (data === null || data.data === null || data.data.token === null) {

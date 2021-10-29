@@ -3,11 +3,13 @@ import { OrderDirection, OwnerPerDataList } from '../../entities'
 import { useQuery } from '@apollo/client'
 import { NFT_MY_TOKEN } from '../../services/queries/list'
 import { useWeb3React } from '@web3-react/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { pageShowSize, pageSize, POLLING_INTERVAL } from '../../constant'
 import NFTList from '../../components/lists/NFTList'
 import { FilterIndex, SaleModeIndex } from '../../components/Menu/SubNavMenu'
 import { useRouter } from 'next/router'
+import { logPageView } from '../../functions/analysis'
+
 
 export enum ActiveTab {
   ME = 'me',
@@ -76,6 +78,10 @@ function Index() {
   const nftWhere = { owner: account ? account.toLowerCase() : null }
   const where = {}
   const [filter, setFilter] = useState(where)
+
+  useEffect(() => {
+    logPageView()
+  }, [])
 
   const { loading, data, fetchMore, error } = useQuery<OwnerPerDataList>(NFT_MY_TOKEN, {
     variables: {

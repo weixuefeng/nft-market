@@ -11,7 +11,8 @@ import Layout from 'layouts/Layout'
 import { ApolloProvider } from '@apollo/client'
 import Web3ReactManager from 'components/Web3ReactManager'
 import client from '../services/queries'
-import { initialize } from 'react-ga'
+import ReactGA from 'react-ga'
+import { NEXT_PUBLIC_GOOGLE_ANALYTICS } from '../constant/settings'
 
 const Web3ProviderNetwork = dynamic(() => import('components/Web3ProviderNetwork'), { ssr: false })
 declare let window: any
@@ -22,15 +23,20 @@ function App({ Component, pageProps }) {
   useEffect(() => {
     if ('undefined' !== window && !!window.ethereum) {
       window.ethereum.autoRefreshOnNetworkChange = false
-      initialize('G-QT8JGS8FM6', {
-        debug: true,
-        titleCase: false,
-        gaOptions: {
-          userId: "123"
-        }
-      });
     }
   })
+ 
+  useEffect(() => {
+    ReactGA.initialize(NEXT_PUBLIC_GOOGLE_ANALYTICS, { testMode: process.env.NODE_ENV === 'development'})
+    const errorHandler = (error) => {
+      ReactGA.exception({
+        description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,
+        fatal: true,
+      })
+    }
+    window.addEventListener('error', errorHandler)
+    return () => window.removeEventListener('error', errorHandler)
+  }, [])
 
   return (
     <Fragment>

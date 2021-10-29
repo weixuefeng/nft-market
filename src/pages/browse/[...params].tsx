@@ -13,12 +13,17 @@ import { pageShowSize, pageSize, POLLING_INTERVAL } from '../../constant'
 import NFTList from '../../components/lists/NFTList'
 import { useRouter } from 'next/router'
 import { getOrderInfo, getSaleModeInfo } from '../../functions/FilterOrderUtil'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { logPageView } from '../../functions/analysis'
 
 export default function Browse() {
   const { t } = useTranslation()
   const router = useRouter()
   const param = router.query.params || []
+
+  useEffect(() => {
+    logPageView()
+  },[])
 
   let orderIndex = 0
   let saleModeIndex = 0

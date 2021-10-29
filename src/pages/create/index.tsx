@@ -1,6 +1,6 @@
 import 'i18n'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { hexAddress2NewAddress, isValidHexAddress, isValidNewAddress, newAddress2HexAddress } from 'utils/NewChainUtils'
 import { FILE_UPLOAD_URL, JSON_UPLOAD_URL } from '../../constant'
@@ -11,6 +11,7 @@ import { useERC721Contract, useNFTExchangeContract } from '../../hooks/useContra
 import transactor from '../../functions/Transactor'
 import { NEWMALL_COLLECTION_CONTRACT } from '../../constant/settings'
 import CreateConfirmModal from '../../components/Modal/CreateConfirmModal'
+import { logPageView } from '../../functions/analysis'
 
 export default function Me() {
   let { t } = useTranslation()
@@ -24,6 +25,10 @@ export default function Me() {
   const nftExchangeContract = useERC721Contract(NEWMALL_COLLECTION_CONTRACT)
   const [showModal, setShowModal] = useState(false)
   const [createTx, setCreateTx] = useState('')
+
+  useEffect(() => {
+    logPageView()
+  },[])
 
   function onUserChangeRoyaltyRecipient(e) {
     setUserChangedRoyaltyRecipient(true)

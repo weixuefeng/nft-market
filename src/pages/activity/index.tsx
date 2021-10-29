@@ -11,7 +11,7 @@ import {
   AdjustmentsIcon,
   SparklesIcon
 } from '@heroicons/react/solid'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { useQuery } from '@apollo/client'
 import { GET_TRADING_HISTORY } from '../../services/queries/tradeHistory'
@@ -22,6 +22,7 @@ import { getNftDetailPath, getTradingStatus } from '../../functions'
 import NewAddress from '../../components/layouts/NewAddress'
 import { RelativeTimeLocale } from '../../functions/DateTime'
 import { formatEther } from 'ethers/lib/utils'
+import { logPageView } from '../../functions/analysis'
 
 const filterOptions = [
   { title: 'All', current: true },
@@ -119,6 +120,11 @@ export default function Activity() {
   const [hasMore, setHasMore] = useState(true)
   const where = getFilterByTitle(selected.title)
   const [tradingHistoryData, setTradingHistoryData] = useState([])
+
+  useEffect(() => {
+    logPageView()
+  },[])
+
   const { loading, error, data, fetchMore } = useQuery<TradingHistoryList>(GET_TRADING_HISTORY, {
     variables: {
       skip: 0,
@@ -168,7 +174,7 @@ export default function Activity() {
       <div className="activity-list">
         <ul role="list">
           {tradingHistoryData.map(tradingHistory => (
-            <li>
+            <li key={tradingHistory.id}>
               <div>
                 <div>
                   <div className="a">
