@@ -51,6 +51,13 @@ function App({ Component, pageProps }) {
         <meta key="twitter:card" name="twitter:card" content="app" />
         <meta key="twitter:title" name="twitter:title" content="NewMall App" />
         <meta key="twitter:description" name="twitter:description" content="NewMall, Infrastructure for Metaverse" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-QT8JGS8FM6"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments)}
+          gtag('js', new Date());
+          gtag('config', 'G-QT8JGS8FM6');
+        </script>
       </Head>
       <ThemeProvider attribute="class">
         <ApolloProvider client={client}>
