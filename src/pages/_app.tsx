@@ -25,13 +25,13 @@ function App({ Component, pageProps }) {
       window.ethereum.autoRefreshOnNetworkChange = false
     }
   })
- 
+
   useEffect(() => {
-    ReactGA.initialize(NEXT_PUBLIC_GOOGLE_ANALYTICS, { testMode: process.env.NODE_ENV === 'development'})
-    const errorHandler = (error) => {
+    ReactGA.initialize(NEXT_PUBLIC_GOOGLE_ANALYTICS, { testMode: process.env.NODE_ENV === 'development' })
+    const errorHandler = error => {
       ReactGA.exception({
         description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,
-        fatal: true,
+        fatal: true
       })
     }
     window.addEventListener('error', errorHandler)

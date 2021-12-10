@@ -23,7 +23,7 @@ export default function Browse() {
 
   useEffect(() => {
     logPageView()
-  },[])
+  }, [])
 
   let orderIndex = 0
   let saleModeIndex = 0

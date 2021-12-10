@@ -55,7 +55,7 @@ function hexAddress2NewAddress(hexAddress, chainId) {
     return ''
   }
   if (hexAddress.toLowerCase() === AddressZero.slice(2).toLowerCase()) {
-    return ""
+    return ''
   }
   chainId = Number(chainId)
   let data = chainId.toString(16).slice(-8) + hexAddress

@@ -10,7 +10,6 @@ import { FilterIndex, SaleModeIndex } from '../../components/Menu/SubNavMenu'
 import { useRouter } from 'next/router'
 import { logPageView } from '../../functions/analysis'
 
-
 export enum ActiveTab {
   ME = 'me',
   ORDER_SELL = 'orders-sell',

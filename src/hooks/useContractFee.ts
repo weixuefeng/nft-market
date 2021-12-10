@@ -25,8 +25,8 @@ export function useContractFee(tokenAddress) {
         const royaltyFee = await contract.royaltyFeeInfo(tokenAddress)
         contractFee.protocolFee = protocolFee[1] / base
         contractFee.royaltyFee = royaltyFee[1] / base
-      } catch(e) {
-        console.log("error:" + e);
+      } catch (e) {
+        console.log('error:' + e)
       }
       setContractFee(contractFee)
     }

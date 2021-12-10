@@ -1,6 +1,6 @@
 import 'i18n'
 import { useTranslation } from 'react-i18next'
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { hexAddress2NewAddress, isValidHexAddress, isValidNewAddress, newAddress2HexAddress } from 'utils/NewChainUtils'
 import { FILE_UPLOAD_URL, JSON_UPLOAD_URL } from '../../constant'
@@ -28,7 +28,7 @@ export default function Me() {
 
   useEffect(() => {
     logPageView()
-  },[])
+  }, [])
 
   function onUserChangeRoyaltyRecipient(e) {
     setUserChangedRoyaltyRecipient(true)

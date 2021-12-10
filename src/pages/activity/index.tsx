@@ -36,7 +36,7 @@ const filterOptions = [
 
 function TokenMetaInfo(props) {
   const { tradingHistory } = props
-  if(!tradingHistory.token.black) {
+  if (!tradingHistory.token.black) {
     const tokenMetaData = useTokenDescription(tradingHistory.token.uri)
     const [contractAddress, tokenId] = tradingHistory.token.id.split('-')
     return (
@@ -55,15 +55,17 @@ function TokenMetaInfo(props) {
       </div>
     )
   } else {
-    return <div className="b">
+    return (
+      <div className="b">
         <a>
-          <img src="/image/error.png"/>
+          <img src="/image/error.png" />
           <div className="item">
             <p>-</p>
             <p>-</p>
           </div>
         </a>
-    </div>
+      </div>
+    )
   }
 }
 
@@ -123,7 +125,7 @@ export default function Activity() {
 
   useEffect(() => {
     logPageView()
-  },[])
+  }, [])
 
   const { loading, error, data, fetchMore } = useQuery<TradingHistoryList>(GET_TRADING_HISTORY, {
     variables: {

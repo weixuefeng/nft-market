@@ -9,7 +9,7 @@ function Index() {
   useEffect(() => {
     logPageView()
   }, [])
-  
+
   return (
     <>
       <MenuOfMe activeTab={ActiveTab.ORDER_SELL} setActiveTab={setActiveTab} />

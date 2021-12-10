@@ -46,7 +46,7 @@ export default function View() {
 
   useEffect(() => {
     logPageView()
-  },[])
+  }, [])
 
   useEffect(() => {
     getTokenInfoById(lookTokenID).then(data => {
