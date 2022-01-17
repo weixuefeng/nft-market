@@ -40,7 +40,6 @@ export async function parseTokenMetaData(uri): Promise<TokenMetaData> {
       data.tokenVideo = _videoUri
     }
 
-
     // TBD: support for `media`:[], mime:video|audio|image/type
     // TBD: tag
     // TBD: attributes
@@ -60,8 +59,10 @@ export async function parseTokenMetaData(uri): Promise<TokenMetaData> {
       }
     }
     // add animation
-    if(tokenExtraInfo.animation_uri !== undefined) {
-      const animationUrl = UriResolver(tokenExtraInfo.animation_uri.substring(tokenExtraInfo.animation_uri.lastIndexOf('/') + 1))
+    if (tokenExtraInfo.animation_uri !== undefined) {
+      const animationUrl = UriResolver(
+        tokenExtraInfo.animation_uri.substring(tokenExtraInfo.animation_uri.lastIndexOf('/') + 1)
+      )
       data.nftType = 'animation'
       data.tokenAnimation = animationUrl
       data.aspect_ratio = tokenExtraInfo.aspect_ratio

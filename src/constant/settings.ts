@@ -1,3 +1,11 @@
+/*
+ * @Author: pony@diynova.com
+ * @Date: 2021-10-29 16:31:31
+ * @LastEditors: pony@diynova.com
+ * @LastEditTime: 2022-01-17 20:59:50
+ * @FilePath: /marketplace/src/constant/settings.ts
+ * @Description: config
+ */
 import { newAddress2HexAddress } from '../utils/NewChainUtils'
 
 export const TARGET_CHAINID = process.env.NEXT_PUBLIC_NETWORK_CHAINID
@@ -17,3 +25,5 @@ export const OPERATION_FEE_RECEIPT_ADDRESS = newAddress2HexAddress(
   process.env.NEXT_PUBLIC_OPERATION_FEE_RECEIPT_ADDRESS
 )
 export const NEXT_PUBLIC_GOOGLE_ANALYTICS = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS
+export const NEXT_PUBLIC_LANDS_CONTRACT = process.env.NEXT_PUBLIC_LANDS_CONTRACT
+export const NEXT_PUBLIC_ESTATE_CONTRACT = process.env.NEXT_PUBLIC_ESTATE_CONTRACT

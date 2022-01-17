@@ -27,14 +27,16 @@ export default function Browse() {
 
   let orderIndex = 0
   let saleModeIndex = 0
-  if (param.length === 2) {
+  let contractAddress = 'all'
+  if (param.length === 3) {
     orderIndex = parseInt(param[0].toString().split('=')[1])
     saleModeIndex = parseInt(param[1].toString().split('=')[1])
+    contractAddress = param[2].toString().split('=')[1]
   }
   const { orderBy, orderDirection } = getOrderInfo(orderIndex)
   const currentTimeStamp = parseInt(Date.now() / 1000 + '')
   const [timeNow, setTimeNow] = useState(currentTimeStamp)
-  const where = getSaleModeInfo(saleModeIndex, timeNow)
+  const where = getSaleModeInfo(saleModeIndex, timeNow, contractAddress)
 
   const [pageNumber, setPageNumber] = useState(1)
   const [tokenData, setTokenData] = useState([])
@@ -99,7 +101,8 @@ export default function Browse() {
     pageNumber,
     setPageNumber,
     setTimeNow,
-    loading
+    loading,
+    contractAddress: contractAddress
   }
   return <NFTList {...info} />
 }

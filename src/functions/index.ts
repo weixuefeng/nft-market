@@ -76,6 +76,6 @@ export function splitTx(tx: string | null) {
   return tx.substring(0, 7) + '...' + tx.substring(tx.length - 7, tx.length)
 }
 
-export function getBrowsePath(filterIndex: FilterIndex, saleModeIndex: SaleModeIndex) {
-  return `/browse/filterIndex=${filterIndex}/saleModeIndex=${saleModeIndex}`
+export function getBrowsePath(filterIndex: FilterIndex, saleModeIndex: SaleModeIndex, contract: string = ''): string {
+  return `/browse/filterIndex=${filterIndex}/saleModeIndex=${saleModeIndex}/contract=${contract}`
 }

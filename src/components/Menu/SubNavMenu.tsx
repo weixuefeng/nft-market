@@ -8,6 +8,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import { getBrowsePath } from '../../functions'
+import { NEXT_PUBLIC_ESTATE_CONTRACT, NEXT_PUBLIC_LANDS_CONTRACT } from '../../constant/settings'
 
 export enum SaleModeIndex {
   ON_SALE = 0,
@@ -23,10 +24,16 @@ export enum FilterIndex {
   PRICE_LOW_TO_HIGH = 3
 }
 
+export enum ContractFilter {
+  ALL = 0,
+  LANDS_CONTRACT = 1,
+  ESTATE_CONTRACT = 2
+}
+
 const SubNavMenu = props => {
   let { t } = useTranslation()
   const router = useRouter()
-  const { saleModeIndex, filterIndex, setPageNumber, setTimeNow } = props
+  const { saleModeIndex, filterIndex, setPageNumber, setTimeNow, contractAddress } = props
 
   function onOrderChange(e) {
     const filter = parseInt(e.target.value)
@@ -39,7 +46,7 @@ const SubNavMenu = props => {
     }
     setPageNumber(1)
     resetTime()
-    router.push(getBrowsePath(filter, saleMode))
+    router.push(getBrowsePath(filter, saleMode, contractAddress))
   }
 
   function resetTime() {
@@ -52,7 +59,16 @@ const SubNavMenu = props => {
     const saleMode = parseInt(e.target.value)
     setPageNumber(1)
     resetTime()
-    router.push(getBrowsePath(filterIndex, saleMode))
+    router.push(getBrowsePath(filterIndex, saleMode, contractAddress))
+  }
+
+  const contractArray = ['all', NEXT_PUBLIC_LANDS_CONTRACT, NEXT_PUBLIC_ESTATE_CONTRACT]
+  function onCollectionsChange(e) {
+    let saleMode = saleModeIndex
+    const contractAddress = contractArray[parseInt(e.target.value)]
+    setPageNumber(1)
+    resetTime()
+    router.push(getBrowsePath(filterIndex, saleMode, contractAddress))
   }
 
   return (
@@ -63,12 +79,25 @@ const SubNavMenu = props => {
 
       <div id="sub-filters">
         <div>
-          <label htmlFor="filter">{t('filter')}</label>
+          <label htmlFor="filter">{t('sale mode filter')}</label>
           <select onChange={onSaleModeChange} id="filter" name="filter" defaultValue={saleModeIndex}>
             <option value={SaleModeIndex.ON_SALE}>{t('on sale')}</option>
             <option value={SaleModeIndex.FIXED_PRICE}>{t('fixed price sale')}</option>
             <option value={SaleModeIndex.ENGLISH_AUCTION}>{t('english auction')}</option>
             <option value={SaleModeIndex.ALL}>{t('all')}</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="filter">{t('collection filter')}</label>
+          <select
+            onChange={onCollectionsChange}
+            id="filter-contract"
+            name="ilter-contract"
+            defaultValue={saleModeIndex}
+          >
+            <option value={ContractFilter.ALL}>{t('all')}</option>
+            <option value={ContractFilter.LANDS_CONTRACT}>{t('Andverse Land')}</option>
+            <option value={ContractFilter.ESTATE_CONTRACT}>{t('Andverse Estate')}</option>
           </select>
         </div>
         <div>

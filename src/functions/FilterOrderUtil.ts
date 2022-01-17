@@ -37,13 +37,16 @@ export function getOrderInfo(filterIndex: FilterIndex) {
   return { orderBy, orderDirection }
 }
 
-export function getSaleModeInfo(saleModeIndex: SaleModeIndex, now: number) {
+export function getSaleModeInfo(saleModeIndex: SaleModeIndex, now: number, contract: string | undefined) {
   const idNotIn = ['0xe1d4de8c157094eb39589625a16a1b8eccaf0467-84', '0xe1d4de8c157094eb39589625a16a1b8eccaf0467-82']
   let where
-  const defaultFilter = {
+  let defaultFilter = {
     mintBlock_gt: FILTER_START_BLOCK,
     id_not_in: idNotIn,
     black: false
+  }
+  if (contract && contract.length > 0 && contract !== 'all') {
+    defaultFilter['contract'] = contract
   }
   switch (saleModeIndex) {
     case SaleModeIndex.ALL:

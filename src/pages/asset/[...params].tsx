@@ -192,17 +192,17 @@ export default function View() {
         <DetailSideBar nftToken={data.token} nftTokenMetaData={metaData} contractFee={contractFee} />
       </div>
     )
-  }else if(metaData.nftType === 'animation') {
+  } else if (metaData.nftType === 'animation') {
     //todo: add responsive for animation
-    let width = 400;
-    let height = width * 16 / 9
+    let width = 400
+    let height = (width * 16) / 9
     return (
       <div className="nft_page">
         <div className="nft_main">
           {nftHeader}
           {nftMoreMenu}
           <section className="cover justify-center items-center">
-            <iframe src={metaData.tokenAnimation} className={"rounded"} width={`${width}px`} height={`${height}px`}/>
+            <iframe src={metaData.tokenAnimation} className={'rounded'} width={`${width}px`} height={`${height}px`} />
           </section>
           {nftCreationInfo}
           {nftDescription}
