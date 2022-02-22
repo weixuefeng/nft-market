@@ -133,7 +133,7 @@ export default function View() {
         <Menu.Item>
           <a
             hidden={window['android'] != undefined || (isIOS && window['ethereum'])}
-            onClick={() => downloadFile(metaData.tokenImage, metaData.tokenName)}
+            onClick={() => downloadFile(metaData.tokenOriginImage, metaData.tokenName)}
           >
             {t('download resource')}
           </a>

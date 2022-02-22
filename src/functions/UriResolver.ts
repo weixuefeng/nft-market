@@ -1,5 +1,5 @@
 import { IPFS_GATEWAY_URL } from 'constant'
-
+import { NEXT_PUBLIC_CACHE_URL } from '../constant/settings'
 // FOR SOLVING AN URI
 /* USAGE
   A. for solving an URI:
@@ -7,7 +7,7 @@ import { IPFS_GATEWAY_URL } from 'constant'
   B. for solving an tokenURI while the contract has a baseURI:
     UriResolver(tokenURI, baseURI)
 */
-export function UriResolver(uri = '', baseUri = '') {
+export function UriResolver(uri = '', baseUri = '', forceCache = false) {
   // `uri` is the uri to be resolved
   // `baseUri` is the addtional baseUri provided, like a contract has a baseUri, can be empty.
 
@@ -18,8 +18,9 @@ export function UriResolver(uri = '', baseUri = '') {
   */
   let DEFAULT_GATEWAY_BASE_URL = IPFS_GATEWAY_URL
   let IPFS_GATEWAY_BASE_URL = IPFS_GATEWAY_URL
-  let AR_GATEWAY_BASE_URL = 'https://arweave.net/'
 
+  let AR_GATEWAY_BASE_URL = 'https://arweave.net/'
+  
   switch (GetUriProtocol(uri)) {
     case 'http':
     case 'https':
@@ -27,7 +28,7 @@ export function UriResolver(uri = '', baseUri = '') {
       return uri
     case 'ipfs':
       // use IPFS gateway
-      return IPFS_GATEWAY_BASE_URL + GetIpfsCid(uri)
+      return forceCache ? NEXT_PUBLIC_CACHE_URL + GetIpfsCid(uri) : IPFS_GATEWAY_BASE_URL + GetIpfsCid(uri)
     case 'ar':
       // use AR gateway
       return AR_GATEWAY_BASE_URL + GetArTxnId(uri)
@@ -36,7 +37,7 @@ export function UriResolver(uri = '', baseUri = '') {
       if (baseUri !== '') {
         return baseUri + uri
       }
-      return DEFAULT_GATEWAY_BASE_URL + uri
+      return forceCache ? NEXT_PUBLIC_CACHE_URL + uri : DEFAULT_GATEWAY_BASE_URL + uri
   }
 }
 

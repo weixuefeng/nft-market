@@ -19,6 +19,7 @@ export class TokenMetaData {
   tokenDescription: string = ''
   nftType: string = 'image'
   tokenImage: string = ''
+  tokenOriginImage: string = ''
   tokenVideo: string = ''
   tokenAnimation: string = ''
   aspect_ratio: string = ''
@@ -54,8 +55,10 @@ export async function parseTokenMetaData(uri): Promise<TokenMetaData> {
       if (protocol === 'http' || protocol === 'https' || protocol === 'base64') {
         data.tokenImage = tokenExtraInfo.image
       } else {
-        const imageUri = UriResolver(tokenExtraInfo.image.substring(tokenExtraInfo.image.lastIndexOf('/') + 1))
+        const imageUri = UriResolver(tokenExtraInfo.image.substring(tokenExtraInfo.image.lastIndexOf('/') + 1), '', true)
+        const tokenOriginImage = UriResolver(tokenExtraInfo.image.substring(tokenExtraInfo.image.lastIndexOf('/') + 1))
         data.tokenImage = imageUri
+        data.tokenOriginImage = tokenOriginImage
       }
     }
     // add animation

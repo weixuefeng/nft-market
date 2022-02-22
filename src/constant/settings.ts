@@ -2,7 +2,7 @@
  * @Author: pony@diynova.com
  * @Date: 2021-10-29 16:31:31
  * @LastEditors: pony@diynova.com
- * @LastEditTime: 2022-01-17 20:59:50
+ * @LastEditTime: 2022-02-22 21:08:49
  * @FilePath: /marketplace/src/constant/settings.ts
  * @Description: config
  */
@@ -27,3 +27,4 @@ export const OPERATION_FEE_RECEIPT_ADDRESS = newAddress2HexAddress(
 export const NEXT_PUBLIC_GOOGLE_ANALYTICS = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS
 export const NEXT_PUBLIC_LANDS_CONTRACT = process.env.NEXT_PUBLIC_LANDS_CONTRACT
 export const NEXT_PUBLIC_ESTATE_CONTRACT = process.env.NEXT_PUBLIC_ESTATE_CONTRACT
+export const NEXT_PUBLIC_CACHE_URL = process.env.NEXT_PUBLIC_CACHE_URL
