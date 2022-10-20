@@ -221,7 +221,8 @@ function Network() {
     return <span className="testnet">Newchain {t('wallet.testnet')}</span>
   } else if (chainId === SupportedChainId.NEWCHAIN) {
     return <span className="mainnet">Newchain {t('wallet.mainnet')}</span>
-    // TODO: ADD OTHER CHAIN ID
+  } else if(chainId === SupportedChainId.NEWCHAIN_DEVNET) {
+    return <span className="mainnet">Newchain Devnet</span>
   } else {
     return <span className="testnet">Wrong Network</span>
   }

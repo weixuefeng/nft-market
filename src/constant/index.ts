@@ -15,14 +15,13 @@ export const NETWORK = chainId => {
 
 export const pageSize = 13
 export const pageShowSize = 12
-
-export const IPFS_GATEWAY_HOST = 'files.cloud.diynova.com'
+export const IPFS_GATEWAY_HOST = 'ipfs.wavemall.io'
 export const IPFS_GATEWAY_PORT = '443'
 export const IPFS_GATEWAY_PROTOCOL = 'https'
 export const IPFS_GATEWAY_URL = `${IPFS_GATEWAY_PROTOCOL}://${IPFS_GATEWAY_HOST}:${IPFS_GATEWAY_PORT}/ipfs/`
 
-export const FILE_UPLOAD_URL = 'https://files.cloud.diynova.com/upload'
-export const JSON_UPLOAD_URL = 'https://files.cloud.diynova.com/upload_json'
+export const FILE_UPLOAD_URL = 'https://ipfs.wavemall.io/upload'
+export const JSON_UPLOAD_URL = 'https://ipfs.wavemall.io/upload_json'
 
 export const VERIFIED_ADDRESSES = {
   '0x1774253cfaa39015fa5e7c4c6a0deb8c1a994937': {

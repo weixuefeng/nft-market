@@ -9,5 +9,6 @@ export enum SupportedChainId {
   BSC = 56,
   BSC_TESTNET = 97,
   NEWCHAIN = 1012,
-  NEWCHAIN_TESTNET = 1007
+  NEWCHAIN_TESTNET = 1007,
+  NEWCHAIN_DEVNET = 1002
 }

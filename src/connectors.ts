@@ -7,11 +7,12 @@ const POLLING_INTERVAL = 1000
 
 const RPC: { [chainId: number]: string } = {
   [SupportedChainId.NEWCHAIN]: 'https://global.rpc.mainnet.newtonproject.org/',
-  [SupportedChainId.NEWCHAIN_TESTNET]: 'https://rpc1.newchain.newtonproject.org/'
+  [SupportedChainId.NEWCHAIN_TESTNET]: 'https://rpc1.newchain.newtonproject.org/',
+  [SupportedChainId.NEWCHAIN_DEVNET]: "https://rpc.newton2.devnet.newtonproject.org/"
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 4, 42, 56, 77, 97, 99, 128, 256, 1007, 1012]
+  supportedChainIds: [1, 4, 42, 56, 77, 97, 99, 128, 256, 1007, 1012, 1002]
 })
 
 export const network = new NetworkConnector({
